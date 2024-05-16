@@ -11,6 +11,9 @@ const urlImgComplete = '/completed'
 export function ContextProvider({ children }) {
     const [data, setData] = useState({})
     const [dataActual, setDataActual] = useState([])
+    const [loading, setLoading] = useState(false)
+    console.log(loading)
+
 
     const [resueltosObj, setResueltosObj] = useState({})
     const [noResueltosObj, setNoResueltosObj] = useState({})
@@ -94,13 +97,13 @@ export function ContextProvider({ children }) {
     }
 
     function handleClickElemList(key) {
-/*         if (keywords[key].terminado == true) {
-            setObjetoPrincipal({
-                id: 0,
-                url: urlImgComplete
-            })
-            return
-        } */
+        /*         if (keywords[key].terminado == true) {
+                    setObjetoPrincipal({
+                        id: 0,
+                        url: urlImgComplete
+                    })
+                    return
+                } */
 
         let arrayConcatenado = resueltosObj[key].concat(noResueltosObj[key])
         arrayConcatenado.sort((a, b) => a.id - b.id)
@@ -129,32 +132,43 @@ export function ContextProvider({ children }) {
     }
 
     useEffect(() => {
+        setLoading(true)
+
         fetch(urlRaizApi + "/data-elements")
             .then(response => response.json())
             .then(json => {
-                setData(json)
 
-                let kwords = Object.keys(json)
-                let objKeys = {}
-                kwords.forEach(k => {
-                    objKeys[k] = { key: k, terminado: false }
-                })
-                /* console.log(objKeys) */
-                setKeywords(objKeys)
+                
+                setTimeout(() => {
+                    // Código que deseas ejecutar después del retardo
+                    setData(json)
 
-                let primerCargaRandom = elegirAleatorio(json)
-                setKeyActual(primerCargaRandom[0])
-                setDataActual(primerCargaRandom[1])
+                    let kwords = Object.keys(json)
+                    let objKeys = {}
+                    kwords.forEach(k => {
+                        objKeys[k] = { key: k, terminado: false }
+                    })
+                    /* console.log(objKeys) */
+                    setKeywords(objKeys)
+    
+                    let primerCargaRandom = elegirAleatorio(json)
+                    setKeyActual(primerCargaRandom[0])
+                    setDataActual(primerCargaRandom[1])
+    
+                    let arrayTraducciones = textosTraducidos(primerCargaRandom[1])
+                    setInTxts(textosTraducidos(arrayTraducciones[0]))
+                    setEsTxts(textosTraducidos(arrayTraducciones[1]))
+    
+                    let objPrinc = elegirObjetoEnArray(primerCargaRandom[1])
+                    setObjetoPrincipal(objPrinc)
+                    setResueltosObj(objKeysVacio(kwords))
+                    setNoResueltosObj(json)
+                    console.log('Carga desde servidor exitosa: ', json)
+                    setLoading(false)
 
-                let arrayTraducciones = textosTraducidos(primerCargaRandom[1])
-                setInTxts(textosTraducidos(arrayTraducciones[0]))
-                setEsTxts(textosTraducidos(arrayTraducciones[1]))
+                  }, 4000); 
 
-                let objPrinc = elegirObjetoEnArray(primerCargaRandom[1])
-                setObjetoPrincipal(objPrinc)
-                setResueltosObj(objKeysVacio(kwords))
-                setNoResueltosObj(json)
-                console.log('Carga desde servidor exitosa: ', json)
+
             })
     }, [])
 
@@ -173,10 +187,11 @@ export function ContextProvider({ children }) {
     return (
         <Context.Provider
             value={{
+                loading,
                 data, reloadCategoria, dataActual, resueltosObj, keyActual, keywords,
                 espTxts, ingTxts, objetoPrincipal,
                 reloadApp,
-                handleImagePrincClick, 
+                handleImagePrincClick,
                 handleClickElemList, handleClickVolverCategs,
                 handleClickElimiarAciertos, urlRaizApi, handleClickVerificar,
                 urlImgComplete

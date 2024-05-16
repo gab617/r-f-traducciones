@@ -12,7 +12,7 @@ export default function Seleccion({
     handleClickVolverCategs, keyActual,
     handleImagePrincClick, urlRaizApi,
     objetoPrincipal, dataActual,
-    ingTxts, espTxts,
+    ingTxts, /* espTxts ,*/
     resueltosObj,
 }) {
 

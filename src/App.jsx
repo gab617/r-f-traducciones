@@ -7,10 +7,12 @@ import Categorias from './pages/Categorias/Categorias'
 import Seleccion from './pages/Seleccion/Seleccion'
 import { Aciertos } from './pages/Aciertos/Aciertos'
 import { Context } from './Contexto/Context'
+import { Loader2 } from './components/Loader2'
 
 
 function App() {
   const {
+    loading,
     data, dataActual, resueltos, resueltosObj, keyActual, keywords,
     espTxts, ingTxts,
     reloadApp,
@@ -32,10 +34,16 @@ function App() {
             path='/'
             element={
               <div className='flex flex-col items-center justify-center h-screen'>
+
                 <Link className='link-menu sm:w-1/2' to={'/categorias'}>
                   Empezar!
                 </Link>
-{/*                 <Link className='link-menu  sm:w-1/2' to={'/api'}>
+                {loading &&
+                  <>
+                    <Loader2></Loader2>
+                  </>
+                }
+                {/*                 <Link className='link-menu  sm:w-1/2' to={'/api'}>
                   Api
                 </Link>
                 <Link className='link-menu  sm:w-1/2' to={'/hi'}>
