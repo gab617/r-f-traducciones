@@ -1,0 +1,299 @@
+.seleccion {
+    background-color: rgb(217, 255, 0);
+}
+
+.seleccion {
+    background: rgb(140, 3, 208);
+    background: linear-gradient(90deg, rgba(140, 3, 208, 0.5130427170868348) 14%, rgba(11, 46, 221, 0.6222864145658263) 50%, rgba(23, 166, 193, 0.3785889355742297) 84%);
+}
+
+.btn-opciones {
+    --clr-font-main: hsla(0 0% 20% / 100);
+    --btn-bg-1: hsla(194 100% 69% / 1);
+    --btn-bg-2: rgb(229, 31, 255);
+    --btn-bg-color: hsla(360 100% 100% / 1);
+    --radii: 0.5em;
+    cursor: pointer;
+    /* padding: 1em 1.4em; */
+    width: 100%;
+    height: 3em;
+    /*     min-width: 120px;
+    min-height: 44px; */
+    /* font-size: var(--size, 1.3rem); */
+    font-size: 100%;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-weight: 600;
+    transition: 0.8s;
+    background-size: 280% auto;
+    background-image: linear-gradient(325deg, var(--btn-bg-2) 0%, var(--btn-bg-1) 55%, var(--btn-bg-2) 90%);
+    border: none;
+    border-radius: var(--radii);
+    box-shadow: 0px 0px 20px rgba(71, 184, 255, 0.5), 0px 5px 5px -1px rgba(58, 125, 233, 0.25), inset 4px 4px 8px rgba(175, 230, 255, 0.5), inset -4px -4px 8px rgba(19, 95, 216, 0.35);
+}
+
+.btn-opciones:hover {
+    background-position: right top;
+}
+
+.btn-opciones:is(:focus, :focus-visible, :active) {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--btn-bg-color), 0 0 0 6px var(--btn-bg-2);
+}
+
+.btn-opciones-true{
+    color:green;
+    --btn-bg-1: rgb(144, 255, 97);
+    --btn-bg-2: rgb(83, 255, 31);
+    --btn-bg-color: rgb(255, 255, 255);
+}
+
+@media only screen and (min-width: 650px){
+  .btn-opciones{
+    font-size: 1.3em;
+  }
+
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+    .btn-opciones {
+        transition: linear;
+    }
+}
+
+/* BOTON ACIERTOS */
+.btn-aciertos {
+    position: relative;
+    width: 150px;
+    height: 55px;
+    border-radius: 45px;
+    border: none;
+    background-color: rgb(151, 95, 255);
+    color: white;
+    box-shadow: 0px 10px 10px rgb(210, 187, 253) inset,
+        0px 5px 10px rgba(5, 5, 5, 0.212),
+        0px -10px 10px rgb(124, 54, 255) inset;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.btn-aciertos::before {
+    width: 70%;
+    height: 2px;
+    position: absolute;
+    background-color: rgba(250, 250, 250, 0.678);
+    content: "";
+    filter: blur(1px);
+    top: 7px;
+    border-radius: 50%;
+}
+
+.btn-aciertos::after {
+    width: 70%;
+    height: 2px;
+    position: absolute;
+    background-color: rgba(250, 250, 250, 0.137);
+    content: "";
+    filter: blur(1px);
+    bottom: 7px;
+    border-radius: 50%;
+}
+
+.btn-aciertos:hover {
+    animation: jello-horizontal 0.9s both;
+}
+
+@keyframes jello-horizontal {
+    0% {
+        transform: scale3d(1, 1, 1);
+    }
+
+    30% {
+        transform: scale3d(1.25, 0.75, 1);
+    }
+
+    40% {
+        transform: scale3d(0.75, 1.25, 1);
+    }
+
+    50% {
+        transform: scale3d(1.15, 0.85, 1);
+    }
+
+    65% {
+        transform: scale3d(0.95, 1.05, 1);
+    }
+
+    75% {
+        transform: scale3d(1.05, 0.95, 1);
+    }
+
+    100% {
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+/* BOTON DE VERIFICAR */
+.btn-verificar {
+    width: 140px;
+    height: 60px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(to right,#77530a,#ffd277,#77530a,#77530a,#ffd277,#77530a);
+    background-size: 250%;
+    background-position: left;
+    color: #ffd277;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition-duration: 1s;
+    overflow: hidden;
+  }
+  
+  .btn-verificar::before {
+    position: absolute;
+    content: "Verificar";
+    color: #ffd277;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 97%;
+    height: 90%;
+    border-radius: 8px;
+    transition-duration: 1s;
+    background-color: rgba(0, 0, 0, 0.842);
+    background-size: 200%;
+  }
+  
+  .btn-verificar:hover {
+    background-position: right;
+    transition-duration: 1s;
+  }
+  
+  .btn-verificar:hover::before {
+    background-position: right;
+    transition-duration: 1s;
+  }
+  
+  .btn-verificar:active {
+    transform: scale(0.95);
+  }
+
+  /* BOTON RELOAD */
+  .btn-reload {
+    position: relative;
+    margin: 0;
+    margin-top: .3em;
+    margin-right: .3em;
+    padding: .3em 1em;
+    outline: none;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    text-transform: uppercase;
+    background-color: #fff;
+    border: 1px solid rgba(22, 76, 167, 0.6);
+    border-radius: 10px;
+    color: #1d89ff;
+    font-weight: 400;
+    font-family: inherit;
+    z-index: 0;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.02, 0.01, 0.47, 1);
+  }
+  
+  .btn-reload span {
+    color: #164ca7;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.7px;
+  }
+  
+  .btn-reload:hover {
+    animation: rotate624 0.7s ease-in-out both;
+  }
+  
+  .btn-reload:hover span {
+    animation: storm1261 0.7s ease-in-out both;
+    animation-delay: 0.06s;
+  }
+  
+  @keyframes rotate624 {
+    0% {
+      transform: rotate(0deg) translate3d(0, 0, 0);
+    }
+  
+    25% {
+      transform: rotate(3deg) translate3d(0, 0, 0);
+    }
+  
+    50% {
+      transform: rotate(-3deg) translate3d(0, 0, 0);
+    }
+  
+    75% {
+      transform: rotate(1deg) translate3d(0, 0, 0);
+    }
+  
+    100% {
+      transform: rotate(0deg) translate3d(0, 0, 0);
+    }
+  }
+  
+  @keyframes storm1261 {
+    0% {
+      transform: translate3d(0, 0, 0) translateZ(0);
+    }
+  
+    25% {
+      transform: translate3d(4px, 0, 0) translateZ(0);
+    }
+  
+    50% {
+      transform: translate3d(-3px, 0, 0) translateZ(0);
+    }
+  
+    75% {
+      transform: translate3d(2px, 0, 0) translateZ(0);
+    }
+  
+    100% {
+      transform: translate3d(0, 0, 0) translateZ(0);
+    }
+  }
+  
+  .btn-reload {
+    border: 1px solid;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .btn-reload span {
+    z-index: 20;
+  }
+  
+  .btn-reload:after {
+    background: #38ef7d;
+    content: "";
+    height: 155px;
+    left: -75px;
+    opacity: 0.4;
+    position: absolute;
+    top: -50px;
+    transform: rotate(35deg);
+    transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+    width: 50px;
+    z-index: -10;
+  }
+  
+  .btn-reload:hover:after {
+    left: 120%;
+    transition: all 550ms cubic-bezier(0.19, 1, 0.22, 1);
+  }
