@@ -1,17 +1,29 @@
 /* eslint-disable react/prop-types */
-
+import './BtnsOpciones.css'
 import { Link } from "react-router-dom"
 import { BtnOpc } from "./BtnOpc"
+import { useEffect, useState } from 'react';
 
 export default function BtnsOpciones({
-    ingTxts, idObjetoPrincipal,
-    seleccionado, handleChangeSeleccionado,objetoPrincipal,handleClickVerificar
+    ingTxts,
+    seleccionado, handleChangeSeleccionado, objetoPrincipal, handleClickVerificar
 }) {
 
-    function handleClickVerif(objetoPrinc, selecc, iTxts){
+    function handleClickVerif(objetoPrinc, selecc, iTxts) {
         /* FUNCION DESDE CONTEXTO */
-        handleClickVerificar(objetoPrinc, selecc, iTxts)
+        let acierto = handleClickVerificar(objetoPrinc, selecc, iTxts)
+        if (acierto) {
+            setBlinkBien(true);
+            setTimeout(() => setBlinkBien(false), 1000);
+        } else {
+            setBlinkMal(true);
+            setTimeout(() => setBlinkMal(false), 1000);
+        }
     }
+
+    const [blinkMal, setBlinkMal] = useState(false);
+    const [blinkBien, setBlinkBien] = useState(false);
+
 
     return (
         <>
@@ -27,10 +39,9 @@ export default function BtnsOpciones({
                             <BtnOpc
                                 key={txtIng.id}
                                 txtIng={txtIng}
-                                idObjetoPrincipal={idObjetoPrincipal}
                                 handleChangeSeleccionado={handleChangeSeleccionado}
                                 seleccionado={seleccionado}
-                                
+
                             />
                         )
                     })
@@ -51,18 +62,28 @@ export default function BtnsOpciones({
                                     sm:mb-10
                                     mb-5
                                     text-blue-500'>
-                                      {seleccionado}</h1>
-                            </> 
+                                    {seleccionado}</h1>
+                            </>
                         )
                     }
 
-                    <button
-                        className='btn-verificar'
-                        onClick={
-                            () => handleClickVerif(objetoPrincipal, seleccionado, ingTxts)
-                        }>
+                    <div className="flex items-center">
+                        <div className={blinkMal ? 'blinkNo' : 'text-transparent'}>
+                            <p>---</p>
+                        </div>
 
-                    </button>
+                        <button
+                            className='btn-verificar'
+                            onClick={
+                                () => handleClickVerif(objetoPrincipal, seleccionado, ingTxts)
+                            }>
+
+                        </button>
+                        <div className={blinkBien ? 'blinkSi' : 'text-transparent'}>
+                            <p>---</p>
+                        </div>
+                    </div>
+
                 </div>
                 <Link
                     className='btn-aciertos'

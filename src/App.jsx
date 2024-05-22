@@ -38,7 +38,7 @@ function App() {
                 loading &&
                   <>
                     <LoaderHamster></LoaderHamster>
-                    <h1 className='text-3xl'>Cargando datos</h1>
+                    <h1 className='text-3xl'>Cargando datos...</h1>
                   </>
                 }
                 <Link className={`link-menu sm:w-1/2 ${loading ? 'hidden' : ''}`}

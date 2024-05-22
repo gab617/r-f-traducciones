@@ -1,0 +1,21 @@
+/* Añade estas clases a tu archivo CSS */
+.blinkNo {
+    background: rgb(255,0,0);
+    background: linear-gradient(90deg, rgba(255,0,0,0.7791491596638656) 0%, rgba(255,25,25,0.7707457983193278) 50%, rgba(255,21,21,0.8827906162464986) 100%);
+    color: rgba(0, 0, 0, 0);
+    padding: .3em;
+    border-radius: 50%;
+    opacity: 70%;
+}
+
+/* Añade estas clases a tu archivo CSS */
+.blinkSi {
+    background: rgb(0,255,21);
+    background: linear-gradient(90deg, rgba(0,255,21,0.7791491596638656) 0%, rgba(0,199,6,0.7707457983193278) 50%, rgba(21,255,36,0.8827906162464986) 100%);
+    color: rgba(0, 0, 0, 0);
+    padding: .3em;
+    border-radius: 50%;
+    opacity: 70%;
+
+}
+

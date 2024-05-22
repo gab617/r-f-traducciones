@@ -59,8 +59,10 @@ export function ContextProvider({ children }) {
                 noResueltosObj[keyActual] = arraySinResoluciones.filter(elem => elem.id != obj.id)
             }
         }
-
-        setObjetoPrincipal(elegirObjetoEnArray(noResueltosObj[keyActual]))
+        /* TIEMPO PAUSA AGREGADO PARA NO SOBREPISAR PARPADEO DE CORRECTO EN COMPONENTE SELECCION.JSX */
+        setTimeout(()=>{
+            setObjetoPrincipal(elegirObjetoEnArray(noResueltosObj[keyActual]))
+        },500)
         console.log(resueltosObj[keyActual], noResueltosObj[keyActual])
         if (noResueltosObj[keyActual].length == 0) {
             console.log('NO HAY MAS ELEMENTOS PARA RESOLVER')

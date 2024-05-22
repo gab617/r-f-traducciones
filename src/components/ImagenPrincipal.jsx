@@ -13,22 +13,25 @@ export default function ImagenPrincipal({ handleImagePrincClick, urlRaizApi, obj
         setLoading(false); // Cuando la nueva imagen se carga, establece el estado de carga como falso
     };
 
-    useEffect(()=>{
-        if(objetoPrincipal){
+    useEffect(() => {
+        if (objetoPrincipal) {
             setActualImgUrl(urlRaizApi + objetoPrincipal.url);
             setLoading(true); // Muestra el estado de carga mientras se carga la nueva imagen
-
         }
-    },[objetoPrincipal,urlRaizApi])
+    }, [objetoPrincipal, urlRaizApi])
 
     return (
         <div className="mb-1 mt-2 w-full">
-            {loading && <Loader/>}
+            {loading && <Loader />}
             <img
-                onClick={handleImagePrincClick} 
+                onClick={handleImagePrincClick}
                 src={actualImgUrl} alt=""
                 onLoad={handleImageLoad}
-                className={`w-full sm:w-1/5 mx-auto ${loading ? 'hidden' : ''}`} 
+                className={
+                    `w-full 
+                    sm:w-1/5 mx-auto 
+                    ${loading ? 'hidden' : ''}
+                    `}
             />
 
 

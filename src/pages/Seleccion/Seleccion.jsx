@@ -78,7 +78,6 @@ export default function Seleccion({
                     dataActual && (
                         <BtnsOpciones
                             ingTxts={ingTxts}
-                            idObjetoPrincipal={objetoPrincipal?.id}
                             handleChangeSeleccionado={handleChangeSeleccionado}
                             seleccionado={seleccionado}
                             objetoPrincipal={objetoPrincipal}

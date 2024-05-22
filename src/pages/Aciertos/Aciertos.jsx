@@ -9,7 +9,7 @@ export function Aciertos({ resueltosObj, urlRaizApi }) {
     const{keyActual} = useContext(Context)
 
     return (
-        <div className='flex flex-col mt-4 justify-center'>
+        <div className='flex flex-col mt-4 justify-center items-center'>
             <div className="
             
                 flex sm:justify-evenly mb-4 items-center
