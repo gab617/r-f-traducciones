@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Context } from '../Contexto/Context'
 
 
-export function BtnOpc({ txtIng, idObjetoPrincipal,
+export function BtnOpc({ txtIng,
       handleChangeSeleccionado }) {
 
 
@@ -15,7 +15,7 @@ export function BtnOpc({ txtIng, idObjetoPrincipal,
 
 
     return (
-        <div className='w-1/3'>
+        <div className='w-1/3 mb-2'>
             <button
                 className={
                     txtIng.activo ? `btn-opciones btn-opciones-true` : `btn-opciones` 

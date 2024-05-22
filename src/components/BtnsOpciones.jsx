@@ -16,7 +16,7 @@ export default function BtnsOpciones({
     return (
         <>
             <div className='
-                flex flex-wrap mt-5 
+                flex text-center flex-wrap mt-5 
                 sm:mt-5 
                 sm:m-auto sm:w-1/2 
                 sm:justify-center sm:text-center

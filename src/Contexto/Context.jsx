@@ -166,7 +166,7 @@ export function ContextProvider({ children }) {
                     console.log('Carga desde servidor exitosa: ', json)
                     setLoading(false)
 
-                  }, 4000); 
+                  }, 200); 
 
 
             })

@@ -35,9 +35,11 @@ export default function Seleccion({
                 <div className='flex text-center items-center'>
                     <Link
                         className="
-                            bg-transparent 
+                            bg-blue-400
+                            bg-opacity-35
                             hover:bg-blue-500 
-                            text-blue-700 
+                            text-white
+                            text-opacity-80
                             font-semibold 
                             hover:text-white px-4 border 
                             border-blue-500 hover:border-transparent 
@@ -61,7 +63,7 @@ export default function Seleccion({
                 </button>
             </div>
 
-            <div className='mb-10'>
+            <div className=''>
                 {
                     dataActual && (
                         <ImagenPrincipal
@@ -85,10 +87,11 @@ export default function Seleccion({
                     )
                 }
             </div>
+            <div>Rengav</div>
 
 
 
-            <div>
+{/*             <div>
                 {resueltosObj && resueltosObj[keyActual]?.map(obj => {
                     return (
                         <div>
@@ -96,7 +99,7 @@ export default function Seleccion({
                         </div>
                     )
                 })}
-            </div>
+            </div> */}
 
         </div>
     )
