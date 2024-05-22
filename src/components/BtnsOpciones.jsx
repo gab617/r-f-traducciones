@@ -13,16 +13,19 @@ export default function BtnsOpciones({
         /* FUNCION DESDE CONTEXTO */
         let acierto = handleClickVerificar(objetoPrinc, selecc, iTxts)
         if (acierto) {
-            setBlinkBien(true);
-            setTimeout(() => setBlinkBien(false), 1000);
+            setStyleVerificar('correcto')
+            setTimeout(() => {
+                setStyleVerificar('')
+            }, 1000);
         } else {
-            setBlinkMal(true);
-            setTimeout(() => setBlinkMal(false), 1000);
+            setStyleVerificar('incorrecto')
+            setTimeout(() => {
+                setStyleVerificar('')
+            }, 1000);
         }
     }
 
-    const [blinkMal, setBlinkMal] = useState(false);
-    const [blinkBien, setBlinkBien] = useState(false);
+    const [styleVerificar, setStyleVerificar] = useState('')
 
 
     return (
@@ -68,20 +71,17 @@ export default function BtnsOpciones({
                     }
 
                     <div className="flex items-center">
-                        <div className={blinkMal ? 'blinkNo' : 'text-transparent'}>
-                            <p>---</p>
+
+                        <div className={styleVerificar}>
+                            <button
+                                className='btn-verificar'
+                                onClick={
+                                    () => handleClickVerif(objetoPrincipal, seleccionado, ingTxts)
+                                }>
+
+                            </button>
                         </div>
 
-                        <button
-                            className='btn-verificar'
-                            onClick={
-                                () => handleClickVerif(objetoPrincipal, seleccionado, ingTxts)
-                            }>
-
-                        </button>
-                        <div className={blinkBien ? 'blinkSi' : 'text-transparent'}>
-                            <p>---</p>
-                        </div>
                     </div>
 
                 </div>
