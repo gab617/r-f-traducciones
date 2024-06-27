@@ -15,7 +15,7 @@ export default function ImagenPrincipal({ handleImagePrincClick, urlRaizApi, obj
 
     useEffect(() => {
         if (objetoPrincipal) {
-            setActualImgUrl(urlRaizApi + objetoPrincipal.url);
+            setActualImgUrl(objetoPrincipal.url);
             setLoading(true); // Muestra el estado de carga mientras se carga la nueva imagen
         }
     }, [objetoPrincipal, urlRaizApi])

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom'
 
 import './App.css'
@@ -8,6 +8,7 @@ import Seleccion from './pages/Seleccion/Seleccion'
 import { Aciertos } from './pages/Aciertos/Aciertos'
 import { Context } from './Contexto/Context'
 import { LoaderHamster } from './components/LoaderHamster'
+import { Comp1 } from './Comp1'
 
 
 function App() {
@@ -22,6 +23,22 @@ function App() {
   }
 
     = useContext(Context)
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  const handleMouseMove = (event) => {
+    console.log(event)
+    setMousePosition({ x: event.clientX, y: event.clientY });
+  };
+
+
+
+  useEffect(() => {
+    window.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
 
 
   return (
@@ -34,16 +51,27 @@ function App() {
             path='/'
             element={
               <div className='flex flex-col items-center justify-center h-screen'>
+
+
+                <div
+                  className="dot"
+                  style={{
+                    left: `${mousePosition.x}px`,
+                    top: `${mousePosition.y}px`,
+                  }}
+                ></div>
                 {
-                loading &&
+                  loading &&
+
                   <>
+                    {/* <Comp1></Comp1> */}
                     <LoaderHamster></LoaderHamster>
                     <h1 className='text-3xl'>Cargando datos...</h1>
                   </>
                 }
                 <Link className={`link-menu sm:w-1/2 ${loading ? 'hidden' : ''}`}
-                to={'/categorias'}
-                
+                  to={'/categorias'}
+
                 >
                   Empezar!
                 </Link>
