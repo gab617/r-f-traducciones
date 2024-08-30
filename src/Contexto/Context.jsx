@@ -8,8 +8,8 @@ import {
 
 export const Context = createContext({});
 /* const urlRaizApi = "http://localhost:3000" */
-const urlRaizApi = "https://e-b-js-traduciones.onrender.com";
-const urlImgComplete = "https://e-b-js-traduciones.onrender.com/completed";
+const urlRaizApi = "https://serviciosunificados.onrender.com";
+const urlImgComplete = "https://serviciosunificados.onrender.com/bw/completed";
 
 // eslint-disable-next-line react/prop-types
 export function ContextProvider({ children }) {
@@ -168,7 +168,7 @@ export function ContextProvider({ children }) {
   useEffect(() => {
     setLoading(true);
 
-    fetch(urlRaizApi + "/data-elements")
+    fetch(urlRaizApi + "/bw/databw")
       .then((response) => response.json())
       .then((json) => {
         setTimeout(() => {
