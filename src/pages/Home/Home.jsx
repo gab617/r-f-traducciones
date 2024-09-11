@@ -8,7 +8,7 @@ import { CardUser } from "./CardUser";
 
 export function Home({ loading }) {
   const [login, setLogin] = useState(true);
-  const { defUser, user, closeUser,points } = useContext(Context);
+  const { defUser, user, closeUser, points } = useContext(Context);
 
   function actionUserLogin() {
     setLogin(!login);
@@ -16,6 +16,13 @@ export function Home({ loading }) {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
+      <div>
+        <h1 className="lg:text-4xl w-1/2 m-auto mb-40 text-white">
+          Enfocado en el aprendizaje de vocabulario básico en
+          inglés, organizado por categorías y acompañado de imágenes
+          ilustrativas que facilitan la memorización y el entendimiento.
+        </h1>
+      </div>
       {loading && (
         <>
           {/* <Comp1></Comp1> */}
@@ -23,8 +30,8 @@ export function Home({ loading }) {
           <h1 className="text-3xl">Cargando datos...</h1>
         </>
       )}
-{/* 
-      <div className={`${loading || user !== "guest" ? "hidden" : ""}`}>
+
+      {/*       <div className={`${loading || user !== "guest" ? "hidden" : ""}`}>
         {login && (
           <div className={`${login ? "" : "hidden"}`}>
             <FormLogin
@@ -40,6 +47,7 @@ export function Home({ loading }) {
           ></FormRegister>
         </div>
       </div> */}
+
       <Link
         className={`mt-5 link-menu sm:w-1/2 ${
           loading || user !== "guest" ? "hidden" : ""
@@ -48,13 +56,9 @@ export function Home({ loading }) {
       >
         Continuar Invitado
       </Link>
-{/*       <div className={`w-80 h-80 ${user !== "guest" ? "" : "hidden"}`}>
-        <CardUser
-          user={user}
-          closeUser={closeUser}
-          points={points}
-        />
-      </div> */}
+      <div className={`w-80 h-80 ${user !== "guest" ? "" : "hidden"}`}>
+        <CardUser user={user} closeUser={closeUser} points={points} />
+      </div>
     </div>
   );
 }

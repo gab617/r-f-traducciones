@@ -41,11 +41,11 @@ export default function Categorias({ keywords, handleClickElemList }) {
             return (
               <li
                 className={`
-                  li-categorias 
+                   
                   sm:px-4 py-4
                 bg-gray-200 
                   
-                  ${objetoKey.terminado ? 'text-white bg-green-700' : 'text-red-500'}`}
+                  ${objetoKey.terminado ? 'categoriaRealizada' : 'li-categorias'}`}
 
                 key={k}
               >

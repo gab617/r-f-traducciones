@@ -30,9 +30,9 @@ export default function Seleccion({
 
 
     return (
-        <div className='seleccion mt-5'>
+        <div className='seleccion lg:mt-3'>
             <div className=' flex flex-col sm:flex-row items-center justify-between'>
-                <div className='flex text-center items-center'>
+                <div className='flex text-center items-center lg:mt-1'>
                     <Link
                         className="
                             bg-blue-400
@@ -41,17 +41,17 @@ export default function Seleccion({
                             text-white
                             text-opacity-80
                             font-semibold 
-                            hover:text-white px-4 border 
+                            hover:text-white lg:px-4 border 
                             border-blue-500 hover:border-transparent 
-                            rounded ml-3
-                            text-2xl
+                            rounded lg:ml-3
+                            text-xl
                             sm:text-3xl sm:py-2
                             "
                         to={'/categorias'}
                         onClick={handleClickVolverCategs}>
-                        Categorias
+                        Volver a Categorias
                     </Link>
-                    <h1 className='text-3xl sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 text-center ml-3'>
+                    <h1 className='text-2xl sm:text-4xl text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 text-center ml-3'>
                         {keyActual.charAt(0).toUpperCase() + keyActual.slice(1)}
                     </h1>
                 </div>
