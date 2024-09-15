@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+const URLAPI="https://e-b-js-traduciones.onrender.com"
+const localAPI="http://localhost:3000"
 
 export function FormLogin({ actionUserLogin, defUser }) {
   const [formData, setFormData] = useState({
@@ -30,7 +32,7 @@ export function FormLogin({ actionUserLogin, defUser }) {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:3000/login", {
+      const response = await fetch(`${URLAPI}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -81,8 +83,8 @@ export function FormLogin({ actionUserLogin, defUser }) {
           <p>{error}</p>
         </form>
         <div className="form-section">
-          <p>
-            No tienes cuenta?<button onClick={actionUserLogin}> Creala!</button>{" "}
+          <p className="text-xl">
+            No tienes cuenta?<button onClick={actionUserLogin} className="text-yellow-400 font-bold"> Creala!</button>
           </p>
         </div>
       </div>

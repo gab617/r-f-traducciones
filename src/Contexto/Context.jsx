@@ -5,6 +5,7 @@ import {
   textosTraducidos,
   objKeysVacio,
 } from "../funciones";
+import { getUsers, putPoints } from "./usersActions";
 
 export const Context = createContext({});
 /* const urlRaizApi = "http://localhost:3000" */
@@ -16,10 +17,15 @@ export function ContextProvider({ children }) {
   const [data, setData] = useState({});
   const [dataActual, setDataActual] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [conectBD, setConectBD] = useState(false);
 
-  /* Usuario */
-  const [user, setUser] = useState("guest");
+  /* Usuario/s */
+  const [users, setUsers] = useState();
+  const [user, setUser] = useState({ user: "guest", points: 0 });
   const [points, setPoints] = useState(0);
+  const [racha, setRacha] = useState(0);
+  const [sessionPoints, setSessionPoints] = useState(0);
+  const [rachaSession, setRachaSession] = useState(0);
 
   /* Estados de la aplicacion */
   const [resueltosObj, setResueltosObj] = useState({});
@@ -31,8 +37,25 @@ export function ContextProvider({ children }) {
   const [espTxts, setEsTxts] = useState([]);
   const [ingTxts, setInTxts] = useState([]);
 
-  function reloadPoints (){
-    setPoints(0)
+  function reloadPoints() {
+    setPoints(0);
+  }
+
+  function uploadPoints() {
+    if (user.user === "guest") {
+      alert(
+        'Para guardar un progreso debes registrarte e ingresar. Actualmente estas en modo invitado "guest"'
+      );
+      return;
+    }
+    console.log("upload", user, sessionPoints, rachaSession);
+    putPoints(user, sessionPoints, rachaSession).then((res) => {
+      console.log(res);
+      setPoints(points + sessionPoints);
+      if (rachaSession > racha) {
+        setRacha(rachaSession);
+      }
+    });
   }
 
   function handleImagePrincClick() {
@@ -40,24 +63,36 @@ export function ContextProvider({ children }) {
   }
 
   function defUser(user) {
-    setUser(user.user);
+    setUser(user);
     setPoints(user.points);
+    setRacha(user.best_racha);
   }
 
   function closeUser() {
-    setUser("guest");
+    setUser({ user: "guest", points: 0 });
     setPoints(0);
+    setSessionPoints(0);
   }
 
   function pointsManager() {
-    setPoints(points + 1);
+    setSessionPoints(sessionPoints + 1);
   }
 
   /* Seleccion Context */
   function handleClickVerificar(obj, verificar, ingTxtsEstado) {
     console.log(keyActual, ": ", obj, verificar);
-    if (obj.ing != verificar) return false;
+    if (obj.ing != verificar) {
+      if (setRachaSession !== 0) {
+        setRachaSession(0);
+        if (rachaSession > racha) {
+          console.log("Nueva racha ", rachaSession);
+          setRacha(rachaSession);
+        }
+      }
+      return false;
+    }
     console.log("Acierto");
+    setRachaSession(rachaSession + 1);
     pointsManager();
     let objetoEnData = dataActual.find((elem) => elem.id == obj.id);
     objetoEnData.activo = true;
@@ -107,8 +142,9 @@ export function ContextProvider({ children }) {
     let objRandom = {};
 
     if (resueltosObj[keyActual].length == 0) {
-      console.log('ESTA SIN ACIERTOS ESTA CATEGORIA')
-      return}
+      console.log("ESTA SIN ACIERTOS ESTA CATEGORIA");
+      return;
+    }
     dataActual?.map((obj) => {
       obj.activo = false;
     });
@@ -198,6 +234,15 @@ export function ContextProvider({ children }) {
           console.log("Carga desde servidor exitosa: ", json);
           setLoading(false);
         }, 200);
+      })
+      .then(() => {
+        getUsers().then((users) => {
+          console.log(users, "Datos users");
+          setConectBD(true)
+          setUsers(users.sort((a, b) => b.points - a.points));
+        }).catch((error)=>{
+          console.error(error)
+        })
       });
   }, []);
 
@@ -216,11 +261,17 @@ export function ContextProvider({ children }) {
     <Context.Provider
       value={{
         loading,
+        conectBD,
         user,
+        users,
+        racha,
         defUser,
         closeUser,
         points,
+        sessionPoints,
+        rachaSession,
         pointsManager,
+        uploadPoints,
         data,
         reloadCategoria,
         dataActual,
@@ -238,7 +289,7 @@ export function ContextProvider({ children }) {
         urlRaizApi,
         handleClickVerificar,
         urlImgComplete,
-        reloadPoints
+        reloadPoints,
       }}
     >
       {children}

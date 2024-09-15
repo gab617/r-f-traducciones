@@ -30,7 +30,7 @@ export default function Seleccion({
 
 
     return (
-        <div className='seleccion lg:mt-3'>
+        <div className='seleccion mt-2 lg:mt-3'>
             <div className=' flex flex-col sm:flex-row items-center justify-between'>
                 <div className='flex text-center items-center lg:mt-1'>
                     <Link

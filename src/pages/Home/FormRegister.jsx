@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import "./FormRegister.css";
 import { useNavigate } from "react-router-dom";
+const URLAPI="https://e-b-js-traduciones.onrender.com"
+const localAPI="http://localhost:3000"
 
 export function FormRegister({ actionUserLogin, defUser }) {
   const [formData, setFormData] = useState({
@@ -38,7 +40,7 @@ export function FormRegister({ actionUserLogin, defUser }) {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:3000/register", {
+      const response = await fetch(`${URLAPI}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,11 +53,12 @@ export function FormRegister({ actionUserLogin, defUser }) {
         throw new Error(errorData.message || "Login failed");
       }
 
+      // Redirigir a otra página en caso de login exitoso
       const data = await response.json();
       console.log("Login successful:", data);
+      defUser(data)
       navigate("/categorias");
 
-      // Redirigir a otra página en caso de login exitoso
     } catch (err) {
       setError(err.message);
     } finally {
@@ -103,9 +106,9 @@ export function FormRegister({ actionUserLogin, defUser }) {
           <p>{error} </p>
         </form>
         <div className="form-section">
-          <p>
+          <p className="text-xl"> 
             Ya tenes una cuenta?
-            <button onClick={actionUserLogin}> Ingresa!</button>{" "}
+            <button onClick={actionUserLogin} className="font-bold text-yellow-400"> Ingresa!</button>{" "}
           </p>
         </div>
       </div>

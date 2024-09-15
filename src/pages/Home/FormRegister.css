@@ -55,10 +55,7 @@
   }
   
   .form-section button {
-    font-weight: bold;
-    color: #ffffff;
     transition: color .3s ease;
-    font-size: 1.3em;
     margin-left: .3em;
   }
   

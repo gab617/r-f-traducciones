@@ -10,13 +10,20 @@
     transition: 0.5s ease-out;
     overflow: visible;
    }
+
+   .card h2{
+    font-size: 1.4em;
+   }
+   .card p{
+    font-size: 1.3em;
+   }
    
+   .card span{
+    font-weight: bold;
+}
    .card-details {
     color: black;
-    height: 100%;
     gap: .5em;
-    display: grid;
-    place-content: center;
    }
    
    .card-button {
@@ -34,9 +41,13 @@
     opacity: 0;
     transition: 0.3s ease-out;
    }
-   
+   .card-button:hover{
+    background: gold;
+    color: black;
+   }
    .text-body {
-    color: rgb(134, 134, 134);
+    color: rgb(31, 5, 5);
+    font-size: 1.2em;
    }
    
    /*Text*/
@@ -49,6 +60,7 @@
    .card:hover {
     border-color: #008bf8;
     box-shadow: 0 4px 18px 0 rgba(0, 0, 0, 0.25);
+    cursor: pointer;
    }
    
    .card:hover .card-button {
