@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 import "./FormRegister.css";
 import { useNavigate } from "react-router-dom";
-const URLAPI="https://e-b-js-traduciones.onrender.com"
-const localAPI="http://localhost:3000"
+import { Loader } from "../../components/Loader";
+const URLAPI = "https://e-b-js-traduciones.onrender.com";
+const localAPI = "http://localhost:3000";
 
 export function FormRegister({ actionUserLogin, defUser }) {
   const [formData, setFormData] = useState({
     name_user: "",
     user_handle: "",
     password: "",
-    passwordR:""
+    passwordR: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -28,14 +29,14 @@ export function FormRegister({ actionUserLogin, defUser }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (
-      formData.name_user === '' ||
-      formData.user_handle === '' ||
-      formData.password === '' ||
-      formData.passwordR === ''
-  ) {
-      setError('Por favor, complete todos los campos.');
+      formData.name_user === "" ||
+      formData.user_handle === "" ||
+      formData.password === "" ||
+      formData.passwordR === ""
+    ) {
+      setError("Por favor, complete todos los campos.");
       return;
-  }
+    }
     setLoading(true);
     setError("");
 
@@ -56,9 +57,8 @@ export function FormRegister({ actionUserLogin, defUser }) {
       // Redirigir a otra página en caso de login exitoso
       const data = await response.json();
       console.log("Login successful:", data);
-      defUser(data)
+      defUser(data);
       navigate("/categorias");
-
     } catch (err) {
       setError(err.message);
     } finally {
@@ -103,12 +103,28 @@ export function FormRegister({ actionUserLogin, defUser }) {
             />
           </div>
           <button onClick={handleSubmit}>Crear cuenta</button>
-          <p>{error} </p>
+          {error && <p>{error}</p>}
+
+          {loading && (
+            <>
+              <div class="flex-col gap-4 w-full flex items-center justify-center">
+                <div class="w-4 h-4 border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-blue-400 rounded-full">
+                  <div class="w-4 h-4 border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-red-400 rounded-full"></div>
+                </div>
+              </div>
+            </>
+          )}
         </form>
         <div className="form-section">
-          <p className="text-xl"> 
+          <p className="text-xl">
             Ya tenes una cuenta?
-            <button onClick={actionUserLogin} className="font-bold text-yellow-400"> Ingresa!</button>{" "}
+            <button
+              onClick={actionUserLogin}
+              className="font-bold text-yellow-400"
+            >
+              {" "}
+              Ingresa!
+            </button>{" "}
           </p>
         </div>
       </div>
