@@ -5,8 +5,9 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../../Contexto/Context";
 
-export function Aciertos({ resueltosObj, urlRaizApi }) {
-  const { keyActual } = useContext(Context);
+export function Aciertos() {
+  const { keyActual, resueltosObj } = useContext(Context);
+  console.log(resueltosObj)
 
   return (
     <div className="flex flex-col mt-4 justify-center items-center">

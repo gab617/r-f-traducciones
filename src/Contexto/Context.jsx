@@ -72,6 +72,17 @@ export function ContextProvider({ children }) {
     setUser({ user: "guest", points: 0 });
     setPoints(0);
     setSessionPoints(0);
+    setRachaSession(0);
+    setRacha(0);
+    for (const key in resueltosObj) {
+      if (Array.isArray(resueltosObj[key])) { 
+        resueltosObj[key].forEach((obj) => {
+          resueltosObj[key] = []
+        });
+      }
+    }
+
+
   }
 
   function pointsManager() {
@@ -82,7 +93,7 @@ export function ContextProvider({ children }) {
   function handleClickVerificar(obj, verificar, ingTxtsEstado) {
     console.log(keyActual, ": ", obj, verificar);
     if (obj.ing != verificar) {
-      if (setRachaSession !== 0) {
+      if (rachaSession !== 0) {
         setRachaSession(0);
         if (rachaSession > racha) {
           console.log("Nueva racha ", rachaSession);
