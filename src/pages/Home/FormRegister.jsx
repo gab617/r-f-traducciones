@@ -51,7 +51,7 @@ export function FormRegister({ actionUserLogin, defUser }) {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || "Login failed");
+        throw new Error(errorData.error);
       }
 
       // Redirigir a otra página en caso de login exitoso
@@ -102,7 +102,8 @@ export function FormRegister({ actionUserLogin, defUser }) {
               placeholder="Repetir contraseña"
             />
           </div>
-          <button onClick={handleSubmit}>Crear cuenta</button>
+              
+              <button className={`${loading ? "hidden": "block"} font-bold text-yellow-400`} onClick={handleSubmit}>Crear cuenta</button>
           {error && <p>{error}</p>}
 
           {loading && (
@@ -118,9 +119,9 @@ export function FormRegister({ actionUserLogin, defUser }) {
         <div className="form-section">
           <p className="text-xl">
             Ya tenes una cuenta?
+            
             <button
               onClick={actionUserLogin}
-              className="font-bold text-yellow-400"
             >
               {" "}
               Ingresa!
