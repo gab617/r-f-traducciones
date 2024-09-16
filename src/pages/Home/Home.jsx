@@ -11,7 +11,6 @@ import { BntRankingChange } from "./BntRankingChange";
 const Ranking = ({ users, loading }) => {
   const [rachasManager, setRachasManager] = useState(false);
   const [usersOrderRacha, setUsersOrderRacha] = useState()
-  console.log(usersOrderRacha)
   let counter = 0;
 
   function changeRachas() {
