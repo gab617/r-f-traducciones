@@ -6,6 +6,8 @@ import {
   objKeysVacio,
 } from "../funciones";
 import { getUsers, putPoints } from "./usersActions";
+const URLAPI = import.meta.env.VITE_URL_API
+
 
 export const Context = createContext({});
 /* const urlRaizApi = "http://localhost:3000" */
@@ -267,6 +269,20 @@ export function ContextProvider({ children }) {
     let objPrinc = elegirObjetoEnArray(auxArray);
     setObjetoPrincipal(objPrinc);
   }, [dataActual, keyActual, noResueltosObj]);
+
+  useEffect(() => {
+    const fetchData = () => {
+      fetch(`${URLAPI}/pingBDD`) 
+        .then((response) => {console.log(response.json())})
+    };
+
+    fetchData();
+
+    const intervalId = setInterval(fetchData, 300000); //5minutos
+
+    return () => clearInterval(intervalId);
+  }, []); 
+
 
   return (
     <Context.Provider

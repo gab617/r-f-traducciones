@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import "./FormRegister.css";
 import { useNavigate } from "react-router-dom";
 import { Loader } from "../../components/Loader";
-const URLAPI = "https://e-b-js-traduciones.onrender.com";
-const localAPI = "http://localhost:3000";
+const URLAPI = import.meta.env.VITE_URL_API
 
 export function FormRegister({ actionUserLogin, defUser }) {
   const [formData, setFormData] = useState({
@@ -60,6 +59,7 @@ export function FormRegister({ actionUserLogin, defUser }) {
       defUser(data);
       navigate("/categorias");
     } catch (err) {
+      setLoading(false)
       setError(err.message);
     } finally {
       setLoading(false);
@@ -122,6 +122,7 @@ export function FormRegister({ actionUserLogin, defUser }) {
             
             <button
               onClick={actionUserLogin}
+              className="text-yellow-400 font-bold"
             >
               {" "}
               Ingresa!

@@ -1,5 +1,4 @@
-const URLAPI="https://e-b-js-traduciones.onrender.com"
-const localAPI="http://localhost:3000"
+const URLAPI = import.meta.env.VITE_URL_API;
 
 export const fetchUsers = async () => {
   try {
@@ -25,15 +24,16 @@ export const fetchUsers = async () => {
   }
 };
 
-export const uploadPointsService = async (userData,points, rachaSession) => {
-    const newPunt = points
+
+export const uploadPointsService = async (userData, points, rachaSession) => {
+  const newPunt = points;
   try {
     const response = await fetch(`${URLAPI}/upl-points`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({userData,newPunt, rachaSession}),
+      body: JSON.stringify({ userData, newPunt, rachaSession }),
     });
 
     // Verificar si la respuesta fue exitosa

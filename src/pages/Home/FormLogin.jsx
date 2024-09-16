@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-const URLAPI="https://e-b-js-traduciones.onrender.com"
-const localAPI="http://localhost:3000"
+const URLAPI = import.meta.env.VITE_URL_API
+
 
 export function FormLogin({ actionUserLogin, defUser }) {
   const [formData, setFormData] = useState({
