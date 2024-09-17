@@ -1,7 +1,7 @@
 .categorias {
     margin-top: 1em;
     background: rgb(252, 4, 101);
-    background: linear-gradient(90deg, rgba(252, 4, 101, 0.5130427170868348) 4%, rgba(242, 105, 0, 0.6222864145658263) 36%, rgba(255, 0, 236, 0.3785889355742297) 76%, rgba(255, 248, 0, 0.5046393557422969) 97%);
+    background: linear-gradient(90deg, rgba(252, 4, 101, 0.5130427170868348) 4%, rgba(242, 105, 0, 0.6222864145658263) 36%, rgba(255, 0, 236, 0.3785889355742297) 76%, rgba(255, 136, 0, 0.505) 97%);
 }
 
 .li-categorias {
@@ -20,20 +20,16 @@
     color: white;
 }
 
-#headerCategorias {
-    display: flex;
-    justify-content: space-evenly;
-}
 
 
 .link-header {
-    padding: 0.6em 1em;
-    border: 4px solid #fa725a;
+    border: 4px solid #facf5a;
     transition: ease-in-out 0.3s;
     background-color: transparent;
     color: #fa725a;
+    padding: .3em;
     font-weight: bolder;
-    font-size: 16px;
+    font-size: 1.5em;
 }
 
 .link-header:hover {

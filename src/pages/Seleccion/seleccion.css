@@ -142,7 +142,7 @@
     width: 140px;
     height: 60px;
     border: none;
-    border-radius: 10px;
+    border-radius: 1em;
     background: linear-gradient(to right,#770a75,#d877ff,#770a6a,#77530a,#ffd277,#77530a);
     background-size: 250%;
     background-position: left;
@@ -187,12 +187,7 @@
 
   /* BOTON RELOAD */
   .btn-reload {
-    position: relative;
-    margin: 0;
-    margin-top: .9em;
-    margin-right: .3em;
-    margin-bottom: .2em;
-    padding: .3em 1em;
+    padding: .4em 1em;
     outline: none;
     text-decoration: none;
     display: flex;

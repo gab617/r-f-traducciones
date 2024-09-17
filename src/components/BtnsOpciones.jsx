@@ -70,9 +70,9 @@ export default function BtnsOpciones({
                         )
                     }
 
-                    <div className="flex items-center">
+                    <div className="flex items-center ">
 
-                        <div className={styleVerificar}>
+                        <div className={`${styleVerificar} rounded-xl bg-purple-600`}>
                             <button
                                 className='btn-verificar'
                                 onClick={

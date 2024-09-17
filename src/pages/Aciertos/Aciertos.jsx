@@ -10,20 +10,14 @@ export function Aciertos() {
   console.log(resueltosObj)
 
   return (
-    <div className="flex flex-col mt-4 justify-center items-center">
+    <div className="flex flex-col justify-center items-center">
       <div
         className="
-            
-                flex sm:justify-evenly mb-4 items-center
-                sm:sticky sm:top-2
-                bg-black
-                bg-opacity-40
-                text-xl
-                sm:text-3xl
+            categorias py-2 flex w-full justify-center sm:justify-end
             "
       >
         <Link className="link-header" to={"/"}>
-          Menu
+          Inicio
         </Link>
 
         <Link className="link-header" to={"/categorias"}>
@@ -31,10 +25,12 @@ export function Aciertos() {
         </Link>
 
         <Link className="link-header" to={"/seleccion"}>
-          Volver {keyActual}
+          Jugar
         </Link>
       </div>
-      {resueltosObj &&
+      { Object.keys(resueltosObj).some((key) => resueltosObj[key].length > 0) 
+      ?
+        
         Object.keys(resueltosObj).map((key) => {
           if (resueltosObj[key].length == 0) return;
           return (
@@ -88,27 +84,13 @@ export function Aciertos() {
               </div>
             </div>
           );
-        })}
-      {/*                 {
-      resueltos && resueltos.map(resuelto => {
-          console.log(resuelto)
-          return (
-              <div
-                  key={resuelto.id}
-                  className='w-1/12 ml-2'>
-                  <img
-                      className='w-full-'
-                      src={urlRaizApi + resuelto.url} alt=""
-                  />
-                  <h1 className='text-white'>{resuelto.ing}</h1>
-                  <h1 className='text-white'>{resuelto.esp}</h1>
-              </div>
+        })
+        :
 
-          )
+        <h1 className="text-3xl text-yellow-400">No Hay Aciertos Aún</h1>
       }
 
-      )
-  } */}
+
     </div>
   );
 }

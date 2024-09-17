@@ -278,7 +278,7 @@ export function ContextProvider({ children }) {
 
     fetchData();
 
-    const intervalId = setInterval(fetchData, 300000); //5minutos
+    const intervalId = setInterval(fetchData, 240000); //4minutos
 
     return () => clearInterval(intervalId);
   }, []); 

@@ -10,18 +10,19 @@ export default function Categorias({ keywords, handleClickElemList }) {
   const { loading } = useContext(Context)
   return (
     <>
-      <div className='categorias mb-10' id='headerCategorias'>
+      <div className='categorias py-2 flex mb-10 justify-center sm:justify-end' id='headerCategorias'>
         {/*         <button
           onClick={reloadApp}
         >Reload</button> */}
         <Link className='link-header' to={'/'}>
-          Menu
+          Inicio
         </Link>
 
-        <Link
-          className="link-header"
-          to={'/seleccion'}
-        >Eleccion Aleatoria
+        <Link className='link-header' to={'/acierts'}>
+          Aciertos
+        </Link>
+        <Link className="link-header" to={"/seleccion"}>
+          Jugar
         </Link>
       </div>
 
