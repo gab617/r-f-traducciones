@@ -272,7 +272,7 @@ export function ContextProvider({ children }) {
 
   useEffect(() => {
     const fetchData = () => {
-      fetch(`${URLAPI}/pingBDD`) 
+      fetch(`${URLAPI}/db/pingBDD`) 
         .then((response) => {console.log(response.json())})
     };
 

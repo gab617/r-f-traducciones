@@ -40,7 +40,7 @@ export function FormRegister({ actionUserLogin, defUser }) {
     setError("");
 
     try {
-      const response = await fetch(`${URLAPI}/register`, {
+      const response = await fetch(`${URLAPI}/db/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

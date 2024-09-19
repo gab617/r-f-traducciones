@@ -2,7 +2,7 @@ const URLAPI = import.meta.env.VITE_URL_API;
 
 export const fetchUsers = async () => {
   try {
-    const response = await fetch(`${URLAPI}/users-data`, {
+    const response = await fetch(`${URLAPI}/db/users-data`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export const fetchUsers = async () => {
 export const uploadPointsService = async (userData, points, rachaSession) => {
   const newPunt = points;
   try {
-    const response = await fetch(`${URLAPI}/upl-points`, {
+    const response = await fetch(`${URLAPI}/db/upl-points`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

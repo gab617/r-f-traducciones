@@ -32,7 +32,7 @@ export function FormLogin({ actionUserLogin, defUser }) {
     setError("");
 
     try {
-      const response = await fetch(`${URLAPI}/login`, {
+      const response = await fetch(`${URLAPI}/db/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
