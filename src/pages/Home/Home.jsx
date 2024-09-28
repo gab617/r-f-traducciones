@@ -131,6 +131,7 @@ const Profile = ({ user, closeUser, points }) => {
     <div
       className={`w-80 flex flex-col ${user?.user !== "guest" ? "" : "hidden"}`}
     >
+      <h1 className="text-white text-center font-bold">PERFIL</h1>
       <CardUser closeUser={closeUser} points={points} />
       <Link to={"/categorias"} className="mt-16 mx-auto ">
         <button
@@ -181,7 +182,6 @@ export function Home({ loading }) {
           conectBD ? "block" : "hidden"
         }`}
       >
-        <Ranking users={users} loading={loading} />
         <Formularios
           actionUserLogin={actionUserLogin}
           defUser={defUser}
@@ -189,6 +189,7 @@ export function Home({ loading }) {
           user={user}
           login={login}
         />
+        <Ranking users={users} loading={loading} />
         <Profile user={user} closeUser={closeUser} points={points}></Profile>
       </div>
 

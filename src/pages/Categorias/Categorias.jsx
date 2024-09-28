@@ -10,7 +10,7 @@ export default function Categorias({ keywords, handleClickElemList }) {
   const { loading } = useContext(Context)
   return (
     <>
-      <div className='categorias py-2 flex mb-10 justify-center sm:justify-end' id='headerCategorias'>
+      <div className='categorias sm:py-2 flex mb-10 justify-center sm:justify-end' id='headerCategorias'>
         {/*         <button
           onClick={reloadApp}
         >Reload</button> */}
@@ -43,7 +43,7 @@ export default function Categorias({ keywords, handleClickElemList }) {
               <li
                 className={`
                    
-                  sm:px-4 py-4
+                  sm:px-4 mb-1 sm:mb-0 sm:py-4
                 bg-gray-200 
                   
                   ${objetoKey.terminado ? 'categoriaRealizada' : 'li-categorias'}`}
