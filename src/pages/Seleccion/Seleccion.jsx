@@ -19,7 +19,7 @@ export default function Seleccion({
   ingTxts /* espTxts ,*/,
   resueltosObj,
 }) {
-  const [seleccionado, setSeleccionado] = useState("");
+  const [seleccionado, setSeleccionado] = useState("-----");
   const { handleClickVerificar, reloadCategoria } = useContext(Context);
 
   function handleChangeSeleccionado(nwSelect) {
