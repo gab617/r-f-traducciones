@@ -6,8 +6,7 @@ import {
   objKeysVacio,
 } from "../funciones";
 import { getUsers, putPoints } from "./usersActions";
-const URLAPI = import.meta.env.VITE_URL_API
-
+const URLAPI = import.meta.env.VITE_URL_API;
 
 export const Context = createContext({});
 /* const urlRaizApi = "http://localhost:3000" */
@@ -16,6 +15,7 @@ const urlImgComplete = "https://serviciosunificados.onrender.com/bw/completed";
 
 // eslint-disable-next-line react/prop-types
 export function ContextProvider({ children }) {
+  const [staticData, setStaticData] = useState({});
   const [data, setData] = useState({});
   const [dataActual, setDataActual] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -77,14 +77,12 @@ export function ContextProvider({ children }) {
     setRachaSession(0);
     setRacha(0);
     for (const key in resueltosObj) {
-      if (Array.isArray(resueltosObj[key])) { 
+      if (Array.isArray(resueltosObj[key])) {
         resueltosObj[key].forEach((obj) => {
-          resueltosObj[key] = []
+          resueltosObj[key] = [];
         });
       }
     }
-
-
   }
 
   function pointsManager() {
@@ -223,6 +221,7 @@ export function ContextProvider({ children }) {
         setTimeout(() => {
           // Código que deseas ejecutar después del retardo
           setData(json);
+          setStaticData({ ...json });
 
           let kwords = Object.keys(json);
           let objKeys = {};
@@ -249,13 +248,15 @@ export function ContextProvider({ children }) {
         }, 200);
       })
       .then(() => {
-        getUsers().then((users) => {
-          console.log(users, "Datos users");
-          setConectBD(true)
-          setUsers(users.sort((a, b) => b.points - a.points));
-        }).catch((error)=>{
-          console.error(error)
-        })
+        getUsers()
+          .then((users) => {
+            console.log(users, "Datos users");
+            setConectBD(true);
+            setUsers(users.sort((a, b) => b.points - a.points));
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       });
   }, []);
 
@@ -272,8 +273,9 @@ export function ContextProvider({ children }) {
 
   useEffect(() => {
     const fetchData = () => {
-      fetch(`${URLAPI}/db/pingBDD`) 
-        .then((response) => {console.log(response.json())})
+      fetch(`${URLAPI}/db/pingBDD`).then((response) => {
+        console.log(response.json());
+      });
     };
 
     fetchData();
@@ -281,8 +283,7 @@ export function ContextProvider({ children }) {
     const intervalId = setInterval(fetchData, 240000); //4minutos
 
     return () => clearInterval(intervalId);
-  }, []); 
-
+  }, []);
 
   return (
     <Context.Provider
@@ -300,6 +301,7 @@ export function ContextProvider({ children }) {
         pointsManager,
         uploadPoints,
         data,
+        staticData,
         reloadCategoria,
         dataActual,
         resueltosObj,

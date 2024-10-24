@@ -11,9 +11,6 @@ export default function Categorias({ keywords, handleClickElemList }) {
   return (
     <>
       <div className='categorias sm:py-2 flex mb-10 justify-center sm:justify-center' id='headerCategorias'>
-        {/*         <button
-          onClick={reloadApp}
-        >Reload</button> */}
         <Link className='link-header' to={'/'}>
           Inicio
         </Link>
@@ -23,6 +20,9 @@ export default function Categorias({ keywords, handleClickElemList }) {
         </Link>
         <Link className="link-header" to={"/seleccion"}>
           Jugar
+        </Link>
+        <Link className="link-header" to={"/translations"}>
+          Traducciones
         </Link>
       </div>
 
