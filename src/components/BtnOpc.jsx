@@ -8,7 +8,7 @@ export function BtnOpc({ txtIng, handleChangeSeleccionado }) {
   }
 
   return (
-    <div className="w-1/3 mb-2">
+    <div className="w-full mb-2">
       <button
         className={
           txtIng.activo ? `btn-opciones btn-opciones-true` : `btn-opciones`

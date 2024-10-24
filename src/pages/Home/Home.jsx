@@ -7,21 +7,22 @@ import { Context } from "../../Contexto/Context";
 import { CardUser } from "./CardUser";
 import { useEffect } from "react";
 import { BntRankingChange } from "./BntRankingChange";
+import "./btn-home.css"
 
 const Ranking = ({ users, loading }) => {
   const [rachasManager, setRachasManager] = useState(false);
-  const [usersOrderRacha, setUsersOrderRacha] = useState()
+  const [usersOrderRacha, setUsersOrderRacha] = useState();
   let counter = 0;
 
   function changeRachas() {
-    setRachasManager(prevState => !prevState);
-    counter=0
+    setRachasManager((prevState) => !prevState);
+    counter = 0;
   }
 
-  useEffect(()=>{
-    if (!users)return
+  useEffect(() => {
+    if (!users) return;
     setUsersOrderRacha([...users]?.sort((a, b) => b.best_racha - a.best_racha));
-  },[users])
+  }, [users]);
 
   return (
     <div
@@ -31,6 +32,7 @@ const Ranking = ({ users, loading }) => {
       style={{
         background:
           "linear-gradient(15deg, rgba(242,156,80,1) 0%, rgba(126,0,222,1) 100%)",
+        boxShadow: "0px 0px 12px 10px rgba(80,207,156,1)",
       }}
     >
       {" "}
@@ -39,14 +41,9 @@ const Ranking = ({ users, loading }) => {
         <BntRankingChange changeRachas={changeRachas}></BntRankingChange>
       </div>
       {/* -------- */}
-
-      {
-        !rachasManager ?
+      {!rachasManager ? (
         <>
-        <h2 className="font-bold text-lg text-red-200">
-
-          Puntuación Global
-        </h2>
+          <h2 className="font-bold text-lg text-red-200">Puntuación Global</h2>
           {users &&
             users?.map((user) => {
               counter++;
@@ -66,14 +63,9 @@ const Ranking = ({ users, loading }) => {
               );
             })}
         </>
-
-        :
-
+      ) : (
         <>
-        <h2 className="font-bold text-lg text-red-200">
-
-          Mayor Racha
-        </h2>
+          <h2 className="font-bold text-lg text-red-200">Mayor Racha</h2>
           {usersOrderRacha &&
             usersOrderRacha?.map((user) => {
               counter++;
@@ -93,10 +85,8 @@ const Ranking = ({ users, loading }) => {
               );
             })}
         </>
-      }
-
+      )}
       {/* -------- */}
-
     </div>
   );
 };
@@ -155,7 +145,7 @@ export function Home({ loading }) {
   }
   return (
     <div
-      className={`${
+      className={` ${
         loading || user.user !== "guest"
           ? "items-center text-wrap"
           : "items-center"
@@ -163,7 +153,7 @@ export function Home({ loading }) {
     >
       <div className="lg:flex ">
         <h1
-          className={`w-[90%] m-auto mb-2 lg:text-2xl lg:w-[80%] lg:mx-auto text-white`}
+          className={` w-[90%] m-auto mb-6 lg:text-2xl lg:w-[80%] lg:mx-auto text-white`}
         >
           Enfocado en el aprendizaje de vocabulario básico en inglés, organizado
           por categorías y acompañado de imágenes ilustrativas que facilitan la
@@ -194,12 +184,21 @@ export function Home({ loading }) {
       </div>
 
       <Link
-        className={`mt-5 link-menu sm:w-1/2 ${
+        className={`mt-5 ${
           loading || user.user !== "guest" ? "hidden" : ""
         }`}
         to={"/categorias"}
       >
-        Continuar Como Invitado
+        <div className="btn-home lg:text-2xl">
+          <button className="">
+            <span></span>
+            <p
+              data-start="good luck!"
+              data-text="start!"
+              data-title="Continuar Como Invitado"
+            ></p>
+          </button>
+        </div>
       </Link>
     </div>
   );

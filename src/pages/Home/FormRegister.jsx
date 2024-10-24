@@ -102,8 +102,7 @@ export function FormRegister({ actionUserLogin, defUser }) {
               placeholder="Repetir contraseña"
             />
           </div>
-              
-              <button className={`${loading ? "hidden": "block"} font-bold text-yellow-400`} onClick={handleSubmit}>Crear cuenta</button>
+            <button className={` ${loading ? "hidden": "block"} font-bold text-yellow-400`} onClick={handleSubmit}>Crear cuenta</button>
           {error && <p>{error}</p>}
 
           {loading && (
@@ -122,7 +121,7 @@ export function FormRegister({ actionUserLogin, defUser }) {
             
             <button
               onClick={actionUserLogin}
-              className="text-yellow-400 font-bold"
+              className="text-yellow-400 font-bold hover:scale-110"
             >
               {" "}
               Ingresa!

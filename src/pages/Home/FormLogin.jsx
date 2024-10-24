@@ -93,7 +93,7 @@ export function FormLogin({ actionUserLogin, defUser }) {
         </form>
         <div className="form-section">
           <p className="text-xl">
-            No tienes cuenta?<button onClick={actionUserLogin} className="text-yellow-400 font-bold"> Creala!</button>
+            No tienes cuenta?<button onClick={actionUserLogin} className="text-yellow-400 font-bold hover:scale-110"> Creala!</button>
           </p>
         </div>
       </div>

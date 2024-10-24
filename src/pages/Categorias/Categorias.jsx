@@ -29,7 +29,7 @@ export default function Categorias({ keywords, handleClickElemList }) {
       <h1
         className='mb-5 text-3xl text-white'
       >Listado de categorias: </h1>
-      <ul className='text-center  sm:grid sm:grid-cols-2 xl:grid-cols-3'
+      <ul className='text-center  sm:grid sm:grid-cols-2 xl:grid-cols-3 gap-1'
       >
         {loading &&
           <>

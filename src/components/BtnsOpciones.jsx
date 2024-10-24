@@ -33,7 +33,7 @@ export default function BtnsOpciones({
     <>
       <div
         className="
-                flex text-center flex-wrap mt-5 
+                grid grid-cols-3 sm:grid-cols-4 text-center flex-wrap mt-5 
                 sm:mt-5 
                 sm:m-auto sm:w-1/2 
                 sm:justify-center sm:text-center
@@ -53,19 +53,19 @@ export default function BtnsOpciones({
       </div>
 
       <div>
-        <div className="flex w-[80%] mx-auto sm:flex-col sm:flex-row justify-between  sm:justify-center space-around w-full items-center mb-5">
+        <div className=" mb-2 flex mx-auto  sm:flex-row justify-between  sm:justify-center space-around w-full items-center ">
           {seleccionado && (
             <>
               <h1
                 className="
+                  w-1/2 text-end
                                     text-3xl
-                                    ml-2
-                                    sm:text-6xl
+                                    
+                                    sm:text-5xl
+                                    sm:font-bold
                                     sm:mt-5
-                                    sm:mr-9 
-                                    sm:text-8xl 
+                                    mr-9 
                                     sm:mb-10
-                                    sm:mb-5
                                     text-blue-500"
               >
                 {seleccionado === "-----" ? "-----" : seleccionado}
@@ -73,10 +73,10 @@ export default function BtnsOpciones({
             </>
           )}
 
-          <div className="flex items-center ">
-            <div className={`${styleVerificar} rounded-xl bg-purple-600`}>
+          <div className="flex items-center w-1/2 ">
+            <div className={`${styleVerificar}  rounded-xl bg-purple-600`}>
               <button
-                className="btn-verificar"
+                className="btn-verificar "
                 onClick={() =>
                   handleClickVerif(objetoPrincipal, seleccionado, ingTxts)
                 }
