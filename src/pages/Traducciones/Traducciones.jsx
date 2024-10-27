@@ -17,12 +17,11 @@ export function Traducciones() {
 
   return (
     <div>
-      <div>
+      <div className="hidden sm:block">
         <div
-          className="hidden sm:block categorias sm:py-2 sm:flex mb-10 justify-center"
+          className="categorias sm:py-2 sm:flex mb-10 justify-center"
           id="headerCategorias"
         >
-
           <Link className="link-header" to={"/"}>
             Inicio
           </Link>
@@ -66,7 +65,11 @@ export function Traducciones() {
                 ></div>
                 <div className="ml-3 font-bold text-base sm:text-xl">
                   <div className="flex items-center ">
-                    <img className="w-[17%] md:w-[8%]" src="/spain.png" alt="" />
+                    <img
+                      className="w-[17%] md:w-[8%]"
+                      src="/spain.png"
+                      alt=""
+                    />
                     <p>{obj.esp}</p>
                   </div>
                   <div className="flex items-center">
@@ -85,8 +88,7 @@ export function Traducciones() {
         })}
       </ul>
       <div className="sm:hidden">
-
-      <NavBar></NavBar>
+        <NavBar></NavBar>
       </div>
     </div>
   );

@@ -12,24 +12,26 @@ export function Aciertos() {
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <div
-        className=" hidden sm:block
+      <div className="hidden sm:block">
+        <div
+          className=" 
             categorias py-2 sm:flex w-full justify-center sm:justify-center
             "
-      >
-        <Link className="link-header" to={"/"}>
-          Inicio
-        </Link>
+        >
+          <Link className="link-header" to={"/"}>
+            Inicio
+          </Link>
 
-        <Link className="link-header" to={"/categorias"}>
-          Categorias
-        </Link>
-        <Link className="link-header" to={"/translations"}>
-          Traducciones
-        </Link>
-        <Link className="link-header" to={"/seleccion"}>
-          Jugar
-        </Link>
+          <Link className="link-header" to={"/categorias"}>
+            Categorias
+          </Link>
+          <Link className="link-header" to={"/translations"}>
+            Traducciones
+          </Link>
+          <Link className="link-header" to={"/seleccion"}>
+            Jugar
+          </Link>
+        </div>
       </div>
       {Object.keys(resueltosObj).some((key) => resueltosObj[key].length > 0) ? (
         Object.keys(resueltosObj).map((key) => {

@@ -1,45 +1,47 @@
 /* eslint-disable react/jsx-key */
 /* eslint-disable react/prop-types */
-import { Link } from 'react-router-dom'
-import './categorias.css'
-import { useContext } from 'react'
-import { Context } from '../../Contexto/Context'
-import { Loader2 } from '../../components/Loader2'
-import { NavBar } from '../../components/NavBar/NavBar'
+import { Link } from "react-router-dom";
+import "./categorias.css";
+import { useContext } from "react";
+import { Context } from "../../Contexto/Context";
+import { Loader2 } from "../../components/Loader2";
+import { NavBar } from "../../components/NavBar/NavBar";
 
 export default function Categorias({ keywords, handleClickElemList }) {
-  const { loading } = useContext(Context)
+  const { loading } = useContext(Context);
   return (
     <>
-      <div className='hidden categorias sm:py-2  sm:flex  sm:block mb-10 justify-center sm:justify-center' id='headerCategorias'>
-        <Link className='link-header' to={'/'}>
-          Inicio
-        </Link>
+      <div className="hidden sm:block">
+        <div
+          className="hidden categorias sm:py-2  sm:flex mb-10 justify-center sm:justify-center"
+          id="headerCategorias"
+        >
+          <Link className="link-header" to={"/"}>
+            Inicio
+          </Link>
 
-        <Link className='link-header' to={'/acierts'}>
-          Aciertos
-        </Link>
-        <Link className="link-header" to={"/seleccion"}>
-          Jugar
-        </Link>
-        <Link className="link-header" to={"/translations"}>
-          Traducciones
-        </Link>
+          <Link className="link-header" to={"/acierts"}>
+            Aciertos
+          </Link>
+          <Link className="link-header" to={"/seleccion"}>
+            Jugar
+          </Link>
+          <Link className="link-header" to={"/translations"}>
+            Traducciones
+          </Link>
+        </div>
       </div>
 
-      <h1
-        className='mb-5 text-3xl text-white'
-      >Listado de categorias: </h1>
-      <ul className='text-center  sm:grid sm:grid-cols-2 xl:grid-cols-3 gap-1'
-      >
-        {loading &&
+      <h1 className="mb-5 text-3xl text-white">Listado de categorias: </h1>
+      <ul className="text-center  sm:grid sm:grid-cols-2 xl:grid-cols-3 gap-1">
+        {loading && (
           <>
             <Loader2></Loader2>
           </>
-        }
-        {
-          keywords && Object.keys(keywords).map(k => {
-            const objetoKey = keywords[k]
+        )}
+        {keywords &&
+          Object.keys(keywords).map((k) => {
+            const objetoKey = keywords[k];
             return (
               <li
                 className={`
@@ -47,26 +49,26 @@ export default function Categorias({ keywords, handleClickElemList }) {
                   sm:px-4 mb-1 sm:mb-0 
                 bg-gray-200 
                   
-                  ${objetoKey.terminado ? 'categoriaRealizada' : 'li-categorias'}`}
-
+                  ${
+                    objetoKey.terminado ? "categoriaRealizada" : "li-categorias"
+                  }`}
                 key={k}
               >
                 <Link
-                  className='sm:p-6 w-full flex justify-center'
-                  to={'/seleccion'}
+                  className="sm:p-6 w-full flex justify-center"
+                  to={"/seleccion"}
                   onClick={() => handleClickElemList(k)}
-
-                >{k.toUpperCase()}</Link>
+                >
+                  {k.toUpperCase()}
+                </Link>
               </li>
-            )
-          })
-        }
+            );
+          })}
       </ul>
-      <p className='text-gray-400'>Se agregaran nuevas categorias</p>
-      <div className='sm:hidden'>
-
-      <NavBar></NavBar>
+      <p className="text-gray-400">Se agregaran nuevas categorias</p>
+      <div className="sm:hidden">
+        <NavBar></NavBar>
       </div>
     </>
-  )
+  );
 }
