@@ -3,6 +3,7 @@ import "../../components/BtnArrow.css";
 import { Context } from "../../Contexto/Context";
 import { BtnArrow } from "../../components/BtnArrow";
 import { Link } from "react-router-dom";
+import { NavBar } from "../../components/NavBar/NavBar";
 
 export function Traducciones() {
   const { staticData } = useContext(Context);
@@ -18,7 +19,7 @@ export function Traducciones() {
     <div>
       <div>
         <div
-          className="categorias sm:py-2 flex mb-10 justify-center"
+          className="hidden sm:block categorias sm:py-2 sm:flex mb-10 justify-center"
           id="headerCategorias"
         >
 
@@ -37,7 +38,7 @@ export function Traducciones() {
           </Link>
         </div>
       </div>
-      <div className="bg-black bg-opacity-40 mb-10 flex justify-center">
+      <div className="bg-black bg-opacity-40 mb-10 flex justify-center  ">
         <ul className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 text-xl text-white">
           {keywords &&
             keywords?.map((key) => {
@@ -49,7 +50,7 @@ export function Traducciones() {
             })}
         </ul>
       </div>
-      <ul className="w-[97%] sm:w-[100%] mx-auto grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 text-xl gap-1 text-white">
+      <ul className="mb-3 w-[97%] sm:w-[100%] mx-auto grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 text-xl gap-1 text-white">
         {staticData[currentKey]?.map((obj) => {
           return (
             <li className="mb-10">
@@ -61,7 +62,7 @@ export function Traducciones() {
                     backgroundSize: "cover",
                     backgroundRepeat: "no-repeat",
                   }}
-                  className="transition-all duration-700 mx-4 -mt-6 h-[3em] sm:h-[5em] xl:h-60 overflow-hidden rounded-xl bg-blue-gray-500 text-white shadow-lg shadow-blue-gray-500/40"
+                  className="transition-all duration-700  -mt-6 h-[3.9em] sm:h-[5em] xl:h-60 overflow-hidden rounded-xl bg-blue-gray-500 text-white shadow-lg shadow-blue-gray-500/40"
                 ></div>
                 <div className="ml-3 font-bold text-base sm:text-xl">
                   <div className="flex items-center ">
@@ -83,6 +84,10 @@ export function Traducciones() {
           );
         })}
       </ul>
+      <div className="sm:hidden">
+
+      <NavBar></NavBar>
+      </div>
     </div>
   );
 }

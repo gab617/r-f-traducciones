@@ -39,7 +39,7 @@ function App() {
 
   return (
     <div className="sm:w-90 m-auto">
-      <div className="  flex sm:gap-3 items-center mx-auto justify-between w-[100%] ">
+      <div className="flex sm:gap-3 items-center mx-auto justify-between w-[100%]">
         <h1 className="text-white mt-2 ml-2 sm:ml-0 ">
           Hola!{" "}
           <span className="font-bold text-yellow-400">{`${
@@ -62,11 +62,9 @@ function App() {
           </button>
         </div>
       </div>
-
       <Router>
         <Routes>
-          <Route path="/" element={<Home loading={loading} />}></Route>
-
+          <Route path="/" element={<Home loading={loading} />}/>
           <Route
             path="/categorias"
             element={
@@ -80,8 +78,7 @@ function App() {
                 )}
               </>
             }
-          ></Route>
-
+          />
           <Route
             path="/seleccion"
             element={
@@ -103,7 +100,7 @@ function App() {
                 )}
               </>
             }
-          ></Route>
+          />
 
           <Route
             path="/acierts"
@@ -114,12 +111,9 @@ function App() {
                 urlRaizApi={urlRaizApi}
               />
             }
-          ></Route>
-          
-          <Route
-            path="/translations"
-            element={<Traducciones/>}
-          ></Route>
+          />
+
+          <Route path="/translations" element={<Traducciones />}/>
         </Routes>
       </Router>
     </div>

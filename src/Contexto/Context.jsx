@@ -9,8 +9,8 @@ import { getUsers, putPoints } from "./usersActions";
 const URLAPI = import.meta.env.VITE_URL_API;
 
 export const Context = createContext({});
-/* const urlRaizApi = "http://localhost:3001" */
-const urlRaizApi = "https://serviciosunificados.onrender.com";
+const urlRaizApi = "http://localhost:3001"
+/* const urlRaizApi = "https://serviciosunificados.onrender.com"; */
 const urlImgComplete = "https://serviciosunificados.onrender.com/bw/completed";
 
 // eslint-disable-next-line react/prop-types

@@ -8,6 +8,7 @@ import { CardUser } from "./CardUser";
 import { useEffect } from "react";
 import { BntRankingChange } from "./BntRankingChange";
 import "./btn-home.css"
+import { NavBar } from "../../components/NavBar/NavBar";
 
 const Ranking = ({ users, loading }) => {
   const [rachasManager, setRachasManager] = useState(false);
@@ -119,13 +120,13 @@ const Formularios = ({ actionUserLogin, defUser, loading, user, login }) => {
 const Profile = ({ user, closeUser, points }) => {
   return (
     <div
-      className={`w-80 flex flex-col ${user?.user !== "guest" ? "" : "hidden"}`}
+      className={` w-80 flex flex-col ${user?.user !== "guest" ? "" : "hidden"}`}
     >
       <h1 className="text-white text-center font-bold">PERFIL</h1>
       <CardUser closeUser={closeUser} points={points} />
-      <Link to={"/categorias"} className="mt-16 mx-auto ">
+      <Link to={"/categorias"} className="mt-2 sm:mt-16 mx-auto ">
         <button
-          className="px-8 py-2 text-white font-bold text-lg rounded-full shadow-lg transition-transform transform bg-transparent border-2 border-white hover:scale-105 hover:border-green-600 hover:shadow-green-500/50 hover:shadow-2xl focus:outline-none"
+          className="mb-16 mt-4 sm:mt-0 sm:mb-0 px-8 py-2 text-white font-bold text-lg rounded-full shadow-lg transition-transform transform bg-transparent border-2 border-white hover:scale-105 hover:border-green-600 hover:shadow-green-500/50 hover:shadow-2xl focus:outline-none"
           id="startButton"
         >
           Volver a Categorias
@@ -184,7 +185,7 @@ export function Home({ loading }) {
       </div>
 
       <Link
-        className={`mt-5 ${
+        className={`mt-5 mb-7 sm:mb-0 ${
           loading || user.user !== "guest" ? "hidden" : ""
         }`}
         to={"/categorias"}
@@ -200,6 +201,9 @@ export function Home({ loading }) {
           </button>
         </div>
       </Link>
+      <div>
+        <NavBar></NavBar>
+      </div>
     </div>
   );
 }

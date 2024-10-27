@@ -27,7 +27,7 @@ export default function ImagenPrincipal({
   }, [objetoPrincipal, urlRaizApi]);
 
   return (
-    <div className=" mb-1 mx-auto mt-2 w-[95%] h-[19em] sm:w-[30em] sm:h-[25em] transition-all duration-300">
+    <div className=" mb-1 mx-auto mt-2 w-[95%] h-[15.5em] sm:w-[30em] sm:h-[25em] transition-all duration-300">
       {/* Div que encapsula con un alto definido */}
       {loading && <Loader />}
       <div

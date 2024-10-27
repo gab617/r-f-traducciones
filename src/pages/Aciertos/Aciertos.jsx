@@ -4,6 +4,7 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Context } from "../../Contexto/Context";
+import { NavBar } from "../../components/NavBar/NavBar";
 
 export function Aciertos() {
   const { keyActual, resueltosObj } = useContext(Context);
@@ -12,8 +13,8 @@ export function Aciertos() {
   return (
     <div className="flex flex-col justify-center items-center">
       <div
-        className="
-            categorias py-2 flex w-full justify-center sm:justify-center
+        className=" hidden sm:block
+            categorias py-2 sm:flex w-full justify-center sm:justify-center
             "
       >
         <Link className="link-header" to={"/"}>
@@ -35,7 +36,7 @@ export function Aciertos() {
           if (resueltosObj[key].length == 0) return;
           return (
             <div className=" sm:mt-7 flex w-full">
-              <div className="w-full flex flex-col sm:flex-row">
+              <div className="w-full flex flex-col sm:flex-row ">
                 <h1
                   className="
                                     text-transparent 
@@ -66,7 +67,11 @@ export function Aciertos() {
                           ></div>
                           <div className="ml-3 font-bold text-white">
                             <div className="flex items-center">
-                              <img className="w-[13%]" src="/spain.png" alt="" />
+                              <img
+                                className="w-[13%]"
+                                src="/spain.png"
+                                alt=""
+                              />
                               <p>{resuelto.esp}</p>
                             </div>
                             <div className="flex items-center">
@@ -91,6 +96,9 @@ export function Aciertos() {
       ) : (
         <h1 className="text-3xl text-yellow-400">No Hay Aciertos Aún</h1>
       )}
+      <div className="sm:hidden">
+        <NavBar></NavBar>
+      </div>
     </div>
   );
 }

@@ -5,12 +5,13 @@ import './categorias.css'
 import { useContext } from 'react'
 import { Context } from '../../Contexto/Context'
 import { Loader2 } from '../../components/Loader2'
+import { NavBar } from '../../components/NavBar/NavBar'
 
 export default function Categorias({ keywords, handleClickElemList }) {
   const { loading } = useContext(Context)
   return (
     <>
-      <div className='categorias sm:py-2 flex mb-10 justify-center sm:justify-center' id='headerCategorias'>
+      <div className='hidden categorias sm:py-2  sm:flex  sm:block mb-10 justify-center sm:justify-center' id='headerCategorias'>
         <Link className='link-header' to={'/'}>
           Inicio
         </Link>
@@ -62,6 +63,7 @@ export default function Categorias({ keywords, handleClickElemList }) {
         }
       </ul>
       <p className='text-gray-400'>Se agregaran nuevas categorias</p>
+      <NavBar></NavBar>
     </>
   )
 }

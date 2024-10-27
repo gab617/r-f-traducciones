@@ -8,6 +8,7 @@ import { Context } from "../../Contexto/Context";
 
 import "./seleccion.css";
 import  BtnVolver from "../../components/ButtonVolver";
+import { NavBar } from "../../components/NavBar/NavBar";
 
 export default function Seleccion({
   handleClickVolverCategs,
@@ -34,14 +35,14 @@ export default function Seleccion({
   return (
     <div className="seleccion mt-2 lg:mt-3">
       <div className="flex items-center justify-between">
-        <button className="btn-reload w-1/4 lg:w-[10%] ml-1 sm:ml-3" onClick={reload}>
+        <button className="btn-reload lg:w-[10%] ml-1 sm:ml-3" onClick={reload}>
           <span className=""> REINICIAR {keyActual} </span>
         </button>
         <div className="flex text-center items-center lg:mt-1">
           <h1 className="text-2xl  sm:text-4xl mr-3 text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400 text-center ml-2">
             {keyActual.charAt(0).toUpperCase() + keyActual.slice(1)}
           </h1>
-          <Link className="w-[37%]" to={"/categorias"} onClick={handleClickVolverCategs}>
+          <Link className="hidden sm:block w-[37%]" to={"/categorias"} onClick={handleClickVolverCategs}>
             <BtnVolver text={"Categorias"}></BtnVolver>
           </Link>
         </div>
@@ -65,17 +66,11 @@ export default function Seleccion({
           />
         )}
       </div>
-      <div>Rengav</div>
+      <div className="mb-3 sm:mb-0" >Rengav</div>
+      <div className="sm:hidden">
 
-      {/*             <div>
-                {resueltosObj && resueltosObj[keyActual]?.map(obj => {
-                    return (
-                        <div>
-                            <h1>{obj.esp}</h1>
-                        </div>
-                    )
-                })}
-            </div> */}
+        <NavBar></NavBar>
+      </div>
     </div>
   );
 }
