@@ -201,7 +201,7 @@ export function Home({ loading }) {
           </button>
         </div>
       </Link>
-      <div>
+      <div className="sm:hidden">
         <NavBar></NavBar>
       </div>
     </div>

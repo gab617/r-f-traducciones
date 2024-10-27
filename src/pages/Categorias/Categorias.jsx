@@ -63,7 +63,10 @@ export default function Categorias({ keywords, handleClickElemList }) {
         }
       </ul>
       <p className='text-gray-400'>Se agregaran nuevas categorias</p>
+      <div className='sm:hidden'>
+
       <NavBar></NavBar>
+      </div>
     </>
   )
 }
