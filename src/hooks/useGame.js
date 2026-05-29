@@ -190,6 +190,8 @@ export function useGame({ data, user, setPoints, setRacha, updateUserOnSave, onS
       setResueltosObj((prev) => ({ ...prev, [keyActual]: updatedResolved }));
       setNoResueltosObj((prev) => ({ ...prev, [keyActual]: updatedUnresolved }));
 
+      saveProgress();
+
       setTimeout(() => {
         const nextObj = elegirObjetoEnArray(updatedUnresolved);
         if (nextObj) {
@@ -213,6 +215,7 @@ export function useGame({ data, user, setPoints, setRacha, updateUserOnSave, onS
       keyActual,
       objetoPrincipal,
       setRacha,
+      saveProgress,
     ]
   );
 
