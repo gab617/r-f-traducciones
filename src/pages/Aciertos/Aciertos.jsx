@@ -1,18 +1,14 @@
-/* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-key */
-
 import { useContext } from "react";
 import { Link } from "react-router-dom";
-import { Context } from "../../Contexto/Context";
-import { NavBar } from "../../components/NavBar/NavBar";
+import { AppContext } from "../../context/AppContext";
 
 export function Aciertos() {
-  const { keyActual, resueltosObj } = useContext(Context);
+  const { resueltosObj } = useContext(AppContext);
   console.log(resueltosObj);
 
   return (
     <div className="flex flex-col justify-center items-center">
-      <div className="hidden sm:block">
+{/*       <div className="hidden sm:block">
         <div
           className=" 
             categorias py-2 sm:flex w-full justify-center sm:justify-center
@@ -32,7 +28,7 @@ export function Aciertos() {
             Jugar
           </Link>
         </div>
-      </div>
+      </div> */}
       {Object.keys(resueltosObj).some((key) => resueltosObj[key].length > 0) ? (
         Object.keys(resueltosObj).map((key) => {
           if (resueltosObj[key].length == 0) return;
@@ -98,9 +94,6 @@ export function Aciertos() {
       ) : (
         <h1 className="text-3xl text-yellow-400">No Hay Aciertos Aún</h1>
       )}
-      <div className="sm:hidden">
-        <NavBar></NavBar>
-      </div>
     </div>
   );
 }

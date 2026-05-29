@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-
 import { useEffect, useState } from "react";
 import { Loader } from "./Loader";
 
@@ -9,35 +8,51 @@ export default function ImagenPrincipal({
   objetoPrincipal,
 }) {
   const [loading, setLoading] = useState(false);
-  const [actualImgUrl, setActualImgUrl] = useState(null);
+  const [imgKey, setImgKey] = useState(0);
 
   useEffect(() => {
-    if (objetoPrincipal) {
-      setLoading(true); // Muestra el estado de carga mientras se carga la nueva imagen
-      setActualImgUrl(objetoPrincipal.url);
-      const img = new Image();
-      img.src = objetoPrincipal.url;
+    if (!objetoPrincipal) return;
 
-      // Evento onload para cuando la imagen ha sido cargada
-      img.onload = () => {
-        setActualImgUrl(`url(${objetoPrincipal.url})`); // Establecer la imagen como fondo
-        setLoading(false); // Cambiar el estado de loading
-      };
-    }
-  }, [objetoPrincipal, urlRaizApi]);
+    setLoading(true);
+    const img = new Image();
+    img.src = objetoPrincipal.url;
+
+    img.onload = () => {
+      setImgKey((k) => k + 1);
+      setLoading(false);
+    };
+  }, [objetoPrincipal?.url]);
 
   return (
-    <div className=" mb-1 mx-auto mt-2 w-[95%] h-[15.5em] sm:w-[30em] sm:h-[25em] transition-all duration-300">
-      {/* Div que encapsula con un alto definido */}
-      {loading && <Loader />}
+    <div className="relative mx-auto mt-2 w-[95%] h-[15.5em] sm:w-[30em] sm:h-[25em]">
+      {loading && (
+        <div className="absolute inset-0 flex items-center justify-center bg-gray-900/30 rounded-2xl z-10">
+          <Loader />
+        </div>
+      )}
+
       <div
-        className={`w-full h-full bg-center bg-cover bg-no-repeat transition-opacity duration-700 ${
-            loading ? 'opacity-0' : 'opacity-100'
-          }`}
-        style={{ backgroundImage: `url(${actualImgUrl})` }}
+        key={imgKey}
+        className={`
+          w-full h-full rounded-2xl shadow-2xl
+          bg-center bg-cover bg-no-repeat
+          transition-all duration-500 ease-out
+          ${loading ? "opacity-0 scale-95" : "opacity-100 scale-100"}
+          hover:shadow-3xl cursor-pointer
+          ring-2 ring-white/10 hover:ring-yellow-400/50
+        `}
+        style={{
+          backgroundImage: `url(${objetoPrincipal?.url})`,
+          animation: loading ? "none" : "fun-fade-in 0.5s ease-out",
+        }}
         onClick={handleImagePrincClick}
-      ></div>
-      {/* Imagen para cargar en segundo plano y disparar el onLoad */}
+      />
+
+      {objetoPrincipal?.id === 0 && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-6xl animate-bounce">🎉</span>
+        </div>
+      )}
     </div>
   );
 }

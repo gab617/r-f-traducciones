@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
 import "./BtnsOpciones.css";
-import { Link } from "react-router-dom";
 import { BtnOpc } from "./BtnOpc";
-import { useEffect, useState } from "react";
+import { useState, useRef, useCallback } from "react";
 
 export default function BtnsOpciones({
   ingTxts,
@@ -10,87 +9,116 @@ export default function BtnsOpciones({
   handleChangeSeleccionado,
   objetoPrincipal,
   handleClickVerificar,
+  onCorrect,
+  onIncorrect,
 }) {
+  const [feedback, setFeedback] = useState("");
+  const [disabled, setDisabled] = useState(false);
+  const lastClickRef = useRef({ palabra: null, time: 0 });
+
   function handleClickVerif(objetoPrinc, selecc, iTxts) {
-    /* FUNCION DESDE CONTEXTO */
-    let acierto = handleClickVerificar(objetoPrinc, selecc, iTxts);
+    if (disabled) return;
+    setDisabled(true);
+
+    const acierto = handleClickVerificar(objetoPrinc, selecc, iTxts);
     if (acierto) {
-      setStyleVerificar("correcto");
-      setTimeout(() => {
-        setStyleVerificar("");
-      }, 1000);
+      setFeedback("correcto");
+      onCorrect?.();
     } else {
-      setStyleVerificar("incorrecto");
-      setTimeout(() => {
-        setStyleVerificar("");
-      }, 1000);
+      setFeedback("incorrecto");
+      onIncorrect?.();
     }
+
+    setTimeout(() => {
+      setFeedback("");
+      setDisabled(false);
+    }, 1000);
   }
 
-  const [styleVerificar, setStyleVerificar] = useState("");
+  const handleWordClick = useCallback(
+    (palabra) => {
+      if (disabled) return;
+      const now = Date.now();
+      if (
+        palabra === lastClickRef.current.palabra &&
+        now - lastClickRef.current.time < 350
+      ) {
+        lastClickRef.current = { palabra: null, time: 0 };
+        handleClickVerif(objetoPrincipal, palabra, ingTxts);
+      } else {
+        handleChangeSeleccionado(palabra);
+        lastClickRef.current = { palabra, time: now };
+      }
+    },
+    [disabled, handleChangeSeleccionado, handleClickVerif, objetoPrincipal, ingTxts]
+  );
 
   return (
     <>
       <div
-        className="
-                grid grid-cols-3 sm:grid-cols-4 text-center flex-wrap mt-5 
-                sm:mt-5 
-                sm:m-auto sm:w-1/2 
-                sm:justify-center sm:text-center
-            "
+        className={`
+          grid grid-cols-3 sm:grid-cols-4 text-center flex-wrap mt-2 sm:mt-5
+          sm:m-auto sm:w-1/2 sm:justify-center sm:text-center
+          transition-all duration-300
+          ${disabled ? "opacity-80" : ""}
+        `}
       >
-        {ingTxts &&
-          ingTxts.map((txtIng) => {
-            return (
-              <BtnOpc
-                key={txtIng.id}
-                txtIng={txtIng}
-                handleChangeSeleccionado={handleChangeSeleccionado}
-                seleccionado={seleccionado}
-              />
-            );
-          })}
+        {ingTxts?.map((txtIng) => (
+          <BtnOpc
+            key={txtIng.id}
+            txtIng={txtIng}
+            handleWordClick={handleWordClick}
+            seleccionado={seleccionado}
+            disabled={disabled}
+            feedback={feedback}
+          />
+        ))}
       </div>
 
-      <div>
-        <div className=" mb-2 flex mx-auto  sm:flex-row justify-between  sm:justify-center space-around w-full items-center ">
-          {seleccionado && (
-            <>
-              <h1
-                className="
-                  w-1/2 text-end
-                                    text-3xl
-                                    
-                                    sm:text-5xl
-                                    sm:font-bold
-                                    sm:mt-5
-                                    mr-9 
-                                    sm:mb-10
-                                    text-blue-500"
-              >
-                {seleccionado === "-----" ? "-----" : seleccionado}
-              </h1>
-            </>
-          )}
-
-          <div className="flex items-center w-1/2 ">
-            <div className={`${styleVerificar}  rounded-xl bg-purple-600`}>
-              <button
-                className="btn-verificar "
-                onClick={() =>
-                  handleClickVerif(objetoPrincipal, seleccionado, ingTxts)
-                }
-              ></button>
-            </div>
-          </div>
-        </div>
-        <Link
-          className="btn-aciertos"
-          /* className="inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out" */
-          to={"/acierts"}
+      <div className="mt-1 mb-0.5 flex mx-auto justify-center items-center gap-2 sm:gap-10 w-full">
+        <div
+          className={`
+            text-lg sm:text-5xl font-bold transition-all duration-300 px-1 py-0.5 rounded-xl
+            ${
+              feedback === "correcto"
+                ? "text-green-400 scale-110"
+                : feedback === "incorrecto"
+                ? "text-red-400 animate-fun-shake"
+                : "text-blue-500"
+            }
+          `}
         >
-          ACIERTOS
-        </Link>
+          {seleccionado === "-----" ? "🤔" : seleccionado}
+        </div>
+
+        <button
+          className={`
+            rounded-full transition-all duration-200
+            ${feedback === "correcto" ? "bg-green-500 text-white" : ""}
+            ${feedback === "incorrecto" ? "bg-red-500 text-white" : ""}
+            ${!feedback ? "bg-white/20 text-white/70 hover:text-white hover:bg-white/30" : ""}
+          `}
+          onClick={() =>
+            handleClickVerif(objetoPrincipal, seleccionado, ingTxts)
+          }
+          disabled={disabled}
+        >
+          {!feedback && (
+            <span className="px-3 py-0.5 text-[10px] sm:text-sm font-medium">
+              Verificar
+            </span>
+          )}
+          {feedback === "correcto" && (
+            <span className="px-3 py-0.5 text-[10px] sm:text-sm font-bold">
+              ¡Bien!
+            </span>
+          )}
+          {feedback === "incorrecto" && (
+            <span className="px-3 py-0.5 text-[10px] sm:text-sm font-bold">
+              ¡Casi!
+            </span>
+          )}
+        </button>
       </div>
     </>
   );

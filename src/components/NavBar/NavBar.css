@@ -6,9 +6,8 @@
   bottom: 0; /* Se mantiene fijo en la parte inferior */
   left: 50%; /* Lo colocamos al 50% de la pantalla */
   transform: translateX(-50%); /* Lo centramos en el eje horizontal */
-
+  
   background-color: rgba(236, 226, 226, 0.855);
-  width: 100%;
   height: 3em;
   align-items: center;
   justify-content: space-around;
