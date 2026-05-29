@@ -306,7 +306,7 @@ export function Home() {
           </div>
 
           {conectBD && (
-            <div className="flex flex-col sm:flex-row items-start justify-center gap-6 w-full max-w-4xl">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 w-full max-w-4xl mx-auto">
               {user?.user === "guest" ? (
                 <>
                   <div className="w-72 p-5 rounded-xl border border-gray-700/50 bg-gradient-to-br from-indigo-900/60 to-blue-900/40 shadow-xl shadow-blue-500/10">
@@ -351,7 +351,7 @@ export function Home() {
           )}
 
           {user?.user === "guest" && (
-            <Link to="/categorias" className="mt-8">
+            <Link to="/categorias" className="mt-8 mx-auto">
               <div className="btn-home lg:text-2xl">
                 <button>
                   <span></span>

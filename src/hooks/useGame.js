@@ -146,7 +146,7 @@ export function useGame({ data, user, setPoints, setRacha, updateUserOnSave, onS
     const handleBeforeUnload = () => saveOnExit();
     window.addEventListener("beforeunload", handleBeforeUnload);
 
-    const intervalId = setInterval(() => saveProgress(), 180000);
+    const intervalId = setInterval(() => saveProgress(), 30000);
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibility);
@@ -165,8 +165,10 @@ export function useGame({ data, user, setPoints, setRacha, updateUserOnSave, onS
         return false;
       }
 
-      setRachaSession((prev) => prev + 1);
-      setSessionPoints((prev) => prev + 1);
+      rachaSessionRef.current += 1;
+      sessionPointsRef.current += 1;
+      setRachaSession(rachaSessionRef.current);
+      setSessionPoints(sessionPointsRef.current);
 
       const currentResolved = resueltosObj[keyActual] || [];
       if (currentResolved.some((item) => item.id === objetoPrincipal.id)) {
