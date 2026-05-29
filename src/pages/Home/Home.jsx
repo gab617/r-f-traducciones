@@ -296,8 +296,8 @@ export function Home() {
       {!loading && (
         <>
           <div className="text-center mb-8">
-            <h1 className="text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-yellow-400">
-              🧠 Rengav Imags
+            <h1 className="text-3xl py-2 sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-yellow-400 break-words">
+              🧠 Rengav Studio
             </h1>
             <p className="mt-2 text-sm text-gray-400 max-w-md mx-auto">
               Aprendé vocabulario en inglés con imágenes, categorizado y

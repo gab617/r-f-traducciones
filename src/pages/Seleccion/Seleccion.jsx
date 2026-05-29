@@ -185,7 +185,7 @@ export default function Seleccion() {
             🏆 Volver a Categorías
           </Link>
         ) : (
-          <p className="text-gray-500 text-[10px] sm:text-sm">Rengav Imags - Aprendé jugando 🎮</p>
+          <p className="text-gray-500 text-[10px] sm:text-sm">Rengav Studio - Aprendé jugando 🎮</p>
         )}
       </div>
 

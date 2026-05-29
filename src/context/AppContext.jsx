@@ -17,10 +17,8 @@ export function AppProvider({ children }) {
     if (!username || username === "guest") return;
     const match = users.find((u) => u.user_handle === username);
     if (!match) return;
-    if (match.points > (auth.points || 0)) {
-      auth.setPoints(match.points);
-      auth.setRacha(match.best_racha ?? 0);
-    }
+    auth.setPoints(match.points);
+    auth.setRacha(match.best_racha ?? 0);
   }, [users, auth.user?.user_handle, auth.user?.user]);
   const game = useGame({
     data,
