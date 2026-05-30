@@ -18,6 +18,7 @@ export default function BtnsOpciones({
 
   function handleClickVerif(objetoPrinc, selecc, iTxts) {
     if (disabled) return;
+    if (selecc === "-----") return;
     setDisabled(true);
 
     const acierto = handleClickVerificar(objetoPrinc, selecc, iTxts);

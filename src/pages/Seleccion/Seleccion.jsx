@@ -163,7 +163,7 @@ export default function Seleccion() {
             objetoPrincipal={objetoPrincipal}
           />
         )}
-        {dataActual && (
+        {dataActual && objetoPrincipal?.id !== 0 && (
           <BtnsOpciones
             ingTxts={ingTxts}
             handleChangeSeleccionado={handleChangeSeleccionado}
