@@ -454,7 +454,7 @@ export function MathPlay({
           <div className="text-5xl font-bold text-white min-h-[3rem]">
             {input || <span className="text-gray-600 font-normal text-2xl">?</span>}
           </div>
-          <Numpad value={input} onChange={setInput} onSubmit={handleNumPadSubmit} />
+          <Numpad value={input} onInput={setInput} onSubmit={handleNumPadSubmit} />
         </div>
       )}
 
