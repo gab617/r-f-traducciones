@@ -8,6 +8,7 @@ import { AppContext } from "./context/AppContext";
 import { Home } from "./pages/Home/Home";
 import { Traducciones } from "./pages/Traducciones/Traducciones";
 import { NavBar } from "./components/NavBar/NavBar";
+import { MathGame } from "./games/math/MathGame";
 
 function App() {
   const { user, sessionPoints, rachaSession, data } = useContext(AppContext);
@@ -36,6 +37,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/categorias" element={data ? <Categorias /> : null} />
           <Route path="/seleccion" element={data ? <Seleccion /> : null} />
+          <Route path="/play/math" element={<MathGame />} />
           <Route path="/acierts" element={<Aciertos />} />
           <Route path="/translations" element={<Traducciones />} />
         </Routes>

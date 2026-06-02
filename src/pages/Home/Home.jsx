@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { LoaderHamster } from "../../components/LoaderHamster";
 import { AppContext } from "../../context/AppContext";
 import { register } from "../../services/authService";
+import { GAMES } from "../../games/registry";
 import "./btn-home.css";
 
 const MEDALS = ["🥇", "🥈", "🥉"];
@@ -300,7 +301,7 @@ export function Home() {
               🧠 Rengav Studio
             </h1>
             <p className="mt-2 text-sm text-gray-400 max-w-md mx-auto">
-              Aprendé vocabulario en inglés con imágenes, categorizado y
+               Aprendé palabras en inglés con imágenes, categorizado y
               acompañado de ilustraciones para facilitar la memorización.
             </p>
           </div>
@@ -350,23 +351,51 @@ export function Home() {
             </div>
           )}
 
-          {user?.user === "guest" && (
-            <Link to="/categorias" className="mt-8 mx-auto">
-              <div className="btn-home lg:text-2xl">
-                <button>
-                  <span></span>
-                  <p
-                    data-start="good luck!"
-                    data-text="start!"
-                    data-title="Continuar Como Invitado"
-                  ></p>
-                </button>
-              </div>
-            </Link>
-          )}
-
         </>
       )}
+
+      <div className="w-full max-w-4xl mx-auto mt-8">
+        <h2 className="text-center text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400 mb-4">
+          🎮 Elegí un juego
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 px-4">
+          {GAMES.map((game) => (
+            <Link key={game.id} to={game.route}>
+              <div
+                className={`
+                  group relative overflow-hidden rounded-2xl p-5
+                  bg-gradient-to-br ${game.bgColor}
+                  shadow-xl hover:shadow-2xl hover:scale-[1.02]
+                  active:scale-[0.98] transition-all duration-200
+                  cursor-pointer
+                `}
+              >
+                <div className="flex items-center gap-4">
+                  {game.icon.startsWith("/") ? (
+                    <img
+                      src={game.icon}
+                      alt=""
+                      className="w-12 h-12 object-contain"
+                    />
+                  ) : (
+                    <span className="text-4xl">{game.icon}</span>
+                  )}
+                  <div>
+                    <h3 className="text-lg font-bold text-white">
+                      {game.name}
+                    </h3>
+                    <p className="text-sm text-white/70 mt-1">
+                      {game.description}
+                    </p>
+                  </div>
+                </div>
+                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-colors duration-200" />
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
     </div>
   );
 }
