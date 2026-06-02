@@ -8,18 +8,29 @@ import "./btn-home.css";
 
 const MEDALS = ["🥇", "🥈", "🥉"];
 
+const TABS = [
+  { id: "global", label: "🏆", title: "Global", pointsFn: (u) => (u.points || 0) + (u.points_math || 0), rachaFn: (u) => Math.max(u.best_racha || 0, u.best_racha_math || 0) },
+  { id: "ingles", label: "🇬🇧", title: "Inglés", pointsFn: (u) => u.points || 0, rachaFn: (u) => u.best_racha || 0 },
+  { id: "mate", label: "🧮", title: "Mate", pointsFn: (u) => u.points_math || 0, rachaFn: (u) => u.best_racha_math || 0 },
+];
+
 function Ranking({ users, loading }) {
+  const [tab, setTab] = useState("global");
   const [showRacha, setShowRacha] = useState(false);
   const [usersOrderRacha, setUsersOrderRacha] = useState();
 
+  const currentTab = TABS.find((t) => t.id === tab);
+
   useEffect(() => {
-    if (!users) return;
-    setUsersOrderRacha([...users]?.sort((a, b) => b.best_racha - a.best_racha));
-  }, [users]);
+    if (!users || !currentTab) return;
+    setUsersOrderRacha([...users]?.sort((a, b) => currentTab.rachaFn(b) - currentTab.rachaFn(a)));
+  }, [users, currentTab]);
 
   if (loading) return null;
 
-  const list = showRacha ? usersOrderRacha : users;
+  const sorted = showRacha
+    ? (usersOrderRacha || [])
+    : [...(users || [])].sort((a, b) => currentTab.pointsFn(b) - currentTab.pointsFn(a));
 
   return (
     <div className="w-72 p-4 rounded-xl border border-gray-700/50 bg-gradient-to-br from-purple-900/60 to-pink-900/40 shadow-xl shadow-purple-500/10">
@@ -35,12 +46,28 @@ function Ranking({ users, loading }) {
         </button>
       </div>
 
+      <div className="flex gap-1 mb-3 bg-black/20 rounded-lg p-1">
+        {TABS.map((t) => (
+          <button
+            key={t.id}
+            onClick={() => setTab(t.id)}
+            className={`flex-1 px-2 py-1.5 rounded-md text-xs font-semibold transition-all ${
+              tab === t.id
+                ? "bg-white/15 text-white shadow-sm"
+                : "text-gray-500 hover:text-white/60"
+            }`}
+          >
+            {t.label} {t.title}
+          </button>
+        ))}
+      </div>
+
       <p className="text-xs text-gray-400 mb-2">
-        {showRacha ? "Mayor racha" : "Puntuación global"}
+        {showRacha ? "Mayor racha" : currentTab.title}
       </p>
 
       <div className="space-y-1 max-h-60 overflow-y-auto">
-        {list?.map((u, i) => (
+        {sorted?.map((u, i) => (
           <div
             key={u.user_handle}
             className="flex items-center justify-between px-2 py-1 rounded-lg hover:bg-white/5 transition-colors"
@@ -54,7 +81,7 @@ function Ranking({ users, loading }) {
               </span>
             </div>
             <span className="text-sm font-bold text-yellow-400">
-              {showRacha ? u.best_racha : u.points}
+              {showRacha ? currentTab.rachaFn(u) : currentTab.pointsFn(u)}
             </span>
           </div>
         ))}

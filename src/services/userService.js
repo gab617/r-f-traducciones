@@ -7,3 +7,7 @@ export function fetchUsers() {
 export function uploadPoints(userData, points, rachaSession) {
   return api.put("/db/upl-points", { userData, newPunt: points, rachaSession });
 }
+
+export function uploadPointsMath(userData, points, rachaSession) {
+  return api.put("/db/upl-points-math", { userData, newPunt: points, rachaSession });
+}

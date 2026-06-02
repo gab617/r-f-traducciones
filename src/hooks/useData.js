@@ -33,5 +33,14 @@ export function useData() {
     refreshUsers();
   }, [data, refreshUsers]);
 
-  return { data, staticData, loading, users, conectBD, refreshUsers };
+  const updateUserScore = useCallback((userHandle, scoreUpdates) => {
+    setUsers((prev) => {
+      if (!prev) return prev;
+      return prev.map((u) =>
+        u.user_handle === userHandle ? { ...u, ...scoreUpdates } : u
+      );
+    });
+  }, []);
+
+  return { data, staticData, loading, users, conectBD, refreshUsers, updateUserScore };
 }

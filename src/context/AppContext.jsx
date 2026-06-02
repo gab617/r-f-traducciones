@@ -9,7 +9,7 @@ export const AppContext = createContext({});
 // eslint-disable-next-line react/prop-types
 export function AppProvider({ children }) {
   const auth = useAuth();
-  const { data, staticData, loading, users, conectBD, refreshUsers } = useData();
+  const { data, staticData, loading, users, conectBD, refreshUsers, updateUserScore } = useData();
 
   useEffect(() => {
     if (!users || !auth.user) return;
@@ -19,7 +19,10 @@ export function AppProvider({ children }) {
     if (!match) return;
     auth.setPoints(match.points);
     auth.setRacha(match.best_racha ?? 0);
+    auth.setPointsMath(match.points_math ?? 0);
+    auth.setRachaMath(match.best_racha_math ?? 0);
   }, [users, auth.user?.user_handle, auth.user?.user]);
+
   const game = useGame({
     data,
     user: auth.user,
@@ -44,10 +47,14 @@ export function AppProvider({ children }) {
       user: auth.user,
       users,
       racha: auth.racha,
+      rachaMath: auth.rachaMath,
       defUser: auth.defUser,
       closeUser,
       points: auth.points,
+      pointsMath: auth.pointsMath,
       setPoints: auth.setPoints,
+      setPointsMath: auth.setPointsMath,
+      setRachaMath: auth.setRachaMath,
       sessionPoints: game.sessionPoints,
       rachaSession: game.rachaSession,
       pointsManager: game.pointsManager,
@@ -71,41 +78,22 @@ export function AppProvider({ children }) {
       handleClickVerificar: game.handleClickVerificar,
       urlImgComplete: game.urlImgComplete,
       reloadPoints: game.reloadPoints,
+      refreshUsers,
+      updateUserScore,
       loginWithData: auth.loginWithData,
     }),
     [
-      loading,
-      conectBD,
-      auth.user,
-      auth.racha,
-      auth.defUser,
-      auth.points,
-      auth.setPoints,
-      auth.loginWithData,
-      closeUser,
-      users,
-      game.sessionPoints,
-      game.rachaSession,
-      game.pointsManager,
-      game.uploadPoints,
-      data,
-      staticData,
-      game.reloadCategoria,
-      game.dataActual,
-      game.resueltosObj,
-      game.keyActual,
-      game.keywords,
-      game.espTxts,
-      game.ingTxts,
-      game.objetoPrincipal,
-      game.reloadApp,
-      game.handleImagePrincClick,
-      game.handleClickElemList,
-      game.handleClickVolverCategs,
-      game.handleClickElimiarAciertos,
-      game.urlRaizApi,
-      game.handleClickVerificar,
-      game.urlImgComplete,
+      loading, conectBD, auth.user, auth.racha, auth.rachaMath,
+      auth.defUser, auth.points, auth.pointsMath,
+      auth.setPoints, auth.setPointsMath, auth.setRachaMath, auth.loginWithData,
+      closeUser, users, refreshUsers, updateUserScore,
+      game.sessionPoints, game.rachaSession, game.pointsManager,
+      game.uploadPoints, data, staticData, game.reloadCategoria,
+      game.dataActual, game.resueltosObj, game.keyActual, game.keywords,
+      game.espTxts, game.ingTxts, game.objetoPrincipal, game.reloadApp,
+      game.handleImagePrincClick, game.handleClickElemList,
+      game.handleClickVolverCategs, game.handleClickElimiarAciertos,
+      game.urlRaizApi, game.handleClickVerificar, game.urlImgComplete,
       game.reloadPoints,
     ]
   );
