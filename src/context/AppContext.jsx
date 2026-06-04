@@ -1,4 +1,4 @@
-import { createContext, useCallback, useEffect, useMemo } from "react";
+import { createContext, useCallback, useEffect, useMemo, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useData } from "../hooks/useData";
 import { useGame } from "../hooks/useGame";
@@ -22,6 +22,9 @@ export function AppProvider({ children }) {
     auth.setPointsMath(match.points_math ?? 0);
     auth.setRachaMath(match.best_racha_math ?? 0);
   }, [users, auth.user?.user_handle, auth.user?.user]);
+
+  const [mathSessionPoints, setMathSessionPoints] = useState(0);
+  const [mathRachaSession, setMathRachaSession] = useState(0);
 
   const game = useGame({
     data,
@@ -57,6 +60,10 @@ export function AppProvider({ children }) {
       setRachaMath: auth.setRachaMath,
       sessionPoints: game.sessionPoints,
       rachaSession: game.rachaSession,
+      mathSessionPoints,
+      mathRachaSession,
+      setMathSessionPoints,
+      setMathRachaSession,
       pointsManager: game.pointsManager,
       uploadPoints: game.uploadPoints,
       data,
@@ -87,6 +94,7 @@ export function AppProvider({ children }) {
       auth.defUser, auth.points, auth.pointsMath,
       auth.setPoints, auth.setPointsMath, auth.setRachaMath, auth.loginWithData,
       closeUser, users, refreshUsers, updateUserScore,
+      mathSessionPoints, mathRachaSession, setMathSessionPoints, setMathRachaSession,
       game.sessionPoints, game.rachaSession, game.pointsManager,
       game.uploadPoints, data, staticData, game.reloadCategoria,
       game.dataActual, game.resueltosObj, game.keyActual, game.keywords,

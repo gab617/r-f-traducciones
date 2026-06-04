@@ -254,7 +254,7 @@ function RegisterForm({ onToggle }) {
 }
 
 function ProfileCard() {
-  const { user, closeUser, points, racha, sessionPoints, rachaSession } =
+  const { user, closeUser, points, racha, sessionPoints, rachaSession, mathSessionPoints, mathRachaSession, pointsMath, rachaMath } =
     useContext(AppContext);
 
   return (
@@ -271,22 +271,51 @@ function ProfileCard() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3 mb-4">
-        <div className="p-3 rounded-lg bg-white/5">
-          <p className="text-2xl font-bold text-yellow-400">{sessionPoints}</p>
-          <p className="text-xs text-gray-400">Puntos sesión</p>
+      <div className="relative mb-3 mt-1">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-gray-700/30" />
         </div>
-        <div className="p-3 rounded-lg bg-white/5">
-          <p className="text-2xl font-bold text-orange-400">{rachaSession}</p>
-          <p className="text-xs text-gray-400">Racha actual</p>
+        <div className="relative flex justify-center">
+          <span className="bg-emerald-900/60 px-2 text-[10px] uppercase tracking-wider text-gray-400 font-semibold">
+            Sesión actual
+          </span>
         </div>
-        <div className="p-3 rounded-lg bg-white/5">
-          <p className="text-2xl font-bold text-emerald-400">{points}</p>
-          <p className="text-xs text-gray-400">Puntos totales</p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-2 mb-2">
+        <div className="p-2.5 rounded-lg bg-white/5">
+          <p className="text-[10px] text-gray-400 mb-0.5">🇬🇧 Inglés</p>
+          <p className="text-lg font-bold text-yellow-400">{sessionPoints}</p>
+          <p className="text-[10px] text-gray-500">pts · 🔥 {rachaSession}</p>
         </div>
-        <div className="p-3 rounded-lg bg-white/5">
-          <p className="text-2xl font-bold text-blue-400">{racha}</p>
-          <p className="text-xs text-gray-400">Mejor racha</p>
+        <div className="p-2.5 rounded-lg bg-white/5">
+          <p className="text-[10px] text-gray-400 mb-0.5">🧮 Mate</p>
+          <p className="text-lg font-bold text-cyan-400">{mathSessionPoints}</p>
+          <p className="text-[10px] text-gray-500">pts · 🔥 {mathRachaSession}</p>
+        </div>
+      </div>
+
+      <div className="relative mb-3 mt-1">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-gray-700/30" />
+        </div>
+        <div className="relative flex justify-center">
+          <span className="bg-emerald-900/60 px-2 text-[10px] uppercase tracking-wider text-gray-400 font-semibold">
+            Histórico
+          </span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-2 mb-4">
+        <div className="p-2.5 rounded-lg bg-white/5">
+          <p className="text-[10px] text-gray-400 mb-0.5">🇬🇧 Inglés</p>
+          <p className="text-lg font-bold text-emerald-400">{points}</p>
+          <p className="text-[10px] text-gray-500">pts · 🏆 {racha}</p>
+        </div>
+        <div className="p-2.5 rounded-lg bg-white/5">
+          <p className="text-[10px] text-gray-400 mb-0.5">🧮 Mate</p>
+          <p className="text-lg font-bold text-purple-400">{pointsMath}</p>
+          <p className="text-[10px] text-gray-500">pts · 🏆 {rachaMath}</p>
         </div>
       </div>
 

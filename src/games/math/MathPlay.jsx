@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import { generateProblem, generateOptions, formatProblem } from "./MathProblem";
 import { Timer } from "./Timer";
 import { MathOptions } from "./MathOptions";
 import { Numpad } from "./Numpad";
 import { uploadPointsMath } from "../../services/userService";
+import { AppContext } from "../../context/AppContext";
 
 const LEVEL_LABEL = {
   semilla: "🌱 Semilla",
@@ -55,6 +56,7 @@ export function MathPlay({
   setPointsMath, setRachaMath, onSaveRefreshUsers,
   onLocalUserUpdate, userHandle,
 }) {
+  const { mathSessionPoints, setMathSessionPoints, mathRachaSession, setMathRachaSession } = useContext(AppContext);
   const [inputMode, setInputMode] = useState(LEVEL_INPUT[level]);
   const [problem, setProblem] = useState(null);
   const [input, setInput] = useState("");
@@ -69,8 +71,6 @@ export function MathPlay({
   const [correctInStage, setCorrectInStage] = useState(0);
   const [stageIndex, setStageIndex] = useState(0);
   const [freeProgress, setFreeProgress] = useState(0);
-  const [sessionMathPoints, setSessionMathPoints] = useState(0);
-  const [mathRacha, setMathRacha] = useState(0);
 
   const sessionPointsRef = useRef(0);
   const lastSavedPointsRef = useRef(0);
@@ -85,10 +85,14 @@ export function MathPlay({
 
   useEffect(() => { userRef.current = user; }, [user]);
   useEffect(() => { bestRachaKnownRef.current = rachaMath || 0; }, [rachaMath]);
-  useEffect(() => { sessionPointsRef.current = sessionMathPoints; }, [sessionMathPoints]);
-  useEffect(() => { mathRachaRef.current = mathRacha; }, [mathRacha]);
+  useEffect(() => { sessionPointsRef.current = mathSessionPoints; }, [mathSessionPoints]);
+  useEffect(() => { mathRachaRef.current = mathRachaSession; }, [mathRachaSession]);
   useEffect(() => { pointsMathRef.current = pointsMath; }, [pointsMath]);
   useEffect(() => { rachaMathRef.current = rachaMath; }, [rachaMath]);
+  useEffect(() => {
+    setMathSessionPoints(0);
+    setMathRachaSession(0);
+  }, []);
   useEffect(() => { return () => { mountedRef.current = false; }; }, []);
 
   useEffect(() => {
@@ -202,7 +206,7 @@ export function MathPlay({
 
     if (stageCompleted) {
       sessionPointsRef.current += 1;
-      setSessionMathPoints(sessionPointsRef.current);
+      setMathSessionPoints(sessionPointsRef.current);
 
       if (isInFixedStage) {
         setStageIndex((s) => s + 1);
@@ -227,7 +231,7 @@ export function MathPlay({
 
     const oldRacha = mathRachaRef.current;
     mathRachaRef.current = 0;
-    setMathRacha(0);
+    setMathRachaSession(0);
     if (oldRacha > bestRachaKnownRef.current) {
       doSave(sessionPointsRef.current - lastSavedPointsRef.current, oldRacha);
     }
@@ -248,7 +252,7 @@ export function MathPlay({
       if (isCorrect) {
         const newRacha = mathRachaRef.current + 1;
         mathRachaRef.current = newRacha;
-        setMathRacha(newRacha);
+        setMathRachaSession(newRacha);
         if (newRacha > bestRachaKnownRef.current) {
           scheduleRachaSave(newRacha);
         }
@@ -258,7 +262,7 @@ export function MathPlay({
         setFeedback(`❌ Incorrecto — Era ${problem.answer}`);
         const oldRacha = mathRachaRef.current;
         mathRachaRef.current = 0;
-        setMathRacha(0);
+        setMathRachaSession(0);
         if (oldRacha > bestRachaKnownRef.current) {
           doSave(sessionPointsRef.current - lastSavedPointsRef.current, oldRacha);
         }
@@ -347,8 +351,8 @@ export function MathPlay({
           {LEVEL_LABEL[level]}
         </span>
         <span className="text-sm text-gray-400 min-w-[5rem] text-right">
-          {sessionMathPoints > 0 && (
-            <>{sessionMathPoints}🧮</>
+          {mathSessionPoints > 0 && (
+            <>{mathSessionPoints}🧮</>
           )}
         </span>
       </div>
@@ -413,11 +417,11 @@ export function MathPlay({
       )}
 
       <div className="flex items-center gap-4 text-sm">
-        {sessionMathPoints > 0 && (
-          <span className="text-amber-400 font-bold">+{sessionMathPoints} 🧮</span>
+        {mathSessionPoints > 0 && (
+          <span className="text-amber-400 font-bold">+{mathSessionPoints} 🧮</span>
         )}
-        {mathRacha > 0 && (
-          <span className="text-green-400 font-bold">🔥 {mathRacha}</span>
+        {mathRachaSession > 0 && (
+          <span className="text-green-400 font-bold">🔥 {mathRachaSession}</span>
         )}
       </div>
 
