@@ -92,14 +92,14 @@ function Ranking({ users, loading }) {
 
 function LoginForm({ onToggle }) {
   const { loginWithData } = useContext(AppContext);
-  const [form, setForm] = useState({ user_handle: "", password_hash: "" });
+  const [form, setForm] = useState({ user_handle: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.user_handle || !form.password_hash) {
+    if (!form.user_handle || !form.password) {
       setError("Completá todos los campos");
       return;
     }
@@ -129,10 +129,10 @@ function LoginForm({ onToggle }) {
       </div>
       <div>
         <input
-          name="password_hash"
-          value={form.password_hash}
+          name="password"
+          value={form.password}
           onChange={(e) =>
-            setForm({ ...form, password_hash: e.target.value })
+            setForm({ ...form, password: e.target.value })
           }
           type="password"
           placeholder="Contraseña"
