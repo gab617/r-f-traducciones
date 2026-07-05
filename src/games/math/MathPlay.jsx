@@ -3,6 +3,7 @@ import { generateProblem, generateOptions, formatProblem } from "./MathProblem";
 import { Timer } from "./Timer";
 import { MathOptions } from "./MathOptions";
 import { Numpad } from "./Numpad";
+import { MathMiniGames } from "./MathMiniGames";
 import { uploadPointsMath } from "../../services/userService";
 import { AppContext } from "../../context/AppContext";
 
@@ -65,6 +66,7 @@ export function MathPlay({
   const [options, setOptions] = useState([]);
   const [timerRunning, setTimerRunning] = useState(true);
   const [problemId, setProblemId] = useState(0);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
   const historyRef = useRef([]);
   const feedbackTimeoutRef = useRef(null);
 
@@ -185,6 +187,7 @@ export function MathPlay({
     setInput("");
     setFeedback("");
     setCorrectAnswer(null);
+    setSelectedAnswer(null);
     setTimerRunning(true);
     setProblemId((id) => id + 1);
 
@@ -246,6 +249,7 @@ export function MathPlay({
     (value) => {
       if (!problem || !timerRunning) return;
       setTimerRunning(false);
+      setSelectedAnswer(value);
 
       const isCorrect = value === problem.answer;
 
@@ -382,20 +386,20 @@ export function MathPlay({
 
       {mode === "campaign" && stageIndex < CAMPAIGN_STAGES.length && (
         <div className="w-full text-center">
-          <p className={`text-xs font-semibold mb-1 transition-colors duration-500 ${
+          <p className={`text-[10px] font-semibold transition-colors duration-500 ${
             stageStyleIdx >= 4 ? "text-pink-400" :
             stageStyleIdx >= 2 ? "text-purple-400" :
             "text-amber-400"
           }`}>
             {stageStyle.icon} {stageStyle.label} · {stageIndex + 1}/{CAMPAIGN_STAGES.length}
           </p>
-          <div className="w-full h-2.5 bg-gray-700 rounded-full overflow-hidden">
+          <div className="w-full h-1.5 bg-gray-700 rounded-full overflow-hidden mt-0.5">
             <div
               className={`h-full rounded-full transition-all duration-500 ${stageStyle.bar}`}
               style={{ width: `${(correctInStage / CAMPAIGN_STAGES[stageIndex]) * 100}%` }}
             />
           </div>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-[10px] text-gray-400 mt-0.5">
             {correctInStage}/{CAMPAIGN_STAGES[stageIndex]} correctas
           </p>
         </div>
@@ -403,14 +407,14 @@ export function MathPlay({
 
       {(mode === "infinite" || stageIndex >= CAMPAIGN_STAGES.length) && (
         <div className="w-full text-center">
-          <p className="text-xs text-cyan-400 font-semibold mb-1">♾️ Progreso</p>
-          <div className="w-full h-2 bg-gray-700 rounded-full overflow-hidden">
+          <p className="text-[10px] text-cyan-400 font-semibold">♾️ Progreso</p>
+          <div className="w-full h-1.5 bg-gray-700 rounded-full overflow-hidden mt-0.5">
             <div
               className="h-full bg-cyan-500 rounded-full transition-all duration-300"
               style={{ width: `${(freeProgress / 10) * 100}%` }}
             />
           </div>
-          <p className="text-xs text-gray-400 mt-1">
+          <p className="text-[10px] text-gray-400 mt-0.5">
             {freeProgress}/10 para +1 🧮
           </p>
         </div>
@@ -467,8 +471,21 @@ export function MathPlay({
           <MathOptions
             options={options}
             correctAnswer={correctAnswer}
+            selectedAnswer={selectedAnswer}
             onSelect={handleSubmit}
             disabled={!timerRunning}
+          />
+          <MathMiniGames
+            problem={problem}
+            timerRunning={timerRunning}
+            customTime={customTime}
+            onBonusCorrect={() => {
+              sessionPointsRef.current += 1;
+              setMathSessionPoints(sessionPointsRef.current);
+            }}
+            onHintsUsed={(type) => {
+              console.log("Hint used:", type);
+            }}
           />
         </div>
       )}
