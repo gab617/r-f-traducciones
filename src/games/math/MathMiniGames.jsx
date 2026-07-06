@@ -27,40 +27,97 @@ function TabBar({ active, onChange }) {
   );
 }
 
-function PistasTab({ remaining, onHintsUsed }) {
-  const hintsLeft = 3;
-  const [used, setUsed] = useState(0);
-  const show = remaining <= 5 && remaining > 0;
+function Palitos({ value, color = "bg-indigo-400/60" }) {
+  return (
+    <div className="flex items-center flex-wrap gap-[3px]">
+      {Array.from({ length: value }, (_, i) => (
+        <div key={i} className={`w-[5px] h-3 rounded-sm ${color}`} />
+      ))}
+    </div>
+  );
+}
 
-  if (!show) return null;
+function generateGuidedSteps(problem) {
+  const { a, b, operator, answer } = problem;
+  const steps = [];
 
-  const useHint = (type) => {
-    if (used >= hintsLeft) return;
-    setUsed((u) => u + 1);
-    onHintsUsed?.(type);
-  };
+  if (operator === "+") {
+    const aDec = Math.floor(a / 10) * 10;
+    const aUni = a % 10;
+    const bDec = Math.floor(b / 10) * 10;
+    const bUni = b % 10;
+
+    if (a > 10 || b > 10) {
+      steps.push({ text: `${a} = ${aDec} + ${aUni}`, nums: [aDec, aUni] });
+      steps.push({ text: `${b} = ${bDec} + ${bUni}`, nums: [bDec, bUni] });
+      steps.push({ text: `${aDec} + ${bDec} = ${aDec + bDec}`, nums: [aDec, bDec, aDec + bDec] });
+      steps.push({ text: `${aUni} + ${bUni} = ${aUni + bUni}`, nums: [aUni, bUni, aUni + bUni] });
+      steps.push({ text: `${aDec + bDec} + ${aUni + bUni} = ${answer}`, nums: [aDec + bDec, aUni + bUni, answer] });
+    } else {
+      steps.push({ text: `${a} + ${b} = ${answer}`, nums: [a, b, answer] });
+    }
+  }
+
+  if (operator === "-") {
+    const bDec = Math.floor(b / 10) * 10;
+    const bUni = b % 10;
+
+    if (b > 10) {
+      steps.push({ text: `${a} - ${bDec} = ${a - bDec}`, nums: [a, bDec, a - bDec] });
+      steps.push({ text: `${a - bDec} - ${bUni} = ${answer}`, nums: [a - bDec, bUni, answer] });
+    } else {
+      steps.push({ text: `${a} - ${b} = ${answer}`, nums: [a, b, answer] });
+    }
+  }
+
+  if (operator === "×") {
+    if (b > 1) {
+      const halfB = Math.floor(b / 2);
+      const otherB = b - halfB;
+      steps.push({ text: `${b} = ${halfB} + ${otherB}`, nums: [halfB, otherB] });
+      steps.push({ text: `${a} × ${halfB} = ${a * halfB}`, nums: [a, halfB, a * halfB] });
+      steps.push({ text: `${a} × ${otherB} = ${a * otherB}`, nums: [a, otherB, a * otherB] });
+      steps.push({ text: `${a * halfB} + ${a * otherB} = ${answer}`, nums: [a * halfB, a * otherB, answer] });
+    } else {
+      steps.push({ text: `${a} × ${b} = ${answer}`, nums: [a, b, answer] });
+    }
+  }
+
+  if (operator === "÷") {
+    steps.push({ text: `${b} × ${answer} = ${a}`, nums: [b, answer, a] });
+    steps.push({ text: `${a} ÷ ${b} = ${answer}`, nums: [a, b, answer] });
+  }
+
+  return steps;
+}
+
+function PistasTab({ problem }) {
+  const steps = problem ? generateGuidedSteps(problem) : [];
+  if (!steps.length) return null;
 
   return (
-    <div className="flex flex-col gap-2 items-center">
-      <p className="text-xs text-gray-400">
-        🔔 Quedan {remaining}s — Comodines disponibles ({hintsLeft - used})
-      </p>
-      <div className="flex gap-2">
-        <button
-          onClick={() => useHint("remove")}
-          disabled={used >= hintsLeft}
-          className="px-3 py-2 rounded-lg bg-purple-600/40 border border-purple-400/30 text-xs font-bold text-purple-200 hover:bg-purple-600/60 disabled:opacity-30 transition-all"
-        >
-          🔍 Eliminar 2
-        </button>
-        <button
-          onClick={() => useHint("focus")}
-          disabled={used >= hintsLeft}
-          className="px-3 py-2 rounded-lg bg-amber-600/40 border border-amber-400/30 text-xs font-bold text-amber-200 hover:bg-amber-600/60 disabled:opacity-30 transition-all"
-        >
-          🎯 Enfoque
-        </button>
-      </div>
+    <div className="flex flex-col w-full">
+      {steps.map((s, i) => (
+        <div key={i}>
+          {i > 0 && <hr className="border-t border-white/10 my-3" />}
+          <p className="text-xs font-mono text-gray-200/90 text-center mb-2">{s.text}</p>
+          <div className="flex flex-col items-center gap-1.5">
+            {s.nums.map((n, j) => (
+              <div key={j} className="flex items-center gap-2">
+                <span className="text-[10px] font-mono text-gray-500 w-8 text-right shrink-0">{n}</span>
+                <Palitos
+                  value={n}
+                  color={
+                    s.nums.length > 1 && j === s.nums.length - 1
+                      ? "bg-green-400/70"
+                      : "bg-indigo-400/70"
+                  }
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
@@ -340,7 +397,7 @@ export function MathMiniGames({ problem, timerRunning, customTime, onBonusCorrec
       <TabBar active={tab} onChange={setTab} />
       <div className="mt-3 min-h-[80px]">
         {tab === "pistas" && (
-          <PistasTab remaining={remaining} onHintsUsed={onHintsUsed} />
+          <PistasTab problem={problem} />
         )}
         {tab === "destello" && (
           <DestelloTab

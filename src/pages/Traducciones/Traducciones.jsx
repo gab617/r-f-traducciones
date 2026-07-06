@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
 import { usePersistedState } from "../../hooks/usePersistedState";
+import { normalizeImageUrl } from "../../services/api";
 
 const FLAGS = {
   es: "/spain.png",
@@ -46,7 +47,7 @@ export function Traducciones() {
               <div className="group rounded-xl bg-white/5 border border-gray-700/50 overflow-hidden hover:border-purple-500/50 hover:shadow-xl hover:shadow-purple-500/10 transition-all duration-300">
                 <div className="relative h-28 sm:h-36 overflow-hidden bg-gray-800">
                   <img
-                    src={obj.url}
+                    src={normalizeImageUrl(obj.url)}
                     alt={obj.esp}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     loading="lazy"

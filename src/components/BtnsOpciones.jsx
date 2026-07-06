@@ -3,6 +3,7 @@ import "./BtnsOpciones.css";
 import { BtnOpc } from "./BtnOpc";
 import { useState, useRef, useCallback } from "react";
 import { getExampleSentences } from "../services/exampleSentences";
+import { normalizeImageUrl } from "../services/api";
 
 export default function BtnsOpciones({
   ingTxts,
@@ -241,7 +242,7 @@ export default function BtnsOpciones({
 
             {modalWord?.url && (
               <div className="flex justify-center mb-4">
-                <img src={modalWord.url} alt={modalWord.ing} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover border-2 border-gray-700/50 shadow-lg" />
+                <img src={normalizeImageUrl(modalWord.url)} alt={modalWord.ing} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover border-2 border-gray-700/50 shadow-lg" />
               </div>
             )}
 

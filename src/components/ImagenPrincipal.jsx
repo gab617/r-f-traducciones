@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import { useEffect, useState, useRef } from "react";
 import { Loader } from "./Loader";
+import { normalizeImageUrl } from "../services/api";
 
 const LOAD_TIMEOUT = 10000;
 
@@ -22,7 +23,7 @@ export default function ImagenPrincipal({
     clearTimeout(timeoutRef.current);
 
     const img = new Image();
-    img.src = objetoPrincipal.url;
+    img.src = normalizeImageUrl(objetoPrincipal.url);
 
     img.onload = () => {
       clearTimeout(timeoutRef.current);
@@ -72,7 +73,7 @@ export default function ImagenPrincipal({
           ring-2 ring-white/10 hover:ring-yellow-400/50
         `}
         style={{
-          backgroundImage: `url(${objetoPrincipal?.url})`,
+          backgroundImage: `url(${normalizeImageUrl(objetoPrincipal?.url)})`,
           animation: loading ? "none" : "fun-fade-in 0.5s ease-out",
         }}
         onClick={handleImagePrincClick}

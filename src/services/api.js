@@ -24,3 +24,8 @@ export const api = {
 };
 
 export const URL_BASE = BASE_URL;
+
+export function normalizeImageUrl(url) {
+  if (!url) return url;
+  return url.replace(/^https?:\/\/localhost:\d+/, BASE_URL);
+}
