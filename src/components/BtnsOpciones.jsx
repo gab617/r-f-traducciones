@@ -12,13 +12,24 @@ export default function BtnsOpciones({
   handleClickVerificar,
   onCorrect,
   onIncorrect,
+  resolvedWords,
 }) {
   const [feedback, setFeedback] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [modalSentences, setModalSentences] = useState([]);
   const [showSpanish, setShowSpanish] = useState(false);
+  const [showResolved, setShowResolved] = useState(false);
+  const [modalWord, setModalWord] = useState(null);
   const lastClickRef = useRef({ palabra: null, time: 0 });
+
+  function openModalForWord(wordObj) {
+    const sentences = getExampleSentences(wordObj);
+    setModalWord(wordObj);
+    setModalSentences(sentences);
+    setShowSpanish(false);
+    setShowModal(true);
+  }
 
   function handleClickVerif(objetoPrinc, selecc, iTxts) {
     if (disabled) return;
@@ -138,15 +149,72 @@ export default function BtnsOpciones({
 
         <button
           className="rounded-full bg-white/10 text-white/60 hover:text-white hover:bg-white/25 transition-all duration-200 px-3 py-0.5 text-[10px] sm:text-sm font-medium"
-          onClick={() => {
-            const sentences = getExampleSentences(objetoPrincipal);
-            setModalSentences(sentences);
-            setShowSpanish(false);
-            setShowModal(true);
-          }}
+          onClick={() => openModalForWord(objetoPrincipal)}
         >
           📖 Examples
         </button>
+
+        <button
+          onClick={() => setShowResolved((prev) => !prev)}
+          className={`
+            rounded-full transition-all duration-200 px-3 py-0.5 text-[10px] sm:text-sm font-medium flex items-center gap-1.5
+            ${showResolved
+              ? "bg-gradient-to-r from-amber-600 to-orange-500 text-white shadow-lg shadow-amber-500/30"
+              : "bg-white/10 text-white/60 hover:text-white hover:bg-white/25"
+            }
+          `}
+        >
+          <span className={`inline-block transition-transform duration-300 ${showResolved ? "rotate-180" : ""}`}>
+            📋
+          </span>
+          <span>Acertados</span>
+          <span
+            className={`inline-block w-7 h-4 rounded-full transition-colors duration-300 ${
+              showResolved ? "bg-white/30" : "bg-white/10"
+            }`}
+          >
+            <span
+              className={`block w-3 h-3 rounded-full bg-white shadow transition-all duration-300 mt-0.5 ${
+                showResolved ? "ml-3.5" : "ml-0.5"
+              }`}
+            />
+          </span>
+        </button>
+      </div>
+
+      <div
+        className={`overflow-hidden transition-all duration-500 ease-in-out ${
+          showResolved ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="mt-2 mb-1 mx-auto w-full sm:w-2/3 bg-gray-800/60 border border-gray-700/50 rounded-xl p-3">
+          <h3 className="text-xs sm:text-sm font-bold text-amber-400 mb-2 flex items-center gap-1.5">
+            ✅ Palabras acertadas
+            <span className="text-[10px] text-gray-400 font-normal">({resolvedWords?.length || 0})</span>
+          </h3>
+          {resolvedWords?.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+              {resolvedWords.map((w) => (
+                <div
+                  key={w.id}
+                  className="flex items-center gap-1.5 bg-white/5 rounded-lg px-2 py-1 border border-gray-700/30 cursor-pointer hover:bg-white/10 hover:border-amber-500/50 transition-all duration-200"
+                  onClick={() => openModalForWord(w)}
+                  title={`Ver ejemplos de "${w.ing}"`}
+                >
+                  <span className="text-[10px]">🇬🇧</span>
+                  <span className="text-xs font-semibold text-gray-200">{w.ing}</span>
+                  <span className="text-gray-500 text-[10px]">→</span>
+                  <span className="text-[10px]">🇪🇸</span>
+                  <span className="text-xs font-medium text-emerald-300">{w.esp}</span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-[11px] text-gray-500 italic text-center py-2">
+              Aún no acertaste ninguna palabra en esta categoría
+            </p>
+          )}
+        </div>
       </div>
 
       {showModal && (
@@ -158,9 +226,10 @@ export default function BtnsOpciones({
             className="bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl w-full max-w-lg max-h-[75vh] overflow-y-auto p-5"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center justify-between mb-2">
               <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
-                <span>📖</span> Ejemplos con &ldquo;{objetoPrincipal?.ing}&rdquo;
+                <span>📖</span>
+                Ejemplos con &ldquo;{modalWord?.ing}&rdquo;
               </h2>
               <button
                 className="text-gray-400 hover:text-white transition-colors text-xl leading-none"
@@ -169,6 +238,12 @@ export default function BtnsOpciones({
                 ✕
               </button>
             </div>
+
+            {modalWord?.url && (
+              <div className="flex justify-center mb-4">
+                <img src={modalWord.url} alt={modalWord.ing} className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl object-cover border-2 border-gray-700/50 shadow-lg" />
+              </div>
+            )}
 
             <div className="space-y-3">
               {modalSentences.map((s) => (
@@ -182,7 +257,7 @@ export default function BtnsOpciones({
                     </span>
                     <div className="flex-1 min-w-0 space-y-2">
                       <p className="text-sm sm:text-base text-gray-200 leading-relaxed">
-                        {highlightWord(s.en, objetoPrincipal?.ing)}
+                        {highlightWord(s.en, modalWord?.ing)}
                       </p>
 
                       <div

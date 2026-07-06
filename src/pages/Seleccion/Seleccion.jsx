@@ -172,6 +172,7 @@ export default function Seleccion() {
             handleClickVerificar={handleClickVerificar}
             onCorrect={handleCorrect}
             onIncorrect={handleIncorrect}
+            resolvedWords={resueltosObj[keyActual] || []}
           />
         )}
       </div>
