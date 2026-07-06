@@ -1,5 +1,6 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AppContext } from "../../context/AppContext";
+import { usePersistedState } from "../../hooks/usePersistedState";
 
 const FLAGS = {
   es: "/spain.png",
@@ -8,7 +9,7 @@ const FLAGS = {
 
 export function Traducciones() {
   const { staticData } = useContext(AppContext);
-  const [currentKey, setCurrentKey] = useState("animales");
+  const [currentKey, setCurrentKey] = usePersistedState("traducciones_tab", "animales");
   const keywords = Object.keys(staticData);
 
   return (

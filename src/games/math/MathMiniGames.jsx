@@ -66,15 +66,17 @@ function PistasTab({ remaining, onHintsUsed }) {
 }
 
 function DestelloTab({ problem, remaining, onBonusCorrect }) {
+  const [speed, setSpeed] = useState(1);
   const [cards, setCards] = useState([]);
   const [revealed, setRevealed] = useState(false);
-  const show = remaining <= 3 && remaining > 0;
-  const prevRemainingRef = useRef(remaining);
+  const effectiveRemaining = remaining / speed;
+  const show = effectiveRemaining <= 3 && effectiveRemaining > 0;
+  const prevRemainingRef = useRef(effectiveRemaining);
 
   useEffect(() => {
     if (!show || revealed) return;
-    if (remaining !== prevRemainingRef.current && remaining <= 3) {
-      prevRemainingRef.current = remaining;
+    if (effectiveRemaining !== prevRemainingRef.current && effectiveRemaining <= 3) {
+      prevRemainingRef.current = effectiveRemaining;
       if (cards.length === 0) {
         const distractors = new Set();
         while (distractors.size < 2) {
@@ -85,7 +87,7 @@ function DestelloTab({ problem, remaining, onBonusCorrect }) {
         setCards(shuffled);
       }
     }
-  }, [remaining, show, revealed, problem, cards.length]);
+  }, [effectiveRemaining, show, revealed, problem, cards.length]);
 
   const pick = (val) => {
     if (revealed) return;
@@ -102,6 +104,22 @@ function DestelloTab({ problem, remaining, onBonusCorrect }) {
       <p className="text-xs text-gray-400 animate-pulse">
         ⚡ Destello rápido — tocá una carta antes que termine
       </p>
+      <div className="flex gap-1.5 items-center">
+        <span className="text-[10px] text-gray-500 mr-1">Vel:</span>
+        {[1, 1.5, 2].map((v) => (
+          <button
+            key={v}
+            onClick={() => setSpeed(v)}
+            className={`px-2 py-0.5 rounded text-[10px] font-bold transition-all ${
+              speed === v
+                ? "bg-indigo-500/60 text-white border border-indigo-400/40"
+                : "bg-white/5 text-gray-500 hover:text-white border border-transparent"
+            }`}
+          >
+            x{v}
+          </button>
+        ))}
+      </div>
       <div className="flex gap-3">
         {cards.map((val, i) => {
           let cls = "w-16 h-16 rounded-xl text-xl font-bold transition-all duration-200 border-2 ";
