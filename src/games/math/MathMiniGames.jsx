@@ -1,8 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
 const TABS = [
-  { id: "pistas", label: "💡 Pistas" },
-  { id: "destello", label: "⚡ Destello" },
+  { id: "pistas", label: "💡 Desestructurar" },
   { id: "abaco", label: "🧮 Ábaco" },
   { id: "ecos", label: "🔊 Ecos" },
 ];
@@ -27,12 +26,50 @@ function TabBar({ active, onChange }) {
   );
 }
 
-function Palitos({ value, color = "bg-indigo-400/60" }) {
+function PalitoRow({ value, color, onComplete }) {
+  const [litCount, setLitCount] = useState(0);
+  const completed = useRef(false);
+
+  useEffect(() => {
+    setLitCount(0);
+    completed.current = false;
+    if (value === 0) {
+      completed.current = true;
+      onComplete?.();
+    }
+  }, [value]);
+
+  const handleFill = () => {
+    if (completed.current) return;
+    setLitCount(value);
+    completed.current = true;
+    onComplete?.();
+  };
+
+  const done = completed.current;
+
+  if (value === 0) return null;
+
   return (
-    <div className="flex items-center flex-wrap gap-[3px]">
+    <div className="flex items-center flex-wrap gap-[3px] select-none touch-none">
       {Array.from({ length: value }, (_, i) => (
-        <div key={i} className={`w-[5px] h-3 rounded-sm ${color}`} />
+        <div
+          key={i}
+          className={`w-[5px] h-3 rounded-sm transition-all duration-100 ${
+            i < litCount ? color : "bg-gray-700/50"
+          }`}
+        />
       ))}
+      <button
+        onClick={handleFill}
+        className={`shrink-0 h-[26px] px-4 rounded-full font-bold text-xs tracking-wider transition-all duration-150 active:scale-95 flex items-center justify-center gap-1 ${
+          done
+            ? "bg-green-500 text-white shadow shadow-green-500/30"
+            : "bg-gradient-to-r from-amber-400 to-orange-500 text-white shadow shadow-orange-500/40 animate-pulse"
+        }`}
+      >
+        {done ? "✓" : "▸▸"}
+      </button>
     </div>
   );
 }
@@ -48,13 +85,13 @@ function generateGuidedSteps(problem) {
     const bUni = b % 10;
 
     if (a > 10 || b > 10) {
-      steps.push({ text: `${a} = ${aDec} + ${aUni}`, nums: [aDec, aUni] });
-      steps.push({ text: `${b} = ${bDec} + ${bUni}`, nums: [bDec, bUni] });
-      steps.push({ text: `${aDec} + ${bDec} = ${aDec + bDec}`, nums: [aDec, bDec, aDec + bDec] });
-      steps.push({ text: `${aUni} + ${bUni} = ${aUni + bUni}`, nums: [aUni, bUni, aUni + bUni] });
-      steps.push({ text: `${aDec + bDec} + ${aUni + bUni} = ${answer}`, nums: [aDec + bDec, aUni + bUni, answer] });
+      steps.push({ text: `${a} = ${aDec} + ${aUni}`, nums: [aDec, aUni], result: "" });
+      steps.push({ text: `${b} = ${bDec} + ${bUni}`, nums: [bDec, bUni], result: "" });
+      steps.push({ text: `${aDec} + ${bDec} = `, nums: [aDec, bDec], result: aDec + bDec });
+      steps.push({ text: `${aUni} + ${bUni} = `, nums: [aUni, bUni], result: aUni + bUni });
+      steps.push({ text: `${aDec + bDec} + ${aUni + bUni} = `, nums: [], result: answer });
     } else {
-      steps.push({ text: `${a} + ${b} = ${answer}`, nums: [a, b, answer] });
+      steps.push({ text: `${a} + ${b} = `, nums: [a, b], result: answer });
     }
   }
 
@@ -63,10 +100,10 @@ function generateGuidedSteps(problem) {
     const bUni = b % 10;
 
     if (b > 10) {
-      steps.push({ text: `${a} - ${bDec} = ${a - bDec}`, nums: [a, bDec, a - bDec] });
-      steps.push({ text: `${a - bDec} - ${bUni} = ${answer}`, nums: [a - bDec, bUni, answer] });
+      steps.push({ text: `${a} - ${bDec} = `, nums: [a, bDec], result: a - bDec });
+      steps.push({ text: `${a - bDec} - ${bUni} = `, nums: [a - bDec, bUni], result: answer });
     } else {
-      steps.push({ text: `${a} - ${b} = ${answer}`, nums: [a, b, answer] });
+      steps.push({ text: `${a} - ${b} = `, nums: [a, b], result: answer });
     }
   }
 
@@ -74,18 +111,20 @@ function generateGuidedSteps(problem) {
     if (b > 1) {
       const halfB = Math.floor(b / 2);
       const otherB = b - halfB;
-      steps.push({ text: `${b} = ${halfB} + ${otherB}`, nums: [halfB, otherB] });
-      steps.push({ text: `${a} × ${halfB} = ${a * halfB}`, nums: [a, halfB, a * halfB] });
-      steps.push({ text: `${a} × ${otherB} = ${a * otherB}`, nums: [a, otherB, a * otherB] });
-      steps.push({ text: `${a * halfB} + ${a * otherB} = ${answer}`, nums: [a * halfB, a * otherB, answer] });
+      steps.push({ text: `${b} = ${halfB} + ${otherB}`, nums: [halfB, otherB], result: "" });
+      steps.push({ text: `${a} × ${halfB} = `, nums: [a, halfB], result: a * halfB });
+      if (otherB !== halfB) {
+        steps.push({ text: `${a} × ${otherB} = `, nums: [a, otherB], result: a * otherB });
+      }
+      steps.push({ text: `${a * halfB} + ${a * otherB} = `, nums: [a * halfB, a * otherB], result: answer });
     } else {
-      steps.push({ text: `${a} × ${b} = ${answer}`, nums: [a, b, answer] });
+      steps.push({ text: `${a} × ${b} = `, nums: [a, b], result: answer });
     }
   }
 
   if (operator === "÷") {
-    steps.push({ text: `${b} × ${answer} = ${a}`, nums: [b, answer, a] });
-    steps.push({ text: `${a} ÷ ${b} = ${answer}`, nums: [a, b, answer] });
+    steps.push({ text: `${b} × ${answer} = `, nums: [b, answer], result: a });
+    steps.push({ text: `${a} ÷ ${b} = `, nums: [a, b], result: answer });
   }
 
   return steps;
@@ -93,112 +132,65 @@ function generateGuidedSteps(problem) {
 
 function PistasTab({ problem }) {
   const steps = problem ? generateGuidedSteps(problem) : [];
+  const [rowsDone, setRowsDone] = useState({});
+  const stepKey = problem?.key;
+
+  useEffect(() => {
+    setRowsDone({});
+  }, [stepKey]);
+
   if (!steps.length) return null;
+
+  const handleRowDone = (stepIdx) => {
+    setRowsDone((prev) => {
+      const key = stepIdx;
+      const current = prev[key] || 0;
+      return { ...prev, [key]: current + 1 };
+    });
+  };
 
   return (
     <div className="flex flex-col w-full">
-      {steps.map((s, i) => (
-        <div key={i}>
-          {i > 0 && <hr className="border-t border-white/10 my-3" />}
-          <p className="text-xs font-mono text-gray-200/90 text-center mb-2">{s.text}</p>
-          <div className="flex flex-col items-center gap-1.5">
-            {s.nums.map((n, j) => (
-              <div key={j} className="flex items-center gap-2">
-                <span className="text-[10px] font-mono text-gray-500 w-8 text-right shrink-0">{n}</span>
-                <Palitos
-                  value={n}
-                  color={
-                    s.nums.length > 1 && j === s.nums.length - 1
-                      ? "bg-green-400/70"
-                      : "bg-indigo-400/70"
-                  }
-                />
-              </div>
-            ))}
+      {steps.map((s, i) => {
+        const isComplete = (rowsDone[i] || 0) >= s.nums.length;
+        return (
+          <div key={i}>
+            {i > 0 && <hr className="border-t border-white/10 my-3" />}
+            <div className="flex flex-col items-start gap-1.5">
+              {s.nums.map((n, j) => (
+                <div key={j} className="flex items-center gap-2">
+                  <span className={`text-[10px] font-mono w-8 text-right shrink-0 transition-all duration-300 ${
+                    s.nums.length > 1 && j === s.nums.length - 1 && isComplete
+                      ? "text-green-400"
+                      : "text-gray-500"
+                  }`}>{n}</span>
+                  <PalitoRow
+                    value={n}
+                    color={
+                      s.nums.length > 1 && j === s.nums.length - 1
+                        ? "bg-green-400/70"
+                        : "bg-indigo-400/70"
+                    }
+                    onComplete={() => handleRowDone(i)}
+                  />
+                </div>
+              ))}
+            </div>
+            <p className="text-xs font-mono mt-2 transition-all duration-300">
+              <span className={isComplete ? "text-green-300" : "text-gray-500"}>
+                {s.text}
+              </span>
+              {s.result !== "" ? (
+                isComplete ? (
+                  <span className="text-green-300 font-bold animate-pulse">{s.result}</span>
+                ) : (
+                  <span className="text-gray-600">?</span>
+                )
+              ) : null}
+            </p>
           </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function DestelloTab({ problem, remaining, onBonusCorrect }) {
-  const [speed, setSpeed] = useState(1);
-  const [cards, setCards] = useState([]);
-  const [revealed, setRevealed] = useState(false);
-  const effectiveRemaining = remaining / speed;
-  const show = effectiveRemaining <= 3 && effectiveRemaining > 0;
-  const prevRemainingRef = useRef(effectiveRemaining);
-
-  useEffect(() => {
-    if (!show || revealed) return;
-    if (effectiveRemaining !== prevRemainingRef.current && effectiveRemaining <= 3) {
-      prevRemainingRef.current = effectiveRemaining;
-      if (cards.length === 0) {
-        const distractors = new Set();
-        while (distractors.size < 2) {
-          const d = problem.answer + (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 5) + 1);
-          if (d >= 0 && d !== problem.answer) distractors.add(d);
-        }
-        const shuffled = [...distractors, problem.answer].sort(() => Math.random() - 0.5);
-        setCards(shuffled);
-      }
-    }
-  }, [effectiveRemaining, show, revealed, problem, cards.length]);
-
-  const pick = (val) => {
-    if (revealed) return;
-    setRevealed(true);
-    if (val === problem.answer) {
-      onBonusCorrect?.();
-    }
-  };
-
-  if (!show) return null;
-
-  return (
-    <div className="flex flex-col gap-2 items-center">
-      <p className="text-xs text-gray-400 animate-pulse">
-        ⚡ Destello rápido — tocá una carta antes que termine
-      </p>
-      <div className="flex gap-1.5 items-center">
-        <span className="text-[10px] text-gray-500 mr-1">Vel:</span>
-        {[1, 1.5, 2].map((v) => (
-          <button
-            key={v}
-            onClick={() => setSpeed(v)}
-            className={`px-2 py-0.5 rounded text-[10px] font-bold transition-all ${
-              speed === v
-                ? "bg-indigo-500/60 text-white border border-indigo-400/40"
-                : "bg-white/5 text-gray-500 hover:text-white border border-transparent"
-            }`}
-          >
-            x{v}
-          </button>
-        ))}
-      </div>
-      <div className="flex gap-3">
-        {cards.map((val, i) => {
-          let cls = "w-16 h-16 rounded-xl text-xl font-bold transition-all duration-200 border-2 ";
-          if (revealed) {
-            cls += val === problem.answer
-              ? "bg-green-500 border-green-400 text-white scale-110"
-              : "bg-white/5 border-white/10 text-white/40";
-          } else {
-            cls += "bg-gradient-to-br from-indigo-600/60 to-purple-600/60 border-indigo-400/40 text-white hover:scale-105 active:scale-95";
-          }
-          return (
-            <button
-              key={`card-${i}`}
-              onClick={() => pick(val)}
-              disabled={revealed}
-              className={cls}
-            >
-              {revealed ? val : "?"}
-            </button>
-          );
-        })}
-      </div>
+        );
+      })}
     </div>
   );
 }
@@ -376,36 +368,14 @@ function EcosTab({ problem }) {
   );
 }
 
-export function MathMiniGames({ problem, timerRunning, customTime, onBonusCorrect, onHintsUsed }) {
+export function MathMiniGames({ problem }) {
   const [tab, setTab] = useState("pistas");
-  const [remaining, setRemaining] = useState(customTime);
-
-  useEffect(() => {
-    setRemaining(customTime);
-  }, [problem, customTime]);
-
-  useEffect(() => {
-    if (!timerRunning) return;
-    const id = setInterval(() => {
-      setRemaining((prev) => +(prev - 0.1).toFixed(1));
-    }, 100);
-    return () => clearInterval(id);
-  }, [timerRunning]);
 
   return (
     <div className="w-full mt-4 border-t border-white/10 pt-3">
       <TabBar active={tab} onChange={setTab} />
       <div className="mt-3 min-h-[80px]">
-        {tab === "pistas" && (
-          <PistasTab problem={problem} />
-        )}
-        {tab === "destello" && (
-          <DestelloTab
-            problem={problem}
-            remaining={remaining}
-            onBonusCorrect={onBonusCorrect}
-          />
-        )}
+        {tab === "pistas" && <PistasTab problem={problem} />}
         {tab === "abaco" && <AbacoTab problem={problem} />}
         {tab === "ecos" && <EcosTab problem={problem} />}
       </div>

@@ -474,19 +474,9 @@ export function MathPlay({
             selectedAnswer={selectedAnswer}
             onSelect={handleSubmit}
             disabled={!timerRunning}
+            feedback={feedback}
           />
-          <MathMiniGames
-            problem={problem}
-            timerRunning={timerRunning}
-            customTime={customTime}
-            onBonusCorrect={() => {
-              sessionPointsRef.current += 1;
-              setMathSessionPoints(sessionPointsRef.current);
-            }}
-            onHintsUsed={(type) => {
-              console.log("Hint used:", type);
-            }}
-          />
+          <MathMiniGames problem={problem} />
         </div>
       )}
 

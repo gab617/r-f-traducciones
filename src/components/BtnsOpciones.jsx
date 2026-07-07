@@ -20,7 +20,7 @@ export default function BtnsOpciones({
   const [showModal, setShowModal] = useState(false);
   const [modalSentences, setModalSentences] = useState([]);
   const [showSpanish, setShowSpanish] = useState(false);
-  const [showResolved, setShowResolved] = useState(false);
+  const [showResolved, setShowResolved] = useState(true);
   const [modalWord, setModalWord] = useState(null);
   const lastClickRef = useRef({ palabra: null, time: 0 });
 
