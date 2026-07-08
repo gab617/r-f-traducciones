@@ -4,6 +4,14 @@ export function Timer({ duration, onTimeout, running }) {
   const [remaining, setRemaining] = useState(duration);
   const onTimeoutRef = useRef(onTimeout);
   onTimeoutRef.current = onTimeout;
+  const durationRef = useRef(duration);
+
+  useEffect(() => {
+    if (duration !== durationRef.current) {
+      durationRef.current = duration;
+      setRemaining(duration);
+    }
+  }, [duration]);
 
   useEffect(() => {
     if (!running) return;
@@ -21,7 +29,7 @@ export function Timer({ duration, onTimeout, running }) {
     return () => clearInterval(id);
   }, [running]);
 
-  const pct = (remaining / duration) * 100;
+  const pct = duration > 0 ? (remaining / duration) * 100 : 0;
   const color =
     pct > 50 ? "bg-green-500" : pct > 25 ? "bg-yellow-500" : "bg-red-500";
 

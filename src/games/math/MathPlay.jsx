@@ -4,6 +4,7 @@ import { Timer } from "./Timer";
 import { MathOptions } from "./MathOptions";
 import { Numpad } from "./Numpad";
 import { MathMiniGames } from "./MathMiniGames";
+import { MilestoneBar } from "./MilestoneBar";
 import { uploadPointsMath } from "../../services/userService";
 import { AppContext } from "../../context/AppContext";
 
@@ -24,32 +25,47 @@ const LEVEL_INPUT = {
 const CAMPAIGN_STAGES = [3, 5, 10, 20, 25, 30];
 const MIN_SAVE_INTERVAL = 30000;
 
-const STAGE_STYLES = [
-  {
-    border: "border-gray-700/30", bar: "bg-emerald-500", shadow: "",
-    icon: "🌱", label: "Etapa 1",
-  },
-  {
-    border: "border-blue-500/30", bar: "bg-blue-500", shadow: "shadow-blue-500/20",
-    icon: "🌿", label: "Etapa 2",
-  },
-  {
-    border: "border-purple-500/30", bar: "bg-purple-500", shadow: "shadow-purple-500/30",
-    icon: "🌳", label: "Etapa 3",
-  },
-  {
-    border: "border-amber-500/40", bar: "bg-amber-500", shadow: "shadow-amber-500/40",
-    icon: "🔥", label: "Etapa 4",
-  },
-  {
-    border: "border-pink-500/40", bar: "bg-pink-500", shadow: "shadow-pink-500/50",
-    icon: "⚡", label: "Etapa 5",
-  },
-  {
-    border: "border-yellow-400/50", bar: "bg-yellow-400", shadow: "shadow-yellow-400/60",
-    icon: "👑", label: "Etapa 6",
-  },
-];
+const LEVEL_STAGE_STYLES = {
+  semilla: [
+    { border: "border-emerald-500/30", bar: "bg-emerald-400", accent: "text-emerald-300", shadow: "", icon: "🌱", label: "Etapa 1" },
+    { border: "border-emerald-600/30", bar: "bg-emerald-500", accent: "text-emerald-400", shadow: "shadow-emerald-500/20", icon: "🌿", label: "Etapa 2" },
+    { border: "border-green-600/30", bar: "bg-green-500", accent: "text-green-400", shadow: "shadow-green-500/30", icon: "🌳", label: "Etapa 3" },
+    { border: "border-teal-600/40", bar: "bg-teal-500", accent: "text-teal-400", shadow: "shadow-teal-500/40", icon: "🔥", label: "Etapa 4" },
+    { border: "border-emerald-500/40", bar: "bg-emerald-600", accent: "text-emerald-400", shadow: "shadow-emerald-600/50", icon: "⚡", label: "Etapa 5" },
+    { border: "border-green-400/50", bar: "bg-green-400", accent: "text-green-300", shadow: "shadow-green-400/60", icon: "👑", label: "Etapa 6" },
+  ],
+  fuego: [
+    { border: "border-red-500/30", bar: "bg-red-400", accent: "text-red-300", shadow: "", icon: "🌱", label: "Etapa 1" },
+    { border: "border-red-600/30", bar: "bg-red-500", accent: "text-red-400", shadow: "shadow-red-500/20", icon: "🌿", label: "Etapa 2" },
+    { border: "border-orange-600/30", bar: "bg-orange-500", accent: "text-orange-400", shadow: "shadow-orange-500/30", icon: "🌳", label: "Etapa 3" },
+    { border: "border-red-700/40", bar: "bg-red-600", accent: "text-red-400", shadow: "shadow-red-600/40", icon: "🔥", label: "Etapa 4" },
+    { border: "border-rose-500/40", bar: "bg-rose-500", accent: "text-rose-400", shadow: "shadow-rose-500/50", icon: "⚡", label: "Etapa 5" },
+    { border: "border-yellow-500/50", bar: "bg-yellow-500", accent: "text-yellow-400", shadow: "shadow-yellow-500/60", icon: "👑", label: "Etapa 6" },
+  ],
+  rayo: [
+    { border: "border-yellow-500/30", bar: "bg-yellow-400", accent: "text-yellow-300", shadow: "", icon: "🌱", label: "Etapa 1" },
+    { border: "border-amber-500/30", bar: "bg-amber-500", accent: "text-amber-400", shadow: "shadow-amber-500/20", icon: "🌿", label: "Etapa 2" },
+    { border: "border-yellow-600/30", bar: "bg-yellow-500", accent: "text-yellow-400", shadow: "shadow-yellow-500/30", icon: "🌳", label: "Etapa 3" },
+    { border: "border-orange-500/40", bar: "bg-orange-500", accent: "text-orange-400", shadow: "shadow-orange-500/40", icon: "🔥", label: "Etapa 4" },
+    { border: "border-amber-600/40", bar: "bg-amber-600", accent: "text-amber-400", shadow: "shadow-amber-600/50", icon: "⚡", label: "Etapa 5" },
+    { border: "border-yellow-300/50", bar: "bg-yellow-300", accent: "text-yellow-200", shadow: "shadow-yellow-300/60", icon: "👑", label: "Etapa 6" },
+  ],
+  cosmos: [
+    { border: "border-indigo-500/30", bar: "bg-indigo-400", accent: "text-indigo-300", shadow: "", icon: "🌱", label: "Etapa 1" },
+    { border: "border-purple-500/30", bar: "bg-purple-500", accent: "text-purple-400", shadow: "shadow-purple-500/20", icon: "🌿", label: "Etapa 2" },
+    { border: "border-violet-500/30", bar: "bg-violet-500", accent: "text-violet-400", shadow: "shadow-violet-500/30", icon: "🌳", label: "Etapa 3" },
+    { border: "border-indigo-600/40", bar: "bg-indigo-600", accent: "text-indigo-400", shadow: "shadow-indigo-600/40", icon: "🔥", label: "Etapa 4" },
+    { border: "border-fuchsia-500/40", bar: "bg-fuchsia-500", accent: "text-fuchsia-400", shadow: "shadow-fuchsia-500/50", icon: "⚡", label: "Etapa 5" },
+    { border: "border-amber-400/50", bar: "bg-amber-400", accent: "text-amber-300", shadow: "shadow-amber-400/60", icon: "👑", label: "Etapa 6" },
+  ],
+};
+
+const INFINITE_COLORS = {
+  semilla: { bar: "bg-emerald-500", accent: "text-emerald-400" },
+  fuego: { bar: "bg-red-500", accent: "text-red-400" },
+  rayo: { bar: "bg-yellow-500", accent: "text-yellow-400" },
+  cosmos: { bar: "bg-purple-500", accent: "text-purple-400" },
+};
 
 export function MathPlay({
   level, mode, customTime, activeOps, onBack,
@@ -105,13 +121,12 @@ export function MathPlay({
   }, []);
 
   const isInFixedStage = mode === "campaign" && stageIndex < CAMPAIGN_STAGES.length;
-  const stageTotal = isInFixedStage ? CAMPAIGN_STAGES[stageIndex] : null;
-  const progressCount = isInFixedStage ? correctInStage : freeProgress;
-  const progressTotal = isInFixedStage ? stageTotal : 10;
+  const stageStyles = LEVEL_STAGE_STYLES[level] || LEVEL_STAGE_STYLES.cosmos;
   const stageStyleIdx = mode === "campaign"
-    ? Math.min(stageIndex, STAGE_STYLES.length - 1)
-    : STAGE_STYLES.length - 1;
-  const stageStyle = STAGE_STYLES[stageStyleIdx];
+    ? Math.min(stageIndex, stageStyles.length - 1)
+    : stageStyles.length - 1;
+  const stageStyle = stageStyles[stageStyleIdx];
+  const infiniteColor = INFINITE_COLORS[level] || INFINITE_COLORS.cosmos;
 
   const mathUserData = useCallback(() => ({
     ...userRef.current,
@@ -385,39 +400,28 @@ export function MathPlay({
       </div>
 
       {mode === "campaign" && stageIndex < CAMPAIGN_STAGES.length && (
-        <div className="w-full text-center">
-          <p className={`text-[10px] font-semibold transition-colors duration-500 ${
-            stageStyleIdx >= 4 ? "text-pink-400" :
-            stageStyleIdx >= 2 ? "text-purple-400" :
-            "text-amber-400"
-          }`}>
-            {stageStyle.icon} {stageStyle.label} · {stageIndex + 1}/{CAMPAIGN_STAGES.length}
-          </p>
-          <div className="w-full h-1.5 bg-gray-700 rounded-full overflow-hidden mt-0.5">
-            <div
-              className={`h-full rounded-full transition-all duration-500 ${stageStyle.bar}`}
-              style={{ width: `${(correctInStage / CAMPAIGN_STAGES[stageIndex]) * 100}%` }}
-            />
-          </div>
-          <p className="text-[10px] text-gray-400 mt-0.5">
-            {correctInStage}/{CAMPAIGN_STAGES[stageIndex]} correctas
-          </p>
-        </div>
+        <MilestoneBar
+          key={stageIndex}
+          level={level}
+          progress={correctInStage}
+          total={CAMPAIGN_STAGES[stageIndex]}
+          title={`${stageStyle.icon} ${stageStyle.label} · ${stageIndex + 1}/${CAMPAIGN_STAGES.length}`}
+          label={`${correctInStage}/${CAMPAIGN_STAGES[stageIndex]} correctas`}
+          barColor={stageStyle.bar}
+          accentColor={stageStyle.accent}
+        />
       )}
 
       {(mode === "infinite" || stageIndex >= CAMPAIGN_STAGES.length) && (
-        <div className="w-full text-center">
-          <p className="text-[10px] text-cyan-400 font-semibold">♾️ Progreso</p>
-          <div className="w-full h-1.5 bg-gray-700 rounded-full overflow-hidden mt-0.5">
-            <div
-              className="h-full bg-cyan-500 rounded-full transition-all duration-300"
-              style={{ width: `${(freeProgress / 10) * 100}%` }}
-            />
-          </div>
-          <p className="text-[10px] text-gray-400 mt-0.5">
-            {freeProgress}/10 para +1 🧮
-          </p>
-        </div>
+        <MilestoneBar
+          level={level}
+          progress={freeProgress}
+          total={10}
+          title="♾️ Progreso"
+          label={`${freeProgress}/10 para +1 🧮`}
+          barColor={infiniteColor.bar}
+          accentColor={infiniteColor.accent}
+        />
       )}
 
       <div className="flex items-center gap-4 text-sm">
