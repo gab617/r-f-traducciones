@@ -6,6 +6,7 @@ const HOME_LINKS = [
   { to: "/", icon: "/homeimg.png", label: "Inicio" },
   { to: "/categorias", icon: "/categs.png", label: "Inglés" },
   { to: "/play/math", icon: "🧮", label: "Matemáticas" },
+  { to: "/play/cosmos", icon: "🚀", label: "Cosmos" },
 ];
 
 const VOCAB_LINKS = [

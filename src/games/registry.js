@@ -17,4 +17,12 @@ export const GAMES = [
     bgColor: "from-blue-600 to-cyan-500",
     route: "/play/math",
   },
+  {
+    id: "cosmos",
+    name: "Cosmos",
+    description: "Explorá el sistema solar con planetas, órbitas y animaciones.",
+    icon: "🚀",
+    bgColor: "from-indigo-600 to-purple-600",
+    route: "/play/cosmos",
+  },
 ];

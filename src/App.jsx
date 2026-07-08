@@ -9,6 +9,7 @@ import { Home } from "./pages/Home/Home";
 import { Traducciones } from "./pages/Traducciones/Traducciones";
 import { NavBar } from "./components/NavBar/NavBar";
 import { MathGame } from "./games/math/MathGame";
+import { Cosmos } from "./games/cosmos/Cosmos";
 
 function TopBarContent() {
   const { user, sessionPoints, rachaSession, mathSessionPoints, mathRachaSession } = useContext(AppContext);
@@ -17,6 +18,21 @@ function TopBarContent() {
   if (location.pathname === "/") return null;
 
   const isMath = location.pathname === "/play/math";
+  const isCosmos = location.pathname === "/play/cosmos";
+
+  if (isCosmos) {
+    return (
+      <div className="flex sm:gap-3 items-center mx-auto justify-between w-[100%]">
+        <h1 className="text-white mt-2 ml-2 sm:ml-0">
+          Hola!{" "}
+          <span className="font-bold text-yellow-400">
+            {user.user ? user.user : "guest"}
+          </span>
+        </h1>
+        <div className="text-white text-end mr-2">🚀 Cosmos</div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex sm:gap-3 items-center mx-auto justify-between w-[100%]">
@@ -53,6 +69,7 @@ function App() {
           <Route path="/categorias" element={data ? <Categorias /> : null} />
           <Route path="/seleccion" element={data ? <Seleccion /> : null} />
           <Route path="/play/math" element={<MathGame />} />
+          <Route path="/play/cosmos" element={<Cosmos />} />
           <Route path="/acierts" element={<Aciertos />} />
           <Route path="/translations" element={<Traducciones />} />
         </Routes>
