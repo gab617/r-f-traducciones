@@ -140,92 +140,254 @@ function getDepthScale(y) {
   return 0.55 + norm * 0.9;
 }
 
+const LIGHT = (id) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full">
+    <defs>
+      <radialGradient id={id} cx="30%" cy="25%" r="75%" fx="28%" fy="22%">
+        <stop offset="0%" stopColor="rgba(255,255,255,0.5)" />
+        <stop offset="25%" stopColor="rgba(255,255,255,0.18)" />
+        <stop offset="55%" stopColor="rgba(0,0,0,0.05)" />
+        <stop offset="100%" stopColor="rgba(0,0,0,0.6)" />
+      </radialGradient>
+    </defs>
+    <circle cx="50" cy="50" r="50" fill={`url(#${id})`} />
+  </svg>
+);
+
+const GLOW = (color) => (
+  <svg viewBox="0 0 100 100" className="w-full h-full pointer-events-none">
+    <circle cx="50" cy="50" r="50" fill="none" stroke={color} strokeWidth="4" opacity="0.15" />
+  </svg>
+);
+
 const PLANET_VISUALS = {
   Mercurio: {
-    bg: "radial-gradient(circle at 30% 30%, #d1d5db, #9ca3af, #6b7280)",
     detail: (
-      <span className="absolute top-[30%] left-[55%] w-[2px] h-[2px] rounded-full bg-gray-700/60" />
+      <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+        <circle cx="50" cy="50" r="50" fill="#9ca3af" />
+        <circle cx="30" cy="35" r="6" fill="#6b7280" opacity="0.5" />
+        <circle cx="60" cy="45" r="4" fill="#4b5563" opacity="0.4" />
+        <circle cx="45" cy="65" r="8" fill="#6b7280" opacity="0.35" />
+        <circle cx="20" cy="55" r="3" fill="#4b5563" opacity="0.5" />
+        <circle cx="70" cy="30" r="5" fill="#6b7280" opacity="0.45" />
+        <circle cx="55" cy="72" r="3" fill="#4b5563" opacity="0.4" />
+        <circle cx="35" cy="20" r="2.5" fill="#6b7280" opacity="0.3" />
+        <circle cx="75" cy="60" r="2" fill="#4b5563" opacity="0.35" />
+        <circle cx="28" cy="48" r="5" fill="#6b7280" opacity="0.4" />
+        <circle cx="62" cy="55" r="3.5" fill="#4b5563" opacity="0.3" />
+      </svg>
     ),
+    light: LIGHT("light-mercurio"),
+    glow: GLOW("rgba(255,255,255,0.15)"),
     speed: 4,
   },
   Venus: {
-    bg: "radial-gradient(circle at 30% 30%, #fef9c3, #f59e0b, #b45309)",
     detail: (
-      <span className="absolute top-[35%] left-[30%] w-[5px] h-[1.5px] bg-yellow-100/60 rounded-full rotate-[20deg]" />
+      <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+        <circle cx="50" cy="50" r="50" fill="#f59e0b" />
+        <path d="M 10 30 Q 30 20 50 35 Q 70 50 90 25" fill="none" stroke="#fef3c7" strokeWidth="8" opacity="0.25" />
+        <path d="M 5 60 Q 30 45 55 55 Q 80 65 95 50" fill="none" stroke="#fef9c3" strokeWidth="6" opacity="0.2" />
+        <path d="M 15 45 Q 40 35 60 48 Q 80 60 85 40" fill="none" stroke="#fbbf24" strokeWidth="5" opacity="0.15" />
+        <path d="M 20 75 Q 45 65 65 72 Q 80 78 90 65" fill="none" stroke="#fef9c3" strokeWidth="4" opacity="0.15" />
+        <ellipse cx="40" cy="35" rx="10" ry="6" fill="rgba(255,255,255,0.12)" transform="rotate(-15, 40, 35)" />
+        <ellipse cx="60" cy="55" rx="8" ry="4" fill="rgba(255,255,255,0.1)" transform="rotate(10, 60, 55)" />
+      </svg>
     ),
+    light: LIGHT("light-venus"),
+    glow: GLOW("rgba(255,200,100,0.2)"),
     speed: 8,
   },
   Tierra: {
-    bg: "radial-gradient(circle at 30% 30%, #60a5fa, #2563eb, #1e3a5f)",
     detail: (
-      <>
-        <span className="absolute top-[30%] left-[35%] w-[2.5px] h-[2px] rounded-sm bg-green-400/80" />
-        <span className="absolute top-[45%] left-[55%] w-[1.5px] h-[1.5px] rounded-sm bg-green-500/60" />
-      </>
+      <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+        <circle cx="50" cy="50" r="50" fill="#3b82f6" />
+        <path d="M 25 35 Q 35 25 45 38 Q 40 45 30 42 Q 25 40 25 35 Z" fill="#22c55e" opacity="0.7" />
+        <path d="M 55 40 Q 70 30 75 45 Q 78 55 70 50 Q 60 48 55 40 Z" fill="#16a34a" opacity="0.65" />
+        <path d="M 35 65 Q 45 55 55 68 Q 50 75 40 72 Q 35 70 35 65 Z" fill="#22c55e" opacity="0.6" />
+        <path d="M 65 60 Q 75 55 80 65 Q 78 72 70 68 Q 65 65 65 60 Z" fill="#15803d" opacity="0.55" />
+        <path d="M 30 50 Q 35 45 40 50 Q 38 55 32 52 Z" fill="#4ade80" opacity="0.5" />
+        <path d="M 50 55 Q 55 50 60 58 Q 55 62 50 55 Z" fill="#16a34a" opacity="0.5" />
+        <ellipse cx="30" cy="30" rx="14" ry="3" fill="rgba(255,255,255,0.15)" transform="rotate(-10, 30, 30)" />
+        <ellipse cx="70" cy="45" rx="10" ry="2.5" fill="rgba(255,255,255,0.12)" transform="rotate(5, 70, 45)" />
+        <ellipse cx="50" cy="70" rx="12" ry="2" fill="rgba(255,255,255,0.1)" transform="rotate(-5, 50, 70)" />
+        <ellipse cx="45" cy="22" rx="8" ry="2" fill="rgba(255,255,255,0.12)" transform="rotate(-20, 45, 22)" />
+        <ellipse cx="65" cy="55" rx="12" ry="3" fill="rgba(255,255,255,0.08)" transform="rotate(15, 65, 55)" />
+      </svg>
     ),
+    light: LIGHT("light-tierra"),
+    glow: GLOW("rgba(96,165,250,0.25)"),
     speed: 6,
   },
   Marte: {
-    bg: "radial-gradient(circle at 30% 30%, #fca5a5, #dc2626, #991b1b)",
     detail: (
-      <>
-        <span className="absolute top-1/2 left-[40%] w-[2px] h-[2px] rounded-full bg-red-900/60" />
-        <span className="absolute top-[35%] left-[55%] w-[1.5px] h-[1px] rounded-full bg-red-900/40" />
-      </>
+      <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+        <circle cx="50" cy="50" r="50" fill="#dc2626" />
+        <path d="M 30 35 Q 50 25 65 40 Q 55 55 35 50 Q 25 45 30 35 Z" fill="#991b1b" opacity="0.5" />
+        <path d="M 45 55 Q 60 45 70 60 Q 65 75 50 65 Q 40 60 45 55 Z" fill="#7f1d1d" opacity="0.4" />
+        <path d="M 25 50 Q 35 45 40 55 Q 30 60 25 50 Z" fill="#991b1b" opacity="0.35" />
+        <ellipse cx="50" cy="10" rx="14" ry="4" fill="rgba(255,255,255,0.5)" />
+        <ellipse cx="52" cy="11" rx="10" ry="2.5" fill="rgba(255,255,255,0.6)" />
+        <ellipse cx="50" cy="90" rx="12" ry="3.5" fill="rgba(255,255,255,0.4)" />
+        <ellipse cx="48" cy="89" rx="8" ry="2" fill="rgba(255,255,255,0.5)" />
+        <circle cx="55" cy="35" r="4" fill="#991b1b" opacity="0.3" />
+        <circle cx="30" cy="60" r="3" fill="#7f1d1d" opacity="0.4" />
+        <circle cx="65" cy="70" r="2.5" fill="#991b1b" opacity="0.35" />
+      </svg>
     ),
+    light: LIGHT("light-marte"),
+    glow: GLOW("rgba(252,165,165,0.2)"),
     speed: 7,
   },
   Júpiter: {
-    bg: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.35) 0%, transparent 55%), repeating-linear-gradient(180deg, #d97706 0px, #d97706 5px, #92400e 5px, #92400e 9px, #f59e0b 9px, #f59e0b 13px, #b45309 13px, #b45309 17px, #fbbf24 17px, #fbbf24 20px, #b45309 20px, #b45309 24px, #d97706 24px, #d97706 28px)",
     detail: (
-      <span className="absolute top-[55%] left-[38%] w-[5px] h-[3.5px] rounded-full bg-red-500/80" />
+      <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+        <circle cx="50" cy="50" r="50" fill="#d97706" />
+        <ellipse cx="50" cy="16" rx="46" ry="6" fill="#f59e0b" opacity="0.7" />
+        <ellipse cx="50" cy="25" rx="48" ry="4" fill="#d97706" opacity="0.5" />
+        <ellipse cx="50" cy="33" rx="47" ry="7" fill="#fbbf24" opacity="0.6" />
+        <ellipse cx="50" cy="43" rx="48" ry="5" fill="#b45309" opacity="0.45" />
+        <ellipse cx="50" cy="52" rx="46" ry="6" fill="#f59e0b" opacity="0.55" />
+        <ellipse cx="50" cy="60" rx="47" ry="4" fill="#d97706" opacity="0.4" />
+        <ellipse cx="50" cy="68" rx="46" ry="5" fill="#92400e" opacity="0.35" />
+        <ellipse cx="50" cy="76" rx="44" ry="4" fill="#f59e0b" opacity="0.4" />
+        <ellipse cx="36" cy="50" rx="9" ry="5.5" fill="rgba(220,38,38,0.75)" transform="rotate(-5, 36, 50)" />
+        <ellipse cx="36" cy="50" rx="5" ry="3" fill="rgba(185,28,28,0.5)" transform="rotate(-5, 36, 50)" />
+        <ellipse cx="60" cy="28" rx="3" ry="1.5" fill="rgba(255,255,255,0.12)" />
+        <ellipse cx="30" cy="62" rx="4" ry="2" fill="rgba(255,255,255,0.08)" />
+      </svg>
     ),
+    light: LIGHT("light-jupiter"),
+    glow: GLOW("rgba(251,191,36,0.2)"),
     speed: 3,
   },
   Urano: {
-    bg: "radial-gradient(circle at 30% 30%, #67e8f9, #06b6d4, #0e7490)",
     detail: (
-      <span className="absolute top-[5%] left-1/2 w-[1px] h-[90%] bg-cyan-200/40 -translate-x-1/2" />
+      <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+        <circle cx="50" cy="50" r="50" fill="#06b6d4" />
+        <ellipse cx="50" cy="22" rx="46" ry="4" fill="#67e8f9" opacity="0.2" />
+        <ellipse cx="50" cy="32" rx="47" ry="3" fill="#0891b2" opacity="0.15" />
+        <ellipse cx="50" cy="42" rx="46" ry="5" fill="#67e8f9" opacity="0.2" />
+        <ellipse cx="50" cy="55" rx="47" ry="4" fill="#0891b2" opacity="0.15" />
+        <ellipse cx="50" cy="65" rx="46" ry="3" fill="#67e8f9" opacity="0.15" />
+        <ellipse cx="50" cy="75" rx="44" ry="4" fill="#0891b2" opacity="0.1" />
+        <ellipse cx="50" cy="50" rx="12" ry="36" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="2" transform="rotate(-15, 50, 50)" />
+      </svg>
     ),
+    light: LIGHT("light-urano"),
+    glow: GLOW("rgba(103,232,249,0.2)"),
     speed: 5,
   },
-  Saturno: {
-    bg: "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 50%), repeating-linear-gradient(180deg, #fcd34d 0px, #fcd34d 4px, #d97706 4px, #d97706 7px, #f59e0b 7px, #f59e0b 10px, #b45309 10px, #b45309 13px, #fcd34d 13px, #fcd34d 16px)",
-    speed: 4,
-  },
   Neptuno: {
-    bg: "radial-gradient(circle at 30% 30%, #93c5fd, #3b82f6, #1d4ed8)",
     detail: (
-      <span className="absolute top-[45%] left-[52%] w-[2px] h-[2.5px] rounded-full bg-blue-950/60" />
+      <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+        <circle cx="50" cy="50" r="50" fill="#1d4ed8" />
+        <ellipse cx="50" cy="25" rx="46" ry="3" fill="#60a5fa" opacity="0.15" />
+        <ellipse cx="50" cy="38" rx="47" ry="4" fill="#3b82f6" opacity="0.2" />
+        <ellipse cx="50" cy="55" rx="46" ry="5" fill="#2563eb" opacity="0.15" />
+        <ellipse cx="50" cy="70" rx="45" ry="3" fill="#60a5fa" opacity="0.12" />
+        <ellipse cx="30" cy="50" rx="6" ry="3.5" fill="rgba(15,23,42,0.6)" transform="rotate(-3, 30, 50)" />
+        <ellipse cx="30" cy="50" rx="3.5" ry="2" fill="rgba(15,23,42,0.4)" transform="rotate(-3, 30, 50)" />
+        <path d="M 40 55 Q 55 48 70 52" fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="3" />
+        <path d="M 45 65 Q 55 60 65 63" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="2" />
+        <path d="M 55 30 Q 60 28 65 32" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="2.5" />
+        <ellipse cx="65" cy="42" rx="3" ry="1.5" fill="rgba(255,255,255,0.08)" />
+      </svg>
     ),
+    light: LIGHT("light-neptuno"),
+    glow: GLOW("rgba(147,197,253,0.2)"),
     speed: 6,
   },
   Plutón: {
-    bg: "radial-gradient(circle at 30% 30%, #d6d3d1, #a8a29e, #78716c)",
     detail: (
-      <span className="absolute top-[40%] left-[45%] w-[1px] h-[1px] rounded-full bg-white/70" />
+      <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="xMidYMid slice">
+        <circle cx="50" cy="50" r="50" fill="#a8a29e" />
+        <path d="M 35 50 Q 42 38 50 50 Q 55 58 48 60 Q 40 58 35 50 Z" fill="#d6d3d1" opacity="0.8" />
+        <path d="M 38 48 Q 42 42 47 48 Q 44 52 40 50 Z" fill="#e7e5e4" opacity="0.5" />
+        <circle cx="60" cy="35" r="4" fill="#78716c" opacity="0.5" />
+        <circle cx="62" cy="33" r="2" fill="#78716c" opacity="0.4" />
+        <circle cx="70" cy="50" r="3" fill="#78716c" opacity="0.35" />
+        <circle cx="50" cy="75" r="2.5" fill="#78716c" opacity="0.4" />
+        <circle cx="25" cy="55" r="2" fill="#78716c" opacity="0.3" />
+        <circle cx="65" cy="65" r="1.5" fill="#78716c" opacity="0.35" />
+      </svg>
     ),
+    light: LIGHT("light-pluton"),
+    glow: GLOW("rgba(255,255,255,0.1)"),
     speed: 10,
   },
+  Saturno: {
+    speed: 4,
+  },
 };
+
+const SUN_DATA = {
+  name: "Sol",
+  type: "Estrella enana amarilla (G2V)",
+  diam: "1.391.000 km",
+  distSol: "—",
+  orbita: "—",
+  lunas: 8,
+  fact: "Representa el 99,86% de la masa del sistema solar. Su temperatura superficial es de ~5.500°C y en el núcleo alcanza los ~15 millones de °C. La luz solar tarda ~8,3 minutos en llegar a la Tierra.",
+};
+
+function SaturnSVG() {
+  return (
+    <svg viewBox="0 0 120 60" className="w-[3.2em] h-[1.6em] overflow-visible">
+      <defs>
+        <clipPath id="saturn-sphere">
+          <circle cx="60" cy="30" r="12" />
+        </clipPath>
+        <radialGradient id="saturn-light" cx="35%" cy="25%" r="75%" fx="30%" fy="20%">
+          <stop offset="0%" stopColor="rgba(255,255,255,0.4)" />
+          <stop offset="30%" stopColor="rgba(255,255,255,0.1)" />
+          <stop offset="100%" stopColor="rgba(0,0,0,0.5)" />
+        </radialGradient>
+      </defs>
+      <g>
+        <path d="M 8 30 A 52 11 0 0 1 112 30 L 110 30 A 50 10.6 0 0 0 10 30 Z" fill="rgba(217,119,6,0.35)" />
+        <path d="M 11 30 A 49 10.2 0 0 1 109 30 L 105 30 A 45 9.6 0 0 0 15 30 Z" fill="rgba(251,191,36,0.55)" />
+        <path d="M 15 30 A 45 9.6 0 0 1 105 30 L 103 30 A 43 9.2 0 0 0 17 30 Z" fill="transparent" />
+        <path d="M 17 30 A 43 9.2 0 0 1 103 30 L 95 30 A 35 7.2 0 0 0 25 30 Z" fill="rgba(252,211,77,0.8)" />
+        <path d="M 25 30 A 35 7.2 0 0 1 95 30 L 89 30 A 29 5.8 0 0 0 31 30 Z" fill="rgba(180,83,9,0.45)" />
+        <path d="M 31 30 A 29 5.8 0 0 1 89 30 L 85 30 A 25 5 0 0 0 35 30 Z" fill="rgba(120,113,108,0.25)" />
+      </g>
+      <g clipPath="url(#saturn-sphere)">
+        <rect x="48" y="18" width="24" height="24" fill="#fcd34d" />
+        <rect x="48" y="19" width="24" height="3" fill="#d97706" opacity="0.5" />
+        <rect x="48" y="23" width="24" height="2.5" fill="#f59e0b" opacity="0.4" />
+        <rect x="48" y="27" width="24" height="4" fill="#b45309" opacity="0.35" />
+        <rect x="48" y="32" width="24" height="2" fill="#f59e0b" opacity="0.4" />
+        <rect x="48" y="35" width="24" height="3" fill="#d97706" opacity="0.5" />
+        <rect x="48" y="39" width="24" height="2" fill="#fbbf24" opacity="0.3" />
+      </g>
+      <circle cx="60" cy="30" r="12" fill="url(#saturn-light)" />
+      <g>
+        <path d="M 8 30 A 52 11 0 0 0 112 30 L 110 30 A 50 10.6 0 0 1 10 30 Z" fill="rgba(217,119,6,0.5)" />
+        <path d="M 11 30 A 49 10.2 0 0 0 109 30 L 105 30 A 45 9.6 0 0 1 15 30 Z" fill="rgba(251,191,36,0.7)" />
+        <path d="M 15 30 A 45 9.6 0 0 0 105 30 L 103 30 A 43 9.2 0 0 1 17 30 Z" fill="transparent" opacity="0.6" />
+        <path d="M 17 30 A 43 9.2 0 0 0 103 30 L 95 30 A 35 7.2 0 0 1 25 30 Z" fill="rgba(252,211,77,0.9)" />
+        <path d="M 25 30 A 35 7.2 0 0 0 95 30 L 89 30 A 29 5.8 0 0 1 31 30 Z" fill="rgba(180,83,9,0.55)" />
+        <path d="M 31 30 A 29 5.8 0 0 0 89 30 L 85 30 A 25 5 0 0 1 35 30 Z" fill="rgba(120,113,108,0.3)" />
+      </g>
+    </svg>
+  );
+}
 
 function PlanetBody({ planet, depth, rotating }) {
   const scale = depth ?? 1;
   const vis = PLANET_VISUALS[planet.name];
 
-  if (planet.name !== "Saturno") {
+  if (planet.name === "Saturno") {
     return (
       <span
-        className={`${planet.size} relative rounded-full overflow-hidden ${planet.shadow}
-          shadow-lg ring-1 ring-white/20 group-hover:ring-yellow-300/70
-          group-hover:shadow-[0_0_25px_rgba(255,200,0,0.5)] transition-all duration-300`}
-        style={{ transform: `scale(${scale})`, background: vis?.bg }}
+        className="block transition-all duration-300 group-hover:drop-shadow-[0_0_15px_rgba(255,200,0,0.5)]"
+        style={{ transform: `scale(${scale * 1.5})` }}
       >
         <span
-          className={`absolute inset-0 ${rotating ? "animate-planet-spin" : ""}`}
+          className={`block ${rotating ? "animate-planet-spin" : ""}`}
           style={{ animationDuration: `${vis?.speed || 6}s` }}
         >
-          {vis?.detail}
+          <SaturnSVG />
         </span>
       </span>
     );
@@ -233,48 +395,18 @@ function PlanetBody({ planet, depth, rotating }) {
 
   return (
     <span
-      className="transition-all duration-300 group-hover:drop-shadow-[0_0_15px_rgba(255,200,0,0.5)]"
-      style={{ transform: `scale(${scale * 1.5})` }}
+      className={`${planet.size} relative rounded-full overflow-hidden ${planet.shadow}
+        shadow-lg ring-1 ring-white/20 group-hover:ring-yellow-300/70
+        group-hover:shadow-[0_0_25px_rgba(255,200,0,0.5)] transition-all duration-300`}
+      style={{ transform: `scale(${scale})` }}
     >
       <span
-        className={`relative flex items-center justify-center ${rotating ? "animate-planet-spin" : ""}`}
+        className={`absolute inset-0 ${rotating ? "animate-planet-spin" : ""}`}
         style={{ animationDuration: `${vis?.speed || 6}s` }}
       >
-        <span
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-            w-14 h-[6px] rounded-full
-            bg-gradient-to-b from-amber-200/50 via-amber-300/60 to-amber-200/50
-            rotate-[10deg]"
-        />
-        <span
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-            w-[3.25rem] h-[2px] rounded-full
-            bg-amber-800/40 rotate-[7deg]"
-        />
-        <span
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-            w-12 h-[7px] rounded-full
-            bg-gradient-to-b from-amber-300/80 via-amber-400/90 to-amber-300/80
-            border border-amber-300/70 rotate-[8deg] shadow-lg shadow-amber-400/20"
-        />
-        <span
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-            w-10 h-[3px] rounded-full
-            bg-gradient-to-b from-amber-600/50 to-amber-700/40
-            border border-amber-600/20 rotate-[5deg]"
-        />
-        <span
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-            w-8 h-[2px] rounded-full
-            bg-gradient-to-b from-yellow-200/30 to-amber-300/20
-            -rotate-[2deg]"
-        />
-        <span
-          className="w-4 h-4 rounded-full relative z-10
-            shadow-[0_0_30px_rgba(217,119,6,0.6)] ring-1 ring-amber-300/30"
-          style={{ background: vis?.bg }}
-        />
+        {vis?.detail}
       </span>
+      {vis?.light}
     </span>
   );
 }
@@ -451,8 +583,14 @@ export function Cosmos() {
     }
   }, []);
 
-  const selected = openPlanet ? PLANETS.find((p) => p.name === openPlanet) : null;
-  const selPos = selected ? getPos(PLANETS.indexOf(selected)) : null;
+  const sunPhase = animating ? sunPhaseRef.current : 0;
+  const sunPos = {
+    left: CX + 25 * Math.sin(0.3 * sunPhase),
+    top: CY + 12 * Math.cos(0.2 * sunPhase),
+  };
+
+  const selected = openPlanet === "Sol" ? SUN_DATA : PLANETS.find((p) => p.name === openPlanet);
+  const selPos = selected ? (selected === SUN_DATA ? sunPos : getPos(PLANETS.indexOf(selected))) : null;
   const topHalf = selPos && selPos.top < 50;
 
   let tipPos = {};
@@ -470,12 +608,6 @@ export function Cosmos() {
       tipPos.bottom = `${Math.max(2, Math.min(85, 100 - selPos.top + 5))}%`;
     }
   }
-
-  const sunPhase = animating ? sunPhaseRef.current : 0;
-  const sunPos = {
-    left: CX + 25 * Math.sin(0.3 * sunPhase),
-    top: CY + 12 * Math.cos(0.2 * sunPhase),
-  };
 
   const ringCount = 3;
 
@@ -508,7 +640,7 @@ export function Cosmos() {
             Arrastrá para mover la vista • Tocá un planeta • Viaje: Sol se mueve
           </p>
         </div>
-        <div className={`flex justify-center gap-2 pointer-events-auto transition-all duration-500 ${fullscreen ? "opacity-30 hover:opacity-70" : "opacity-100"}`}>
+        <div className={`pointer-events-auto transition-all duration-500 ${fullscreen ? "fixed right-2 bottom-2 flex flex-col gap-2 opacity-30 hover:opacity-70" : "flex justify-center gap-2 opacity-100"}`}>
           <button
             onClick={() => { setPan({ x: 0, y: 0 }); setZoom(1); setHasAnimated(false); setAngles(initAngles()); decayRef.current = 1; sunPhaseRef.current = 0; timeRef.current = 0; }}
             className={`rounded-full font-semibold bg-white/10 text-white/60
@@ -577,32 +709,37 @@ export function Cosmos() {
           className="absolute z-20"
           style={{ top: `${sunPos.top}%`, left: `${sunPos.left}%` }}
         >
-          <div className="-translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-            {animating &&
-              Array.from({ length: ringCount }).map((_, i) => (
-                <div
-                  key={i}
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
-                    rounded-full border border-yellow-400/20 animate-grav-wave"
-                  style={{
-                    width: "5em",
-                    height: "5em",
-                    animationDelay: `${i * 1.2}s`,
-                    animationDuration: "3.6s",
-                  }}
-                />
-              ))}
-            <div
-              className={`w-[5em] h-[5em] rounded-full bg-gradient-to-br from-yellow-300 via-orange-400 to-red-500
-                shadow-[0_0_40px_rgba(255,200,0,0.6)]
-                ring-2 ring-yellow-200/30 transition-all duration-300 ${
-                animating ? "animate-sun-pulse" : ""
-              }`}
-            />
-            <span className="text-[10px] text-yellow-300/80 mt-1 whitespace-nowrap font-medium">
-              Sol
-            </span>
-          </div>
+          <button
+            onClick={() => handleToggle("Sol")}
+            className="group relative flex flex-col items-center cursor-pointer"
+          >
+            <div className="-translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+              {animating &&
+                Array.from({ length: ringCount }).map((_, i) => (
+                  <div
+                    key={i}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+                      rounded-full border border-yellow-400/20 animate-grav-wave"
+                    style={{
+                      width: "5em",
+                      height: "5em",
+                      animationDelay: `${i * 1.2}s`,
+                      animationDuration: "3.6s",
+                    }}
+                  />
+                ))}
+              <div
+                className={`w-[5em] h-[5em] rounded-full bg-gradient-to-br from-yellow-300 via-orange-400 to-red-500
+                  shadow-[0_0_40px_rgba(255,200,0,0.6)]
+                  ring-2 ring-yellow-200/30 transition-all duration-300 ${
+                  animating ? "animate-sun-pulse" : ""
+                }`}
+              />
+              <span className="text-[10px] text-yellow-300/80 mt-1 whitespace-nowrap font-medium">
+                Sol
+              </span>
+            </div>
+          </button>
         </div>
 
         {PLANETS.map((planet, i) => {
@@ -674,14 +811,16 @@ export function Cosmos() {
                 <p className="text-gray-300">
                   <span className="text-gray-500">Diámetro:</span> {selected.diam}
                 </p>
+                {selected.name !== "Sol" && (<>
+                  <p className="text-gray-300">
+                    <span className="text-gray-500">Distancia del Sol:</span> {selected.distSol}
+                  </p>
+                  <p className="text-gray-300">
+                    <span className="text-gray-500">Órbita:</span> {selected.orbita}
+                  </p>
+                </>)}
                 <p className="text-gray-300">
-                  <span className="text-gray-500">Distancia del Sol:</span> {selected.distSol}
-                </p>
-                <p className="text-gray-300">
-                  <span className="text-gray-500">Órbita:</span> {selected.orbita}
-                </p>
-                <p className="text-gray-300">
-                  <span className="text-gray-500">Lunas:</span>{" "}
+                  <span className="text-gray-500">{selected.name === "Sol" ? "Planetas" : "Lunas"}:</span>{" "}
                   <span className="text-yellow-400 font-semibold">{selected.lunas}</span>
                 </p>
                 <p className="text-gray-400 text-xs mt-2 leading-relaxed border-t border-white/10 pt-2">
