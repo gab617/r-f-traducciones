@@ -433,9 +433,16 @@ export function Cosmos() {
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const handler = (e) => e.preventDefault();
-    el.addEventListener("wheel", handler, { passive: false });
-    return () => el.removeEventListener("wheel", handler);
+    const prevent = (e) => { if (e.touches?.length > 1) e.preventDefault(); };
+    const preventWheel = (e) => e.preventDefault();
+    el.addEventListener("wheel", preventWheel, { passive: false });
+    el.addEventListener("touchstart", prevent, { passive: false });
+    el.addEventListener("touchmove", prevent, { passive: false });
+    return () => {
+      el.removeEventListener("wheel", preventWheel);
+      el.removeEventListener("touchstart", prevent);
+      el.removeEventListener("touchmove", prevent);
+    };
   }, []);
 
   const toggleFullscreen = useCallback(async () => {
