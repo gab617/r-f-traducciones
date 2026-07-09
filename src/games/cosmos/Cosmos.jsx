@@ -303,7 +303,6 @@ export function Cosmos() {
   const sunPhaseRef = useRef(0);
   const sceneRef = useRef(null);
   const dragRef = useRef(null);
-  const touchRef = useRef(null);
   const containerRef = useRef(null);
 
   const handleToggle = (name) => {
@@ -359,7 +358,7 @@ export function Cosmos() {
   }, []);
 
   const onPointerDown = useCallback((e) => {
-    if (touchRef.current) return;
+    if (e.pointerType === "touch") return;
     dragRef.current = {
       startX: e.clientX,
       startY: e.clientY,
@@ -372,7 +371,7 @@ export function Cosmos() {
   }, []);
 
   const onPointerMove = useCallback((e) => {
-    if (touchRef.current) return;
+    if (e.pointerType === "touch") return;
     if (!dragRef.current) return;
     const dx = e.clientX - dragRef.current.startX;
     const dy = e.clientY - dragRef.current.startY;
@@ -387,7 +386,6 @@ export function Cosmos() {
   }, [updatePan]);
 
   const onPointerUp = useCallback(() => {
-    if (touchRef.current) return;
     dragRef.current = null;
     document.removeEventListener("pointermove", onPointerMove);
     document.removeEventListener("pointerup", onPointerUp);
@@ -395,38 +393,32 @@ export function Cosmos() {
 
   const onTouchStart = useCallback((e) => {
     if (e.touches.length === 1) {
-      touchRef.current = { startX: e.touches[0].clientX, startY: e.touches[0].clientY, panX: 0, panY: 0, dist: 0 };
-    } else if (e.touches.length === 2) {
-      const t1 = e.touches[0];
-      const t2 = e.touches[1];
-      touchRef.current = { dist: Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY), startX: 0, startY: 0, panX: 0, panY: 0 };
+      dragRef.current = {
+        startX: e.touches[0].clientX,
+        startY: e.touches[0].clientY,
+        panX: 0,
+        panY: 0,
+        moved: false,
+      };
     }
   }, []);
 
   const onTouchMove = useCallback((e) => {
-    if (!touchRef.current) return;
-    if (e.touches.length === 2) {
-      const t1 = e.touches[0];
-      const t2 = e.touches[1];
-      const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
-      if (touchRef.current.dist) {
-        setZoom((prev) => Math.max(0.3, Math.min(3, prev * (dist / touchRef.current.dist))));
-      }
-      touchRef.current.dist = dist;
-    } else if (e.touches.length === 1) {
-      const dx = e.touches[0].clientX - touchRef.current.startX;
-      const dy = e.touches[0].clientY - touchRef.current.startY;
-      const pdx = dx - touchRef.current.panX;
-      const pdy = dy - touchRef.current.panY;
-      touchRef.current.panX = dx;
-      touchRef.current.panY = dy;
-      touchRef.current.dist = 0;
-      updatePan(pdx, pdy);
+    if (e.touches.length !== 1 || !dragRef.current) return;
+    const dx = e.touches[0].clientX - dragRef.current.startX;
+    const dy = e.touches[0].clientY - dragRef.current.startY;
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) {
+      dragRef.current.moved = true;
     }
+    const pdx = dx - dragRef.current.panX;
+    const pdy = dy - dragRef.current.panY;
+    dragRef.current.panX = dx;
+    dragRef.current.panY = dy;
+    updatePan(pdx, pdy);
   }, [updatePan]);
 
   const onTouchEnd = useCallback(() => {
-    touchRef.current = null;
+    dragRef.current = null;
   }, []);
 
   const onWheel = useCallback((e) => {
@@ -444,13 +436,7 @@ export function Cosmos() {
     if (!el) return;
     const prevent = (e) => e.preventDefault();
     el.addEventListener("wheel", prevent, { passive: false });
-    el.addEventListener("touchstart", prevent, { passive: false, capture: true });
-    el.addEventListener("touchmove", prevent, { passive: false, capture: true });
-    return () => {
-      el.removeEventListener("wheel", prevent);
-      el.removeEventListener("touchstart", prevent, { capture: true });
-      el.removeEventListener("touchmove", prevent, { capture: true });
-    };
+    return () => el.removeEventListener("wheel", prevent);
   }, []);
 
   const toggleFullscreen = useCallback(async () => {
