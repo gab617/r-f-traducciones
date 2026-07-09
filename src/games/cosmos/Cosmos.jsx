@@ -289,7 +289,7 @@ function initAngles() {
 
 export function Cosmos() {
   const [openPlanet, setOpenPlanet] = useState(null);
-  const [animating, setAnimating] = useState(false);
+  const [animating, setAnimating] = useState(true);
   const [angles, setAngles] = useState(initAngles);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -303,6 +303,7 @@ export function Cosmos() {
   const sunPhaseRef = useRef(0);
   const sceneRef = useRef(null);
   const dragRef = useRef(null);
+  const touchRef = useRef(null);
   const containerRef = useRef(null);
 
   const handleToggle = (name) => {
@@ -358,6 +359,7 @@ export function Cosmos() {
   }, []);
 
   const onPointerDown = useCallback((e) => {
+    if (touchRef.current) return;
     dragRef.current = {
       startX: e.clientX,
       startY: e.clientY,
@@ -370,6 +372,7 @@ export function Cosmos() {
   }, []);
 
   const onPointerMove = useCallback((e) => {
+    if (touchRef.current) return;
     if (!dragRef.current) return;
     const dx = e.clientX - dragRef.current.startX;
     const dy = e.clientY - dragRef.current.startY;
@@ -384,24 +387,55 @@ export function Cosmos() {
   }, [updatePan]);
 
   const onPointerUp = useCallback(() => {
+    if (touchRef.current) return;
     dragRef.current = null;
     document.removeEventListener("pointermove", onPointerMove);
     document.removeEventListener("pointerup", onPointerUp);
   }, []);
 
-  const onWheel = useCallback((e) => {
-    if (e.ctrlKey || e.metaKey) {
-      e.preventDefault();
-      setZoom((z) => Math.max(0.3, Math.min(3, z - e.deltaY * 0.005)));
-    } else {
-      setPan((prev) => ({ x: prev.x - e.deltaX, y: prev.y - e.deltaY }));
+  const onTouchStart = useCallback((e) => {
+    if (e.touches.length === 2) {
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      touchRef.current = {
+        dist: Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY),
+      };
     }
+  }, []);
+
+  const onTouchMove = useCallback((e) => {
+    if (e.touches.length === 2 && touchRef.current) {
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+      setZoom((prev) => {
+        const next = prev * (dist / touchRef.current.dist);
+        return Math.max(0.3, Math.min(3, next));
+      });
+      touchRef.current.dist = dist;
+    }
+  }, []);
+
+  const onTouchEnd = useCallback(() => {
+    touchRef.current = null;
+  }, []);
+
+  const onWheel = useCallback((e) => {
+    setZoom((z) => Math.max(0.3, Math.min(3, z - e.deltaY * 0.005)));
   }, []);
 
   useEffect(() => {
     const handler = () => setFullscreen(!!document.fullscreenElement);
     document.addEventListener("fullscreenchange", handler);
     return () => document.removeEventListener("fullscreenchange", handler);
+  }, []);
+
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const handler = (e) => e.preventDefault();
+    el.addEventListener("wheel", handler, { passive: false });
+    return () => el.removeEventListener("wheel", handler);
   }, []);
 
   const toggleFullscreen = useCallback(async () => {
@@ -450,6 +484,9 @@ export function Cosmos() {
       className="relative w-full min-h-[90vh] overflow-hidden select-none touch-none"
       onPointerDown={onPointerDown}
       onWheel={onWheel}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
     >
       {selected && (
         <div className="fixed inset-0 z-40" onClick={() => setOpenPlanet(null)} />
