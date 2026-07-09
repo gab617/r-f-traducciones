@@ -394,27 +394,36 @@ export function Cosmos() {
   }, []);
 
   const onTouchStart = useCallback((e) => {
-    if (e.touches.length === 2) {
+    if (e.touches.length === 1) {
+      touchRef.current = { startX: e.touches[0].clientX, startY: e.touches[0].clientY, panX: 0, panY: 0, dist: 0 };
+    } else if (e.touches.length === 2) {
       const t1 = e.touches[0];
       const t2 = e.touches[1];
-      touchRef.current = {
-        dist: Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY),
-      };
+      touchRef.current = { dist: Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY), startX: 0, startY: 0, panX: 0, panY: 0 };
     }
   }, []);
 
   const onTouchMove = useCallback((e) => {
-    if (e.touches.length === 2 && touchRef.current) {
+    if (!touchRef.current) return;
+    if (e.touches.length === 2) {
       const t1 = e.touches[0];
       const t2 = e.touches[1];
       const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
-      setZoom((prev) => {
-        const next = prev * (dist / touchRef.current.dist);
-        return Math.max(0.3, Math.min(3, next));
-      });
+      if (touchRef.current.dist) {
+        setZoom((prev) => Math.max(0.3, Math.min(3, prev * (dist / touchRef.current.dist))));
+      }
       touchRef.current.dist = dist;
+    } else if (e.touches.length === 1) {
+      const dx = e.touches[0].clientX - touchRef.current.startX;
+      const dy = e.touches[0].clientY - touchRef.current.startY;
+      const pdx = dx - touchRef.current.panX;
+      const pdy = dy - touchRef.current.panY;
+      touchRef.current.panX = dx;
+      touchRef.current.panY = dy;
+      touchRef.current.dist = 0;
+      updatePan(pdx, pdy);
     }
-  }, []);
+  }, [updatePan]);
 
   const onTouchEnd = useCallback(() => {
     touchRef.current = null;
@@ -433,15 +442,14 @@ export function Cosmos() {
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
-    const prevent = (e) => { if (e.touches?.length > 1) e.preventDefault(); };
-    const preventWheel = (e) => e.preventDefault();
-    el.addEventListener("wheel", preventWheel, { passive: false });
-    el.addEventListener("touchstart", prevent, { passive: false });
-    el.addEventListener("touchmove", prevent, { passive: false });
+    const prevent = (e) => e.preventDefault();
+    el.addEventListener("wheel", prevent, { passive: false });
+    el.addEventListener("touchstart", prevent, { passive: false, capture: true });
+    el.addEventListener("touchmove", prevent, { passive: false, capture: true });
     return () => {
-      el.removeEventListener("wheel", preventWheel);
-      el.removeEventListener("touchstart", prevent);
-      el.removeEventListener("touchmove", prevent);
+      el.removeEventListener("wheel", prevent);
+      el.removeEventListener("touchstart", prevent, { capture: true });
+      el.removeEventListener("touchmove", prevent, { capture: true });
     };
   }, []);
 
